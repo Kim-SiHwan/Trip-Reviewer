@@ -16,7 +16,7 @@ public class CommentResponseDto {
         id= comment.getId();
         content= comment.getContent();
         //쿼리
-        username= comment.getMember().getUsername();
+        username= comment.getUsername();
         createDate= comment.getCreateDate().toString();
 
     }
