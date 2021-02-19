@@ -3,6 +3,7 @@ package kim.sihwan.trip_reviewer.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class Review {
     private String area;
     private String title;
     private String content;
+    private String thumbnail;
     private LocalDateTime createDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,11 +33,12 @@ public class Review {
     private Member member;
 
     @OneToMany(mappedBy="review")
+    //private List<Comment> comments = new ArrayList<>();
     private Set<Comment> comments = new HashSet<>();
 
-    //cascade설정하면 addCOmment할 때 리뷰앨범이 뻥튀기 되는 현상 생김.
     @OneToMany(mappedBy="review", cascade = CascadeType.PERSIST)
-    private List<ReviewAlbum> reviewAlbums = new ArrayList<>();
+    //private List<ReviewAlbum> reviewAlbums = new ArrayList<>();
+    private Set<ReviewAlbum> reviewAlbums = new HashSet<>();
 
     @OneToMany(mappedBy="review")
     private List<ReviewTag> reviewTags = new ArrayList<>();
@@ -48,8 +51,14 @@ public class Review {
         this.createDate = createDate;
     }
 
+    public void addThumbnail(String thumbnailUrl) {
+        this.thumbnail = thumbnailUrl;
+    }
+
     //- 연관관계 편의 메소드 -
     public void addMember(Member member){
         this.member=member;
     }
+
+
 }
