@@ -21,13 +21,14 @@ public class ReviewListResponseDto {
     private int reviewAlbumsCount;
     private int commentCount;
     public ReviewListResponseDto (Review review){
+        System.out.println("리뷰리스트 디티오!!! : " +review.getReviewAlbums().size());
         id = review.getId();
         area = review.getArea();
         username = review.getMember().getUsername();
         title = review.getTitle();
         content = review.getContent();
         createDate = review.getCreateDate().toString();
-        thumbnail = review.getReviewAlbums().get(0).getUrl();
+        thumbnail = review.getThumbnail();
         reviewAlbumsCount = review.getReviewAlbums().size();
         commentCount = review.getComments().size();
     }
