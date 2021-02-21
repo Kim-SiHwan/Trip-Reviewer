@@ -15,6 +15,7 @@ public interface AlbumRepository extends JpaRepository<Album,Long> {
     List<Album> findAllByArea_Id(Long id);
 
     //이걸로 delete는 쿼리 한번으로 퉁.
+    //성능 저하용은 deleteEntity
     @Transactional
     @Modifying
     @Query("DELETE FROM Album a WHERE a.id IN :ids")
