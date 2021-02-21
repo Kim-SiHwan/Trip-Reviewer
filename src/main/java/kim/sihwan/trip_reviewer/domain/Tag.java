@@ -19,5 +19,10 @@ public class Tag {
     private Long id;
     private String tag;
 
+    @Builder
+    public Tag (String tag){
+        this.tag= tag;
+    }
+
 
 }
