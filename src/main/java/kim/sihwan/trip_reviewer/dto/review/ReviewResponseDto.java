@@ -3,7 +3,9 @@ package kim.sihwan.trip_reviewer.dto.review;
 import kim.sihwan.trip_reviewer.domain.Review;
 import kim.sihwan.trip_reviewer.dto.comment.CommentResponseDto;
 import kim.sihwan.trip_reviewer.dto.review.reviewAlbum.ReviewAlbumResponseDto;
+import kim.sihwan.trip_reviewer.dto.tag.TagResponseDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Collections;
@@ -12,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ReviewResponseDto {
     private Long id;
     private String area;
@@ -21,6 +24,7 @@ public class ReviewResponseDto {
     private String createDate;
     private List<ReviewAlbumResponseDto> reviewAlbums;
     private List<CommentResponseDto> comments;
+    private List<TagResponseDto> tags;
     public ReviewResponseDto (Review review){
         id = review.getId();
         area = review.getArea();
@@ -37,6 +41,11 @@ public class ReviewResponseDto {
         comments = review.getComments()
                 .stream()
                 .map(comment -> new CommentResponseDto(comment))
+                .collect(Collectors.toList());
+
+        tags = review.getReviewTags()
+                .stream()
+                .map(tag -> new TagResponseDto(tag.getTag()))
                 .collect(Collectors.toList());
        /* List<CommentResponseDto> commentList = review.getComments()
                 .stream()
