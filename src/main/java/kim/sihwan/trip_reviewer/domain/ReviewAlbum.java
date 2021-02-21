@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewAlbum {
@@ -33,9 +32,7 @@ public class ReviewAlbum {
 
     //- 연관관계 편의 메소드 -
     public void addReview(Review review){
-        System.out.println(review.getId());
         this.review = review;
         this.review.getReviewAlbums().add(this);
-        System.out.println(this.review.getReviewAlbums().size());
     }
 }
