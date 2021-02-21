@@ -32,7 +32,7 @@ public class Review {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy="review")
+    @OneToMany(mappedBy="review", cascade = CascadeType.PERSIST)
     //private List<Comment> comments = new ArrayList<>();
     private Set<Comment> comments = new HashSet<>();
 
@@ -40,8 +40,8 @@ public class Review {
     //private List<ReviewAlbum> reviewAlbums = new ArrayList<>();
     private Set<ReviewAlbum> reviewAlbums = new HashSet<>();
 
-    @OneToMany(mappedBy="review")
-    private List<ReviewTag> reviewTags = new ArrayList<>();
+    @OneToMany(mappedBy="review", cascade = CascadeType.PERSIST)
+    private Set<ReviewTag> reviewTags = new HashSet<>();
 
     @Builder
     public Review(String area, String title, String content, LocalDateTime createDate) {
@@ -59,6 +59,7 @@ public class Review {
     public void addMember(Member member){
         this.member=member;
     }
+
 
 
 }
