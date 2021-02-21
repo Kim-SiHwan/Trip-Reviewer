@@ -13,6 +13,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
@@ -23,6 +24,7 @@ public class AppConfig implements ApplicationRunner {
     private final RedisTemplate redisTemplate;
     private final MemberRepository memberRepository;
     private final AreaRepository areaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -33,7 +35,7 @@ public class AppConfig implements ApplicationRunner {
         Member member = Member
                 .builder()
                 .username("kim")
-                .password("kim")
+                .password(passwordEncoder.encode("kim"))
                 .nickname("라인가고싶다")
                 .role("ROLE_ADMIN")
                 .build();
@@ -43,7 +45,7 @@ public class AppConfig implements ApplicationRunner {
         Member member2 = Member
                 .builder()
                 .username("user")
-                .password("user")
+                .password(passwordEncoder.encode("user"))
                 .nickname("취직하고싶다")
                 .role("ROLE_USER")
                 .build();
