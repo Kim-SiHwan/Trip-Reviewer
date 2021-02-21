@@ -35,5 +35,11 @@ public class MemberController {
         return new ResponseEntity(result,HttpStatus.OK);
     }
 
+    @PostMapping("/new_token")
+    public ResponseEntity refreshToken(@RequestParam String expiredToken){
+        Map<String,String> result = memberService.createNewAccessToken(expiredToken);
+        return new ResponseEntity(result,HttpStatus.OK);
+    }
+
 
 }

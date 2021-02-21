@@ -1,5 +1,6 @@
 package kim.sihwan.trip_reviewer.service;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import kim.sihwan.trip_reviewer.config.jwt.JwtFilter;
 import kim.sihwan.trip_reviewer.config.jwt.JwtTokenProvider;
 import kim.sihwan.trip_reviewer.domain.Area;
@@ -9,12 +10,15 @@ import kim.sihwan.trip_reviewer.dto.member.MemberLoginDto;
 import kim.sihwan.trip_reviewer.repository.AreaRepository;
 import kim.sihwan.trip_reviewer.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -31,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.FileReader;
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -75,6 +80,35 @@ public class MemberService implements UserDetailsService {
         map.put("token",jwt);
         map.put("username",auth.getName());
 
+        return map;
+    }
+
+    @Transactional
+    public Map createNewAccessToken(String expiredToken){
+        Map<String,String> map = new HashMap<>();
+        String username="";
+        String jwt = expiredToken.substring(7,expiredToken.length());
+        ValueOperations<String,String> vo = redisTemplate.opsForValue();
+        try{
+            username = tokenProvider.getAuthentication(jwt).getName();
+            log.info(username+"의 토큰 검증.");
+        }catch (ExpiredJwtException e){
+            String tempName = e.getClaims().getSubject();
+            String refreshToken = vo.get(tempName+"r");
+            if(!tokenProvider.validateToken(vo.get(refreshToken))){
+                log.info("리프레시 토큰이 만료되었기에 재 로그인이 필요합니다.");
+                map.put("msg","다시 로그인을 진행해주세요.");
+            }
+
+            if(vo.get(expiredToken).equals(jwt) && tokenProvider.validateToken(refreshToken)){
+                log.info("액세스 토큰은 만료되었으나 리프레시 토큰은 만료되지 않아 재발급이 가능합니다.");
+                Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+                String newAccessToken = tokenProvider.createToken(authentication);
+                map.put("msg", "새로운 토큰이 발급되었습니다.");
+                map.put("newAccessToken", newAccessToken);
+                map.put("username", authentication.getName());
+            }
+        }
         return map;
     }
 
