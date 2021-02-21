@@ -4,6 +4,7 @@ import kim.sihwan.trip_reviewer.domain.Review;
 import kim.sihwan.trip_reviewer.domain.ReviewTag;
 import kim.sihwan.trip_reviewer.domain.Tag;
 import kim.sihwan.trip_reviewer.dto.review.ReviewRequestDto;
+import kim.sihwan.trip_reviewer.repository.ReviewTagRepository;
 import kim.sihwan.trip_reviewer.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,13 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class TagService {
     private final TagRepository tagRepository;
+    private final ReviewTagRepository reviewTagRepository;
+
+
+    public List<ReviewTag> getReviewIdsByTagId(Long tagId){
+        List<ReviewTag> reviewTags = reviewTagRepository.findAllByTag_Id(tagId);
+        return reviewTags;
+    }
 
     @Transactional
     public void addReviewTag(Review review , ReviewRequestDto requestDto){
@@ -49,9 +57,15 @@ public class TagService {
     }
 
     @Transactional
-    public void deleteAllWithReview(List<Long> reviewTagIdList){
-        tagRepository.deleteAllByIdInQuery(reviewTagIdList);
+    public void deleteAllReviewTagWithReview(List<Long> reviewTagIdList){
+        reviewTagRepository.deleteAllByIdInQuery(reviewTagIdList);
     }
+
+    @Transactional
+    public void deleteTag(Long tagId){
+        tagRepository.deleteById(tagId);
+    }
+
 
 
 
