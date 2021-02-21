@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,6 +17,7 @@ public class ReviewRequestDto {
     private String content;
     private String username;
     private List<MultipartFile> files;
+    private Set<String> tags;
 
     public Review toEntity(ReviewRequestDto requestDto){
         return Review.builder()
