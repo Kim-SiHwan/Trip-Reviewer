@@ -40,9 +40,9 @@ public class CommentService {
     public void addComment(CommentRequestDto requestDto){
         Long reviewId = requestDto.getReviewId();
         Review review = reviewRepository.findById(reviewId).get();
+        System.out.println("애드코멘트 : "+review.getReviewAlbums().size());
         Comment comment = requestDto.toEntity(requestDto);
         comment.addReview(review);
-        commentRepository.save(comment);
     }
 
     @Transactional
@@ -51,4 +51,10 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).get();
         commentRepository.delete(comment);
     }
+
+    @Transactional
+    public void deleteAllWithReview(List<Long> commentIdList){
+        commentRepository.deleteAllByIdInQuery(commentIdList);
+    }
+
 }
