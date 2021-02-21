@@ -7,6 +7,7 @@ import kim.sihwan.trip_reviewer.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,14 +18,14 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    public List<ReviewListResponseDto> getReviews(){
-        List<ReviewListResponseDto> list = reviewService.findAllReviews();
+    public List<ReviewListResponseDto> getReviews(Long tagId){
+        List<ReviewListResponseDto> list = reviewService.findAllReviews(tagId);
         return list;
     }
 
-    @GetMapping
-    public ResponseEntity findAllReviews(){
-        List<ReviewListResponseDto> result = getReviews();
+    @GetMapping("/all/{tagId}")
+    public ResponseEntity findAllReviews(@PathVariable("tagId")Long tagId){
+        List<ReviewListResponseDto> result = getReviews(tagId);
         return new ResponseEntity(result,HttpStatus.OK);
     }
 

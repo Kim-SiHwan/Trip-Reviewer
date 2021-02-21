@@ -9,10 +9,13 @@ import kim.sihwan.trip_reviewer.repository.MemberRepository;
 import kim.sihwan.trip_reviewer.repository.ReviewAlbumRepository;
 import kim.sihwan.trip_reviewer.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.security.auth.message.AuthException;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
@@ -29,16 +32,31 @@ public class ReviewService {
     private final CommentService commentService;
     private final TagService tagService;
 
-    public List<ReviewListResponseDto> findAllReviews(){
-        List<Review> reviews = reviewRepository.findAll();
-        List<ReviewListResponseDto> list = reviews
-                .stream()
-                .map(review -> new ReviewListResponseDto(review))
-                .collect(Collectors.toList());
-        Collections.reverse(list);
-        return list;
-    }
+//    @Cacheable(key = "reviewList" ,value = "review",unless = "#result == null")
+    public List<ReviewListResponseDto> findAllReviews(Long tagId){
+        if(tagId==0){
+            List<Review> reviews = reviewRepository.findAll();
+            List<ReviewListResponseDto> list = reviews
+                    .stream()
+                    .map(review -> new ReviewListResponseDto(review))
+                    .collect(Collectors.toList());
+            Collections.reverse(list);
+            return list;
+        }else{
+            //쿼리 줄일방법 생각해보자.
+            List<ReviewTag> reviewTags = tagService.getReviewIdsByTagId(tagId);
+            List<ReviewListResponseDto> list = reviewTags
+                    .stream()
+                    .map(reviewTag -> {
+                        Review review = reviewTag.getReview();
+                        return new ReviewListResponseDto(review);
+                    })
+                    .collect(Collectors.toList());
+            return list;
+        }
 
+    }
+    @Cacheable(key = "#reviewId" , value = "review" , unless = "#result == null")
     public ReviewResponseDto findOneByReviewId(Long reviewId){
         Review review = reviewRepository.findReviewById(reviewId);
         ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
@@ -46,44 +64,48 @@ public class ReviewService {
     }
 
     @Transactional
-    public void addReview(ReviewRequestDto requestDto){
+    public Long addReview(ReviewRequestDto requestDto){
         Member member = memberRepository.findMemberByUsername(requestDto.getUsername()).get();
         Review review = reviewAlbumService.addReviewAlbums(requestDto);
         tagService.addReviewTag(review, requestDto);
         review.addMember(member);
         reviewRepository.save(review);
+        return review.getId();
     }
 
     @Transactional
-    public void deleteReview(Long reviewId){
+    public void deleteReview(Long reviewId) {
         //효율적인지는 모르겠으나
         //기존 delete로 지우면
         // 태그의 수, 댓글의 수, 앨범의 수 만큼 3N의 삭제 쿼리가 나가지만
         //태그에서 1번, 댓글에서 1번, 앨범에서 1번 딱 3번의 삭제 쿼리가 나감.
         Review review = reviewRepository.findReviewById(reviewId);
-        List<Long> commentIds = review.getComments()
-                .stream()
-                .map(comment -> comment.getId())
-                .collect(Collectors.toList());
+        if (SecurityContextHolder.getContext().getAuthentication().getName().equals(review.getMember().getUsername())) {
 
-        List<Long> reviewAlbumIds = review.getReviewAlbums()
-                .stream()
-                .map(reviewAlbum -> reviewAlbum.getId())
-                .collect(Collectors.toList());
+            List<Long> commentIds = review.getComments()
+                    .stream()
+                    .map(comment -> comment.getId())
+                    .collect(Collectors.toList());
 
-        List<Long> reviewTagIds = review.getReviewTags()
-                .stream()
-                .map(reviewTag -> reviewTag.getId())
-                .collect(Collectors.toList());
+            List<Long> reviewAlbumIds = review.getReviewAlbums()
+                    .stream()
+                    .map(reviewAlbum -> reviewAlbum.getId())
+                    .collect(Collectors.toList());
 
-        System.out.println(reviewAlbumIds);
+            List<Long> reviewTagIds = review.getReviewTags()
+                    .stream()
+                    .map(reviewTag -> reviewTag.getId())
+                    .collect(Collectors.toList());
+
+            System.out.println(reviewAlbumIds);
 
 
-        tagService.deleteAllWithReview(reviewTagIds);
-        commentService.deleteAllWithReview(commentIds);
-        reviewAlbumService.deleteReviewAlbum(reviewAlbumIds);
-        reviewRepository.delete(review);
+            tagService.deleteAllReviewTagWithReview(reviewTagIds);
+            commentService.deleteAllWithReview(commentIds);
+            reviewAlbumService.deleteReviewAlbum(reviewAlbumIds);
+            reviewRepository.delete(review);
 
+        }
     }
 
 
