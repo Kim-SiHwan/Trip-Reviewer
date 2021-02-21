@@ -25,9 +25,9 @@ import java.util.stream.Collectors;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
-    private final CommentRepository commentRepository;
-    private final ReviewAlbumRepository reviewAlbumRepository;
     private final ReviewAlbumService reviewAlbumService;
+    private final CommentService commentService;
+    private final TagService tagService;
 
     public List<ReviewListResponseDto> findAllReviews(){
         List<Review> reviews = reviewRepository.findAll();
@@ -48,54 +48,45 @@ public class ReviewService {
     @Transactional
     public void addReview(ReviewRequestDto requestDto){
         Member member = memberRepository.findMemberByUsername(requestDto.getUsername()).get();
-        Review review = requestDto.toEntity(requestDto);
-        String fileUrl = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\static\\reviewImages\\";
-        String saveUrl = "http://localhost:8080/api/album/download?filename=";
-
-        try{
-            for(MultipartFile file : requestDto.getFiles()){
-                String newFilename = createNewFilename(file.getOriginalFilename());
-                File dest = new File(fileUrl + newFilename);
-                file.transferTo(dest);
-                ReviewAlbum reviewAlbum = ReviewAlbum
-                        .builder()
-                        .url(saveUrl + newFilename)
-                        .filename(newFilename)
-                        .originFilename(file.getOriginalFilename())
-                        .build();
-                reviewAlbum.addReview(review);
-            }
-            review.addMember(member);
-            reviewRepository.save(review);
-        }catch (Exception e){
-            System.out.println("리뷰 생성 중 오류 발생");
-        }
+        Review review = reviewAlbumService.addReviewAlbums(requestDto);
+        tagService.addReviewTag(review, requestDto);
+        review.addMember(member);
+        reviewRepository.save(review);
     }
 
     @Transactional
     public void deleteReview(Long reviewId){
+        //효율적인지는 모르겠으나
+        //기존 delete로 지우면
+        // 태그의 수, 댓글의 수, 앨범의 수 만큼 3N의 삭제 쿼리가 나가지만
+        //태그에서 1번, 댓글에서 1번, 앨범에서 1번 딱 3번의 삭제 쿼리가 나감.
         Review review = reviewRepository.findReviewById(reviewId);
         List<Long> commentIds = review.getComments()
                 .stream()
                 .map(comment -> comment.getId())
                 .collect(Collectors.toList());
+
         List<Long> reviewAlbumIds = review.getReviewAlbums()
                 .stream()
                 .map(reviewAlbum -> reviewAlbum.getId())
                 .collect(Collectors.toList());
-        System.out.println(reviewAlbumIds);
-        commentRepository.deleteAllByIdInQuery(commentIds);
 
+        List<Long> reviewTagIds = review.getReviewTags()
+                .stream()
+                .map(reviewTag -> reviewTag.getId())
+                .collect(Collectors.toList());
+
+        System.out.println(reviewAlbumIds);
+
+
+        tagService.deleteAllWithReview(reviewTagIds);
+        commentService.deleteAllWithReview(commentIds);
         reviewAlbumService.deleteReviewAlbum(reviewAlbumIds);
         reviewRepository.delete(review);
 
     }
 
-    public String createNewFilename(String filename){
-        UUID uuid = UUID.randomUUID();
-        String newFilename= uuid.toString() +"_" + filename;
-        return newFilename;
-    }
+
 
 
 }
