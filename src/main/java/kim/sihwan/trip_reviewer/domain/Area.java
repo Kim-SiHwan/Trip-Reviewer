@@ -44,6 +44,26 @@ public class Area {
         this.accompany = accompany;
     }
 
+    public void changeTitle(String title){
+        this.title = title;
+    }
+    public void changeColor(String color){
+        this.color = color;
+    }
+    public void changeAccompany(String accompany){
+        this.accompany = accompany;
+    }
+    public void changeVisitDate(String visitDate){
+        this.visitDate = visitDate;
+    }
+
+    public void initArea(){
+        this.title="";
+        this.color="#ffffff";
+        this.accompany="";
+        this.visitDate="";
+    }
+
     //- 연관관계 편의 메소드 -
     public void addMember(Member member){
         this.member = member;
