@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,14 +38,7 @@ public class TagService {
             reviewTag.addReview(review);
             reviewTag.addTag(tag);
         });
-        /*tags.stream()
-                .map(tagName -> {
-                    Tag tag = addTag(tagName);
-                    reviewTag.addReview(review);
-                    reviewTag.addTag(tag);
-                    return tag;
-                }).collect(Collectors.toSet());
-*/
+
     }
 
     @Transactional
@@ -60,15 +52,6 @@ public class TagService {
     public void deleteAllReviewTagWithReview(List<Long> reviewTagIdList){
         reviewTagRepository.deleteAllByIdInQuery(reviewTagIdList);
     }
-
-    @Transactional
-    public void deleteTag(Long tagId){
-        tagRepository.deleteById(tagId);
-    }
-
-
-
-
 
 
 

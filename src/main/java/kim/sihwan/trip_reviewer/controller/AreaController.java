@@ -20,28 +20,32 @@ public class AreaController {
 
     //쿼리1
     @GetMapping
-    public List<AreaResponseDto> findAllByUsername(){
+    public ResponseEntity findAllByUsername(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         List<AreaResponseDto> list = areaService.findAllByUsername(username);
-        return list;
+        return new ResponseEntity(list,HttpStatus.OK);
     }
 
     //쿼리 1
     @GetMapping("/{areaId}")
-    public AreaResponseDto findOneByAreaId(@PathVariable("areaId")Long areaId){
+    public ResponseEntity findOneByAreaId(@PathVariable("areaId")Long areaId){
         AreaResponseDto area = areaService.findOneByAreaId(areaId);
-        return area;
+        return new ResponseEntity(area,HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity updateAreaInfo(@RequestBody AreaRequestDto requestDto){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
         areaService.changeAreaInfo(requestDto);
-        return new ResponseEntity(areaService.findOneByAreaId(requestDto.getAreaId()), HttpStatus.OK);
+        return new ResponseEntity(areaService.findAllByUsername(username), HttpStatus.OK);
     }
 
     @PutMapping("/{areaId}")
     public ResponseEntity initArea(@PathVariable("areaId")Long areaId){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         areaService.initArea(areaId);
-        return new ResponseEntity(areaService.findOneByAreaId(areaId),HttpStatus.OK);
+        return new ResponseEntity(areaService.findAllByUsername(username),HttpStatus.OK);
     }
+
 }

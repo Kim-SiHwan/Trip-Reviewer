@@ -1,7 +1,6 @@
 package kim.sihwan.trip_reviewer.service;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import kim.sihwan.trip_reviewer.config.jwt.JwtFilter;
 import kim.sihwan.trip_reviewer.config.jwt.JwtTokenProvider;
 import kim.sihwan.trip_reviewer.domain.Area;
 import kim.sihwan.trip_reviewer.domain.Member;
@@ -14,12 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -33,7 +28,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Table;
 import java.io.FileReader;
 import java.util.*;
 
@@ -84,9 +78,7 @@ public class MemberService implements UserDetailsService {
         String rJwt = tokenProvider.createRefreshToken(auth);
         ValueOperations<String,String> vo = redisTemplate.opsForValue();
         vo.set(auth.getName()+"a", jwt);
-        vo.set(auth.getName()+"r", rJwt);/*
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer "+jwt);*/
+        vo.set(auth.getName()+"r", rJwt);
         map.put("token",jwt);
         map.put("username",auth.getName());
 

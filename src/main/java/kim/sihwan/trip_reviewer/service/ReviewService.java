@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ReviewService {
+    //결합도 줄이고싶음.
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final ReviewAlbumService reviewAlbumService;
