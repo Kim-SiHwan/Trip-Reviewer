@@ -19,4 +19,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
     @Override
     @EntityGraph( attributePaths = {"member","reviewAlbums","comments","reviewTags"},type = EntityGraph.EntityGraphType.LOAD)
     List<Review> findAll();
+
+    @EntityGraph(attributePaths = {"member","reviewAlbums","comments","reviewTags"},type = EntityGraph.EntityGraphType.LOAD)
+    List<Review> findAllByMember_Username(String username);
 }

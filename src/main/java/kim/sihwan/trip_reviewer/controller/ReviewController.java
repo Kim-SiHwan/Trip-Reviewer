@@ -5,7 +5,10 @@ import kim.sihwan.trip_reviewer.dto.review.ReviewRequestDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewResponseDto;
 import kim.sihwan.trip_reviewer.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -41,10 +44,23 @@ public class ReviewController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @GetMapping(value = "/download", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+    public ResponseEntity<Resource> downloadAlbumImage(@RequestParam("filename")String filename){
+        Resource resource = new FileSystemResource("C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\static\\reviewImages\\" + filename);
+        return new ResponseEntity(resource,HttpStatus.OK);
+    }
+
+
     @DeleteMapping("/{reviewId}")
     public ResponseEntity deleteReview(@PathVariable("reviewId") Long reviewId){
         reviewService.deleteReview(reviewId);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/my/{username}")
+    public ResponseEntity getReviewsByUsername(@PathVariable("username") String username){
+        List<ReviewListResponseDto> result = reviewService.findAllReviewsByUsername(username);
+        return new ResponseEntity(result,HttpStatus.OK);
     }
 
 

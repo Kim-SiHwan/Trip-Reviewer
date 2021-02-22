@@ -1,25 +1,24 @@
 package kim.sihwan.trip_reviewer.service;
 
-import kim.sihwan.trip_reviewer.domain.*;
+import kim.sihwan.trip_reviewer.domain.Member;
+import kim.sihwan.trip_reviewer.domain.Review;
+import kim.sihwan.trip_reviewer.domain.ReviewTag;
 import kim.sihwan.trip_reviewer.dto.review.ReviewListResponseDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewRequestDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewResponseDto;
-import kim.sihwan.trip_reviewer.repository.CommentRepository;
 import kim.sihwan.trip_reviewer.repository.MemberRepository;
-import kim.sihwan.trip_reviewer.repository.ReviewAlbumRepository;
 import kim.sihwan.trip_reviewer.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.security.auth.message.AuthException;
-import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,29 +31,43 @@ public class ReviewService {
     private final CommentService commentService;
     private final TagService tagService;
 
-//    @Cacheable(key = "reviewList" ,value = "review",unless = "#result == null")
+
+    @Cacheable(key = "#username" ,value = "myReviewList",unless = "#result == null")
+    public List<ReviewListResponseDto> findAllReviewsByUsername(String username){
+        List<Review> reviews = reviewRepository.findAllByMember_Username(username);
+        List<ReviewListResponseDto> list = new ArrayList<>();
+        list = reviews
+                .stream()
+                .map(review-> new ReviewListResponseDto(review))
+                .collect(Collectors.toList());
+        Collections.reverse(list);
+        return list;
+    }
+
+    @Cacheable(key = "#tagId" ,value = "reviewList",unless = "#result == null")
     public List<ReviewListResponseDto> findAllReviews(Long tagId){
+        List<ReviewListResponseDto> list = new ArrayList<>();
         if(tagId==0){
             List<Review> reviews = reviewRepository.findAll();
-            List<ReviewListResponseDto> list = reviews
+            list = reviews
                     .stream()
                     .map(review -> new ReviewListResponseDto(review))
                     .collect(Collectors.toList());
-            Collections.reverse(list);
-            return list;
+
         }else{
             //쿼리 줄일방법 생각해보자.
             List<ReviewTag> reviewTags = tagService.getReviewIdsByTagId(tagId);
-            List<ReviewListResponseDto> list = reviewTags
+            list = reviewTags
                     .stream()
                     .map(reviewTag -> {
                         Review review = reviewTag.getReview();
                         return new ReviewListResponseDto(review);
                     })
                     .collect(Collectors.toList());
-            return list;
-        }
 
+        }
+        Collections.reverse(list);
+        return list;
     }
     @Cacheable(key = "#reviewId" , value = "review" , unless = "#result == null")
     public ReviewResponseDto findOneByReviewId(Long reviewId){
@@ -64,6 +77,7 @@ public class ReviewService {
     }
 
     @Transactional
+    @CacheEvict(key = "0" , value = "reviewList")
     public Long addReview(ReviewRequestDto requestDto){
         Member member = memberRepository.findMemberByUsername(requestDto.getUsername()).get();
         Review review = reviewAlbumService.addReviewAlbums(requestDto);
@@ -74,6 +88,10 @@ public class ReviewService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(key = "#reviewId", value = "review"),
+            @CacheEvict(key = "0", value = "reviewList")
+    })
     public void deleteReview(Long reviewId) {
         //효율적인지는 모르겠으나
         //기존 delete로 지우면
