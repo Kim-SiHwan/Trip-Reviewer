@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 public class ReviewListResponseDto {
+
     private Long id;
     private String area;
     private String username;
@@ -25,6 +26,7 @@ public class ReviewListResponseDto {
     private int reviewAlbumsCount;
     private int commentCount;
     private List<TagResponseDto> tags;
+
     public ReviewListResponseDto (Review review){
         System.out.println("리뷰리스트 디티오!!! : " +review.getReviewAlbums().size());
         id = review.getId();

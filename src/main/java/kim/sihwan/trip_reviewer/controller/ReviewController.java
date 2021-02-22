@@ -10,7 +10,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,15 +26,15 @@ public class ReviewController {
     }
 
     @GetMapping("/all/{tagId}")
-    public ResponseEntity findAllReviews(@PathVariable("tagId")Long tagId){
-        List<ReviewListResponseDto> result = getReviews(tagId);
-        return new ResponseEntity(result,HttpStatus.OK);
+    public ResponseEntity<ReviewListResponseDto> findAllReviews(@PathVariable Long tagId){
+//        List<ReviewListResponseDto> result = getReviews(tagId);
+        return new ResponseEntity(reviewService.findAllReviews(tagId),HttpStatus.OK);
     }
 
     @GetMapping("/{reviewId}")
-    public ResponseEntity findOneByReviewId(@PathVariable("reviewId")Long reviewId){
-        ReviewResponseDto reviewResponseDto = reviewService.findOneByReviewId(reviewId);
-        return new ResponseEntity(reviewResponseDto, HttpStatus.OK);
+    public ResponseEntity<ReviewResponseDto> findOneByReviewId(@PathVariable Long reviewId){
+//        ReviewResponseDto reviewResponseDto = reviewService.findOneByReviewId(reviewId);
+        return new ResponseEntity(reviewService.findOneByReviewId(reviewId), HttpStatus.OK);
     }
 
     @PostMapping
@@ -52,15 +51,14 @@ public class ReviewController {
 
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity deleteReview(@PathVariable("reviewId") Long reviewId){
+    public void deleteReview(@PathVariable Long reviewId){
         reviewService.deleteReview(reviewId);
-        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/my/{username}")
-    public ResponseEntity getReviewsByUsername(@PathVariable("username") String username){
-        List<ReviewListResponseDto> result = reviewService.findAllReviewsByUsername(username);
-        return new ResponseEntity(result,HttpStatus.OK);
+    public ResponseEntity getReviewsByUsername(@PathVariable String username){
+//        List<ReviewListResponseDto> result = reviewService.findAllReviewsByUsername(username);
+        return new ResponseEntity(reviewService.findAllReviewsByUsername(username),HttpStatus.OK);
     }
 
 
