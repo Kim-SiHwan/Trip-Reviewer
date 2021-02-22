@@ -15,6 +15,13 @@ function addComment(data){
     })
 }
 
+function getMyCommentsByUsername(username){
+    return Send({
+        url:'/api/comment/my/'+username,
+        method:'GET'
+    })
+}
+
 function deleteComment(ids){
     return Send({
         url:'/api/comment/'+ids.reviewId+'/'+ids.commentId,
@@ -29,4 +36,4 @@ function updateComment(data){
         data:data
     })
 }
-export default {getAllComments,addComment,deleteComment,updateComment}
+export default {getAllComments,addComment,deleteComment,updateComment,getMyCommentsByUsername}

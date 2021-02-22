@@ -3,6 +3,7 @@ import comment_api from "@/apis/comment_api";
 const commentStore={
     state:{
         commentList:'',
+        myCommentList:''
 
     },
     mutations:{
@@ -11,6 +12,9 @@ const commentStore={
         },
         SET_UPDATE_COMMENT(state,payload){
             state.commentList[payload.idx]=payload.commentData;
+        },
+        SET_MY_COMMENT_LIST(state,payload){
+            state.myCommentList = payload;
         }
     },
     actions:{
@@ -59,6 +63,19 @@ const commentStore={
 
                 context.commit('SET_SNACK_BAR',{
                     msg:'댓글 수정을 실패했습니다.',color:'error'
+                });
+            }
+        },
+        async REQUEST_GET_ALL_MY_COMMENTS_BY_USERNAME(context,payload){
+            try{
+                const response = await comment_api.getMyCommentsByUsername(payload);
+                console.log(response);
+                context.commit('SET_MY_COMMENT_LIST',response.data);
+            }catch (e) {
+                console.log("댓글 불러오기 실패 ")
+
+                context.commit('SET_SNACK_BAR',{
+                    msg:'댓글 불러오기를 실패했습니다.',color:'error'
                 });
             }
         }
