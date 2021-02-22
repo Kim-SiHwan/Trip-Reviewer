@@ -4,13 +4,14 @@ import kim.sihwan.trip_reviewer.domain.Comment;
 import kim.sihwan.trip_reviewer.domain.Review;
 import kim.sihwan.trip_reviewer.dto.comment.CommentRequestDto;
 import kim.sihwan.trip_reviewer.dto.comment.CommentResponseDto;
+import kim.sihwan.trip_reviewer.dto.comment.CommentUpdateRequestDto;
 import kim.sihwan.trip_reviewer.repository.CommentRepository;
-import kim.sihwan.trip_reviewer.repository.MemberRepository;
 import kim.sihwan.trip_reviewer.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +28,21 @@ public class CommentService {
         return result;
     }
 
+    public List<CommentResponseDto> findAllCommentsByUsername(String username){
+        List<Comment> comments = commentRepository.findAllByUsername(username);
+        System.out.println("코멘트 서비스 : "+username);
+        List<CommentResponseDto> list = new ArrayList<>();
+        list = comments
+                .stream()
+                .map(comment -> new CommentResponseDto(comment))
+                .collect(Collectors.toList());
+        list.forEach(l-> System.out.println("리스트 :" +l.getUsername()+" "+l.getContent()));
+        return list;
+
+    }
+
     public List<CommentResponseDto> findAllComments(Long reviewId){
-        List<Comment> comments = commentRepository.findAll();
+        List<Comment> comments = commentRepository.findAllByReview_Id(reviewId);
         List<CommentResponseDto> list = comments
                 .stream()
                 .map(comment -> new CommentResponseDto(comment))
@@ -46,8 +60,14 @@ public class CommentService {
     }
 
     @Transactional
+    public void updateComment(CommentUpdateRequestDto updateRequestDto){
+        Comment comment = commentRepository.findById(updateRequestDto.getId()).get();
+        comment.changeContent(updateRequestDto.getContent());
+
+    }
+
+    @Transactional
     public void deleteComment(Long commentId){
-        //이것도 쿼리 2번 나가는게 싫으면 쿼리작성 해보기
         Comment comment = commentRepository.findById(commentId).get();
         commentRepository.delete(comment);
     }
