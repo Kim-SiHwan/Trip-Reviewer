@@ -23,7 +23,6 @@ public class ReviewResponseDto {
     private String content;
     private String createDate;
     private List<ReviewAlbumResponseDto> reviewAlbums;
-    private List<CommentResponseDto> comments;
     private List<TagResponseDto> tags;
     public ReviewResponseDto (Review review){
         id = review.getId();
@@ -38,20 +37,10 @@ public class ReviewResponseDto {
                 .map(m->new ReviewAlbumResponseDto(m))
                 .collect(Collectors.toList());
 
-        comments = review.getComments()
-                .stream()
-                .map(comment -> new CommentResponseDto(comment))
-                .collect(Collectors.toList());
-
         tags = review.getReviewTags()
                 .stream()
                 .map(tag -> new TagResponseDto(tag.getTag()))
                 .collect(Collectors.toList());
-       /* List<CommentResponseDto> commentList = review.getComments()
-                .stream()
-                .map(comment -> new CommentResponseDto(comment))
-                .collect(Collectors.toList());
-        Collections.reverse(commentList);
-        comments = commentList;*/
+
     }
 }

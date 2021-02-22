@@ -1,10 +1,8 @@
 package kim.sihwan.trip_reviewer.service;
 
-import kim.sihwan.trip_reviewer.domain.Member;
 import kim.sihwan.trip_reviewer.domain.Review;
 import kim.sihwan.trip_reviewer.domain.ReviewAlbum;
 import kim.sihwan.trip_reviewer.dto.review.ReviewRequestDto;
-import kim.sihwan.trip_reviewer.dto.review.reviewAlbum.ReviewAlbumRequestDto;
 import kim.sihwan.trip_reviewer.repository.ReviewAlbumRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,7 +29,7 @@ public class ReviewAlbumService {
     public Review addReviewAlbums(ReviewRequestDto requestDto){
         Review review = requestDto.toEntity(requestDto);
         String fileUrl = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\static\\reviewImages\\";
-        String saveUrl = "http://localhost:8080/api/album/download?filename=";
+        String saveUrl = "http://localhost:8080/api/review/download?filename=";
 
         try{
             String newFilename="";
