@@ -7,14 +7,11 @@ import kim.sihwan.trip_reviewer.dto.area.album.AlbumResponseDto;
 import kim.sihwan.trip_reviewer.repository.AlbumRepository;
 import kim.sihwan.trip_reviewer.repository.AreaRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,12 +24,10 @@ public class AlbumService {
     private final AreaRepository areaRepository;
 
     public List<AlbumResponseDto> findAllAlbumByAreaId(Long areaId) {
-        List<Album> albums = albumRepository.findAllByArea_Id(areaId);
-        List<AlbumResponseDto> list = albums
+        return albumRepository.findAllByArea_Id(areaId)
                 .stream()
-                .map(album -> new AlbumResponseDto(album))
+                .map(AlbumResponseDto::new)
                 .collect(Collectors.toList());
-        return list;
     }
 
     @Transactional
@@ -68,8 +63,7 @@ public class AlbumService {
 
     public String createNewFilename(String filename){
         UUID uuid = UUID.randomUUID();
-        String newFilename= uuid.toString() +"_" + filename;
-        return newFilename;
+        return uuid.toString() +"_" + filename;
     }
 
 
