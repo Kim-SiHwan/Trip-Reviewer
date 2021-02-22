@@ -5,6 +5,7 @@ const instance = axios.create();
 
 instance.interceptors.request.use(
     async config=>{
+        console.log(localStorage.getItem("access_token"));
         config.headers={'Authorization' : localStorage.getItem("access_token")}
         return config;
     },
@@ -26,6 +27,9 @@ instance.interceptors.response.use(
                     //현재 리프레시 만료되었을 때 한번에 처리를 못함. 아래 캐치에서 500에러뜰 때 진행되니까
                     //msg를 검사하던, 컨트롤러에서 토큰이 만료되었을 때 에러를 던지던 깔끔하게 처리를 합시다.
                     localStorage.setItem('access_token','Bearer '+res.data.newAccessToken)
+                    console.log(res.data.newAccessToken);
+                    console.log(localStorage.getItem("access_token"));
+                    console.log(store.state.token);
                     store.commit('SET_SNACK_BAR',{
                         msg:"토큰이 재발급 되었습니다! 다시 진행해주세요.",color:'info'
                     })
@@ -47,11 +51,11 @@ instance.interceptors.response.use(
 
 function requestRefreshToken(accessToken){
     let form ={
-        jwt : accessToken
+        expiredToken : accessToken
     }
     console.log("펑셩ㄴ! " +accessToken);
     return axios.request({
-        url:'/api/new_token',
+        url:'/api/member/new_token',
         method:'POST',
         data:form,
 
