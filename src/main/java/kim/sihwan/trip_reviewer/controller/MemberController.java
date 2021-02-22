@@ -40,6 +40,11 @@ public class MemberController {
         return new ResponseEntity(result,HttpStatus.OK);
     }
 
+    @PostMapping("/logout/{username}")
+    public void logout(@PathVariable("username")String username){
+
+    }
+
     @PostMapping("/new_token")
     public ResponseEntity refreshToken(@RequestBody NewTokenDto tokenDto){
         Map<String, String> result = new HashMap<>();

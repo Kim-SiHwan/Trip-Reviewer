@@ -33,6 +33,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Table;
 import java.io.FileReader;
 import java.util.*;
 
@@ -64,6 +65,14 @@ public class MemberService implements UserDetailsService {
             return "이미 존재하는 회원입니다.";
         }
 
+    }
+
+    @Transactional
+    public void logout(String username){
+        ValueOperations<String,String> vo = redisTemplate.opsForValue();
+        vo.set(username+"a","");
+        vo.set(username+"r","");
+        log.info(username+"로그아웃.");
     }
 
     @Transactional

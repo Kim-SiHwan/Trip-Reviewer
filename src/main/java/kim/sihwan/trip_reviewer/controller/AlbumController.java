@@ -4,7 +4,9 @@ import kim.sihwan.trip_reviewer.dto.area.album.AlbumRequestDto;
 import kim.sihwan.trip_reviewer.dto.area.album.AlbumResponseDto;
 import kim.sihwan.trip_reviewer.service.AlbumService;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.apache.coyote.Response;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -46,13 +48,14 @@ public class AlbumController {
     }
 
     @DeleteMapping
-    public ResponseEntity deleteAlbumByAlbumIds(@RequestBody dto d){
-        albumService.deleteAlbum(d.ids);
-        return new ResponseEntity(getAlbums(d.areaId),HttpStatus.OK);
+    public ResponseEntity deleteAlbumByAlbumIds(@RequestBody AlbumUpdateDto updateDto){
+        albumService.deleteAlbum(updateDto.getIds());
+        return new ResponseEntity(getAlbums(updateDto.getAreaId()),HttpStatus.OK);
     }
 
-    @Data
-    static class dto{
+    @Getter
+    @Setter
+    static class AlbumUpdateDto{
         private Long areaId;
         private List<Long> ids;
 

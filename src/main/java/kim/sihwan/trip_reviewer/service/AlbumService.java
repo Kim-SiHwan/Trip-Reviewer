@@ -64,10 +64,6 @@ public class AlbumService {
     @Transactional
     public void deleteAlbum(List<Long> albumIdList){
         albumRepository.deleteAllAlbumByQuery(albumIdList);
-/*        albumIdList.forEach(id->{
-            Album album = albumRepository.findById(id).get();
-            albumRepository.delete(album);
-        });*/
     }
 
     public String createNewFilename(String filename){
