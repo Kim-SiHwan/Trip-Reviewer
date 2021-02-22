@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
@@ -85,29 +86,44 @@ public class MemberService implements UserDetailsService {
 
     @Transactional
     public Map createNewAccessToken(String expiredToken){
+        System.out.println("만료된 토큰  : "+expiredToken);
         Map<String,String> map = new HashMap<>();
         String username="";
         String jwt = expiredToken.substring(7,expiredToken.length());
         ValueOperations<String,String> vo = redisTemplate.opsForValue();
         try{
+            System.out.println(username+"의 토큰 검증");
             username = tokenProvider.getAuthentication(jwt).getName();
+            System.out.println(username+"의 토큰 검증2");
             log.info(username+"의 토큰 검증.");
+            System.out.println(username+"의 토큰 검증3");
+
         }catch (ExpiredJwtException e){
+            System.out.println("유저네임 : "+username);
             String tempName = e.getClaims().getSubject();
+            System.out.println("유저네임 : "+tempName);
+
             String refreshToken = vo.get(tempName+"r");
-            if(!tokenProvider.validateToken(vo.get(refreshToken))){
+            if(!tokenProvider.validateToken(refreshToken)){
+                System.out.println("리프레시 토큰이 만료되었음");
                 log.info("리프레시 토큰이 만료되었기에 재 로그인이 필요합니다.");
                 map.put("msg","다시 로그인을 진행해주세요.");
             }
 
-            if(vo.get(expiredToken).equals(jwt) && tokenProvider.validateToken(refreshToken)){
+            if(vo.get(tempName+"a").equals(jwt) && tokenProvider.validateToken(refreshToken)){
                 log.info("액세스 토큰은 만료되었으나 리프레시 토큰은 만료되지 않아 재발급이 가능합니다.");
+                System.out.println("액세스토큰 재발급");
                 Authentication authentication = tokenProvider.getAuthentication(refreshToken);
                 String newAccessToken = tokenProvider.createToken(authentication);
                 map.put("msg", "새로운 토큰이 발급되었습니다.");
                 map.put("newAccessToken", newAccessToken);
+                System.out.println("쌔 토큰 : "+newAccessToken);
+                vo.set(tempName+"a",newAccessToken);
                 map.put("username", authentication.getName());
             }
+        }
+        if(map.isEmpty()){
+            map.put("msg","아직 만료되지 않은 토큰입니다.");
         }
         return map;
     }
