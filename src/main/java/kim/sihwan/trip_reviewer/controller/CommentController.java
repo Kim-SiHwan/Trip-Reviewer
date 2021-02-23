@@ -23,8 +23,12 @@ public class CommentController {
 
     @GetMapping("/{reviewId}")
     public ResponseEntity<CommentResponseDto> findAllCommentsByReviewId(@PathVariable("reviewId")Long reviewId){
-//        List<CommentResponseDto> result = getComments(reviewId);
         return new ResponseEntity(commentService.findAllComments(reviewId),HttpStatus.OK);
+    }
+
+    @GetMapping("/my/{username}")
+    public ResponseEntity<CommentResponseDto> getAllCommentsByUsername(@PathVariable("username")String username){
+        return new ResponseEntity(commentService.findAllCommentsByUsername(username),HttpStatus.OK);
     }
 
     @PostMapping
@@ -32,10 +36,6 @@ public class CommentController {
         commentService.addComment(requestDto);
     }
 
-    @DeleteMapping("/{commentId}")
-    public void deleteComment(@PathVariable("commentId")Long commentId){
-        commentService.deleteComment(commentId);
-    }
 
     @PutMapping
     public ResponseEntity updateComment(@RequestBody CommentUpdateRequestDto updateRequestDto){
@@ -43,10 +43,10 @@ public class CommentController {
         return new ResponseEntity(getComments(updateRequestDto.getReviewId()),HttpStatus.OK);
     }
 
-    @GetMapping("/my/{username}")
-    public ResponseEntity<CommentResponseDto> getAllCommentsByUsername(@PathVariable("username")String username){
-//        List<CommentResponseDto> result = commentService.findAllCommentsByUsername(username);
-        return new ResponseEntity(commentService.findAllCommentsByUsername(username),HttpStatus.OK);
+    @DeleteMapping("/{commentId}")
+    public void deleteComment(@PathVariable("commentId")Long commentId){
+        commentService.deleteComment(commentId);
     }
+
 
 }

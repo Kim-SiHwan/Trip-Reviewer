@@ -30,7 +30,7 @@ public class CommentService {
     public List<CommentResponseDto> findAllCommentsByUsername(String username) {
         return commentRepository.findAllByUsername(username)
                 .stream()
-                .map(CommentResponseDto::new)
+                .map(CommentResponseDto::toDto)
                 .collect(Collectors.toList());
 
     }
@@ -38,7 +38,7 @@ public class CommentService {
     public List<CommentResponseDto> findAllComments(Long reviewId) {
         return commentRepository.findAllByReview_Id(reviewId)
                 .stream()
-                .map(CommentResponseDto::new)
+                .map(CommentResponseDto::toDto)
                 .collect(Collectors.toList());
     }
 
