@@ -7,11 +7,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -28,9 +25,8 @@ public class MemberController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity save(@RequestBody MemberJoinDto joinDto){
-        String result = memberService.save(joinDto);
-        return new ResponseEntity(result, HttpStatus.OK);
+    public void save(@RequestBody MemberJoinDto joinDto){
+        memberService.save(joinDto);
     }
 
     @PostMapping("/login")
@@ -42,18 +38,19 @@ public class MemberController {
 
     @PostMapping("/logout/{username}")
     public void logout(@PathVariable("username")String username){
-
+        memberService.logout(username);
     }
 
-    @PostMapping("/new_token")
+/*    @PostMapping("/new_token")
     public ResponseEntity refreshToken(@RequestBody NewTokenDto tokenDto){
-        Map<String, String> result = new HashMap<>();
-        result = memberService.createNewAccessToken(tokenDto.expiredToken);
-        if(result.get("msg").equals("다시 로그인을 진행해주세요."))
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+        String result = memberService.createNewAccessToken(tokenDto.expiredToken);
+        return new ResponseEntity(result,HttpStatus.OK);
 
-        return new ResponseEntity(result, HttpStatus.OK);
-    }
+*//*        if("다시 로그인을 진행해주세요.".equals(result.getOrDefault("msg",""))) {
+            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(result, HttpStatus.OK);*//*
+    }*/
 
     @Getter
     static class NewTokenDto{
