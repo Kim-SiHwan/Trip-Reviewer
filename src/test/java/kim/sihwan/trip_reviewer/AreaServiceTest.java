@@ -20,6 +20,7 @@ public class AreaServiceTest {
 
     @Autowired
     MemberRepository memberRepository;
+
     @Test
     void 인증없이_지역구_가져오기(){
     //given

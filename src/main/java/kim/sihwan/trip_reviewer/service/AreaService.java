@@ -1,8 +1,10 @@
 package kim.sihwan.trip_reviewer.service;
 
+import kim.sihwan.trip_reviewer.domain.Album;
 import kim.sihwan.trip_reviewer.domain.Area;
 import kim.sihwan.trip_reviewer.dto.area.AreaRequestDto;
 import kim.sihwan.trip_reviewer.dto.area.AreaResponseDto;
+import kim.sihwan.trip_reviewer.dto.exception.AreaNotFoundException;
 import kim.sihwan.trip_reviewer.repository.AlbumRepository;
 import kim.sihwan.trip_reviewer.repository.AreaRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,27 +18,29 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AreaService {
+
     private final AreaRepository areaRepository;
     private final AlbumRepository albumRepository;
 
     public List<AreaResponseDto> findAllByUsername(String username){
-        List<Area> areas = areaRepository.findAllByMember_Username(username);
-        List<AreaResponseDto> list = areas
+        return areaRepository.findAllByMember_Username(username)
                 .stream()
-                .map(area -> new AreaResponseDto(area))
+                .map(AreaResponseDto::toDto)
                 .collect(Collectors.toList());
-        return list;
     }
 
     public AreaResponseDto findOneByAreaId(Long areaId){
-        Area area = areaRepository.findById(areaId).get();
-        AreaResponseDto areaResponseDto = new AreaResponseDto(area);
-        return areaResponseDto;
+        Area area = areaRepository.findById(areaId)
+                .orElseThrow(AreaNotFoundException::new);
+        return AreaResponseDto.toDto(area);
     }
 
     @Transactional
     public void changeAreaInfo(AreaRequestDto requestDto){
-        Area area = areaRepository.findById(requestDto.getAreaId()).get();
+        Area area = areaRepository.findById(requestDto.getAreaId())
+                .orElseThrow(AreaNotFoundException::new);
+
+
         if(!requestDto.getTitle().isEmpty())
             area.changeTitle(requestDto.getTitle());
         if(!requestDto.getColor().isEmpty())
@@ -48,16 +52,16 @@ public class AreaService {
 
     }
 
+    // 람다표현식
     @Transactional
     public void initArea(Long areaId){
-        Area area = areaRepository.findById(areaId).get();
+        Area area = areaRepository.findById(areaId)
+                .orElseThrow(AreaNotFoundException::new);
         area.initArea();
         List<Long> albumIdList = area.getAlbums()
                 .stream()
-                .map(album -> album.getId())
+                .map(Album::getId)
                 .collect(Collectors.toList());
         albumRepository.deleteAllAlbumByQuery(albumIdList);
-
     }
-
 }

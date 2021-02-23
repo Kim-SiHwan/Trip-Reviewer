@@ -57,6 +57,13 @@ public class Area {
         this.visitDate = visitDate;
     }
 
+    public void updateArea(String title, String color, String accompay, String visitDate){
+        this.title = title;
+        this.color = color;
+        this.accompany = accompay;
+        this.visitDate = visitDate;
+    }
+
     public void initArea(){
         this.title="";
         this.color="#ffffff";

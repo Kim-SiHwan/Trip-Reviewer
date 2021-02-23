@@ -1,6 +1,5 @@
 package kim.sihwan.trip_reviewer.controller;
 
-import kim.sihwan.trip_reviewer.domain.Area;
 import kim.sihwan.trip_reviewer.dto.area.AreaRequestDto;
 import kim.sihwan.trip_reviewer.dto.area.AreaResponseDto;
 import kim.sihwan.trip_reviewer.service.AreaService;
@@ -16,36 +15,28 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/area")
 public class AreaController {
+
     private final AreaService areaService;
 
-    //쿼리1
     @GetMapping
-    public ResponseEntity findAllByUsername(){
+    public ResponseEntity<List<AreaResponseDto>> findAllByUsername(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<AreaResponseDto> list = areaService.findAllByUsername(username);
-        return new ResponseEntity(list,HttpStatus.OK);
+        return new ResponseEntity<>(areaService.findAllByUsername(username),HttpStatus.OK);
     }
 
-    //쿼리 1
     @GetMapping("/{areaId}")
-    public ResponseEntity findOneByAreaId(@PathVariable("areaId")Long areaId){
-        AreaResponseDto area = areaService.findOneByAreaId(areaId);
-        return new ResponseEntity(area,HttpStatus.OK);
+    public ResponseEntity<AreaResponseDto> findOneByAreaId(@PathVariable Long areaId){
+        return new ResponseEntity<>(areaService.findOneByAreaId(areaId),HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity updateAreaInfo(@RequestBody AreaRequestDto requestDto){
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
+    @PatchMapping//여기 패치로 바꿨음.
+    public void updateAreaInfo(@RequestBody AreaRequestDto requestDto){
         areaService.changeAreaInfo(requestDto);
-        return new ResponseEntity(areaService.findAllByUsername(username), HttpStatus.OK);
     }
 
     @PutMapping("/{areaId}")
-    public ResponseEntity initArea(@PathVariable("areaId")Long areaId){
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    public void initArea(@PathVariable Long areaId){
         areaService.initArea(areaId);
-        return new ResponseEntity(areaService.findAllByUsername(username),HttpStatus.OK);
     }
 
 }
