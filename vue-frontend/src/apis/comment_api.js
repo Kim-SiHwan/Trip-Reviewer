@@ -22,9 +22,9 @@ function getMyCommentsByUsername(username){
     })
 }
 
-function deleteComment(ids){
+function deleteComment(commentId){
     return Send({
-        url:'/api/comment/'+ids.reviewId+'/'+ids.commentId,
+        url:'/api/comment/'+commentId,
         method:'DELETE'
     })
 }

@@ -32,11 +32,9 @@ const commentStore={
         },
         async REQUEST_ADD_COMMENT(context,payload){
             try{
-                const response = await comment_api.addComment(payload);
-                context.commit('SET_COMMENT_LIST',response.data);
+                await comment_api.addComment(payload);
             }catch (e) {
                 console.log("댓글 작성 실패 ")
-
                 context.commit('SET_SNACK_BAR',{
                     msg:'댓글 작성을 실패했습니다.',color:'error'
                 });
@@ -44,8 +42,7 @@ const commentStore={
         },
         async REQUEST_DELETE_COMMENT(context,payload){
             try{
-                const response = await comment_api.deleteComment(payload);
-                context.commit('SET_COMMENT_LIST',response.data);
+                await comment_api.deleteComment(payload);
             }catch (e) {
                 console.log("댓글 삭제 실패 ")
 

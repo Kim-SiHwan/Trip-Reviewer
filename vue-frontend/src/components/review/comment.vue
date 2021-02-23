@@ -173,11 +173,9 @@ export default {
   methods:{
     deleteComment(commentId,username) {
       if(this.username == username){
-        let ids={
-          commentId:commentId,
-          reviewId:this.$route.query.reviewId
-        }
-        this.$store.dispatch('REQUEST_DELETE_COMMENT',ids);
+        this.$store.dispatch('REQUEST_DELETE_COMMENT',commentId);
+        this.$store.dispatch('REQUEST_GET_ALL_COMMENTS',this.$route.query.reviewId);
+
       }else{
         this.$store.commit('SET_SNACK_BAR',
             {msg:'작성자만 삭제 할 수 있습니다.', color:'error'}
@@ -207,7 +205,7 @@ export default {
     updateComment(commentId){
       console.log(commentId);
         let data={
-          commentId:commentId,
+          id:commentId,
           content:this.updateContent,
           reviewId:this.$route.query.reviewId
         }
@@ -223,10 +221,14 @@ export default {
         content : this.content
       }
       this.$store.dispatch('REQUEST_ADD_COMMENT',this.sendForm);
+      this.$store.dispatch('REQUEST_GET_ALL_COMMENTS',this.$route.query.reviewId)
     }
   },
   created() {
     console.log(this.$route.query.reviewId);
+    this.dialog=true;
+    this.dialog=false;
+
   },
   mounted() {
      this.$store.dispatch('REQUEST_GET_ALL_COMMENTS',this.$route.query.reviewId);
