@@ -17,13 +17,12 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TagService {
+
     private final TagRepository tagRepository;
     private final ReviewTagRepository reviewTagRepository;
 
-
     public List<ReviewTag> getReviewIdsByTagId(Long tagId){
-        List<ReviewTag> reviewTags = reviewTagRepository.findAllByTag_Id(tagId);
-        return reviewTags;
+        return reviewTagRepository.findAllByTag_Id(tagId);
     }
 
     @Transactional
@@ -48,10 +47,6 @@ public class TagService {
         return tagRepository.save(tag);
     }
 
-    @Transactional
-    public void deleteAllReviewTagWithReview(List<Long> reviewTagIdList){
-        reviewTagRepository.deleteAllByIdInQuery(reviewTagIdList);
-    }
 
 
 

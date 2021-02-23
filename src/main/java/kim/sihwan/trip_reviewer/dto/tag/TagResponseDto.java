@@ -19,4 +19,5 @@ public class TagResponseDto {
         //태그 조회는 딱 1번만 되는걸로 확인했음. 02-20-04:33기준, 
         this.tag = tag.getTag();
     }
+
 }
