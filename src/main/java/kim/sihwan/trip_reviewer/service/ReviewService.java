@@ -36,7 +36,7 @@ public class ReviewService {
         List<Review> reviews = reviewRepository.findAllByMember_Username(username);
         List<ReviewListResponseDto> list = reviews
                 .stream()
-                .map(ReviewListResponseDto::new)
+                .map(ReviewListResponseDto::toDto)
                 .collect(Collectors.toList());
         Collections.reverse(list);
         return list;
@@ -49,7 +49,7 @@ public class ReviewService {
 
             return reviewRepository.findAll()
                     .stream()
-                    .map(ReviewListResponseDto::new)
+                    .map(ReviewListResponseDto::toDto)
                     .sorted(Comparator.comparing(ReviewListResponseDto::getId, Comparator.reverseOrder()))
                     .collect(Collectors.toList());
         }
@@ -57,7 +57,7 @@ public class ReviewService {
         //쿼리 줄일방법 생각해보자.
         return tagService.getReviewIdsByTagId(tagId)
                 .stream()
-                .map(reviewTag -> new ReviewListResponseDto(reviewTag.getReview()))
+                .map(reviewTag -> ReviewListResponseDto.toDto(reviewTag.getReview()))
                 .sorted(Comparator.comparing(ReviewListResponseDto::getId, Comparator.reverseOrder()))
                 .collect(Collectors.toList());
     }

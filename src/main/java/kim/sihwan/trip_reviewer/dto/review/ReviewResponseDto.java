@@ -1,14 +1,12 @@
 package kim.sihwan.trip_reviewer.dto.review;
 
 import kim.sihwan.trip_reviewer.domain.Review;
-import kim.sihwan.trip_reviewer.dto.comment.CommentResponseDto;
 import kim.sihwan.trip_reviewer.dto.review.reviewAlbum.ReviewAlbumResponseDto;
 import kim.sihwan.trip_reviewer.dto.tag.TagResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,15 +1,11 @@
 package kim.sihwan.trip_reviewer.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -32,15 +28,15 @@ public class Review {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy="review", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy="review", cascade = CascadeType.ALL)
     //private List<Comment> comments = new ArrayList<>();
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy="review", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy="review", cascade = CascadeType.ALL)
     //private List<ReviewAlbum> reviewAlbums = new ArrayList<>();
     private Set<ReviewAlbum> reviewAlbums = new HashSet<>();
 
-    @OneToMany(mappedBy="review", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy="review", cascade = CascadeType.ALL)
     private Set<ReviewTag> reviewTags = new HashSet<>();
 
     @Builder
