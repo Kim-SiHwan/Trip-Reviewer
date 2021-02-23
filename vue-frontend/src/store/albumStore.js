@@ -18,7 +18,6 @@ const albumStore={
 
             }catch (e) {
                 console.log("사진첩 불러오기 실패")
-
                 context.commit('SET_SNACK_BAR',{
                     msg:'사진첩 불러오기를 실패했습니다.',color:'error'
                 });
@@ -26,11 +25,7 @@ const albumStore={
         },
         async REQUEST_UPLOAD_FILES(context,payload){
             try{
-                console.log(payload.areaId);
-                console.log(payload.files);
-                const response = await file_api.uploadFiles(payload);
-                console.log(response.data);
-                context.commit('SET_FILE_INFO',response.data);
+                await file_api.uploadFiles(payload);
             }catch (e) {
                 console.log("업로드실패");
                 context.commit('SET_SNACK_BAR',{
@@ -40,9 +35,8 @@ const albumStore={
         },
         async REQUEST_UPDATE_ALBUM(context,payload){
             try{
-                console.log(payload.fileList);
-                const response = await file_api.deleteFiles(payload);
-                context.commit('SET_FILE_INFO',response.data);
+                await file_api.deleteFiles(payload);
+
             }catch (e) {
                 console.log("앨범 수정 실패");
                 context.commit('SET_SNACK_BAR',{
