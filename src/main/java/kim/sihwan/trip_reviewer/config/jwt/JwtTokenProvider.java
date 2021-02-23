@@ -2,7 +2,6 @@ package kim.sihwan.trip_reviewer.config.jwt;
 
 import io.jsonwebtoken.*;
 import kim.sihwan.trip_reviewer.service.MemberService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
@@ -45,7 +45,7 @@ public class JwtTokenProvider {
     public String createRefreshToken(Authentication authentication){
 
         long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInSeconds*20);
+        Date validity = new Date(now + this.tokenValidityInSeconds*2);
 
 
         return Jwts.builder()
@@ -68,21 +68,28 @@ public class JwtTokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+        System.out.println("get Authentication의 get Subject : "+claims.getSubject());
         UserDetails userDetails = memberService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails,"", userDetails.getAuthorities());
     }
 
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token, HttpServletRequest request) {
         try {
             Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            request.setAttribute("exception","InvalidTokenException");
         } catch (ExpiredJwtException e) {
-            System.out.println("토큰만료!");
+            System.out.println("EXPIRE! ! !");
+            request.setAttribute("exception","ExpiredTokenException");
 
         } catch (UnsupportedJwtException e) {
+            request.setAttribute("exception","UnsupportedTokenException");
+
         } catch (IllegalArgumentException e) {
+            request.setAttribute("exception","IllegalArgumentTokenException");
+
         }
         return false;
     }
