@@ -27,17 +27,18 @@ public class AlbumController {
         return new ResponseEntity<>(getAlbums(areaId),HttpStatus.OK);
     }
 
-    @PostMapping
-    public void addAlbum(@ModelAttribute AlbumRequestDto albumRequestDto){
-        albumService.addAlbum(albumRequestDto);
-    }
-
     @GetMapping(value = "/download", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
     public ResponseEntity<Resource> downloadAlbumImage(@RequestParam("filename")String filename){
         final String PATH = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\static\\albumImages\\"+filename;
         Resource resource = new FileSystemResource(PATH);
         return new ResponseEntity<>(resource,HttpStatus.OK);
     }
+
+    @PostMapping
+    public void addAlbum(@ModelAttribute AlbumRequestDto albumRequestDto){
+        albumService.addAlbum(albumRequestDto);
+    }
+
     @DeleteMapping
     public void deleteAlbumByAlbumIds(@RequestBody AlbumUpdateDto updateDto){
         albumService.deleteAlbum(updateDto.getIds());
