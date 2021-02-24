@@ -1,62 +1,78 @@
 package kim.sihwan.trip_reviewer.exception;
 
 import kim.sihwan.trip_reviewer.dto.exception.*;
+import kim.sihwan.trip_reviewer.exception.cumtomException.AreaNotFoundException;
+import kim.sihwan.trip_reviewer.exception.cumtomException.FileSizeLimitExceededException;
+import kim.sihwan.trip_reviewer.exception.cumtomException.UserNotFoundException;
+import kim.sihwan.trip_reviewer.exception.cumtomException.UsernameDuplicatedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UsernameNotFoundException.class)
-    protected ResponseEntity<ExceptionResponseDto> usernameNotFoundException(UsernameNotFoundException e){
-        log.info("UsernameNotFoundException!" +" "+e);
-        return new ResponseEntity<>(new ExceptionResponseDto(false,"해당 유저가 존재하지 않습니다.","400"), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
-    protected ResponseEntity<ExceptionResponseDto> unAuthorizedException(HttpClientErrorException.Unauthorized e){
-        System.out.println("에러에러에러에러");
-        System.out.println(e);
-        return new ResponseEntity<>(new ExceptionResponseDto(false,"401에러임","401"),HttpStatus.UNAUTHORIZED);
-    }
 
 
     @ExceptionHandler(UserNotFoundException.class)
-    protected ResponseEntity<ExceptionResponseDto> userNotFoundException(UserNotFoundException e){
+    protected ResponseEntity<ErrorResponseDto> userNotFoundException(UserNotFoundException e){
         System.out.println("낫파운드");
         System.out.println(e);
-        return new ResponseEntity<>(new ExceptionResponseDto(false,e.getMessage(),"400"),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponseDto(false,ErrorCode.INVALID_LOGIN_INFO.getCode(), ErrorCode.INVALID_LOGIN_INFO.getDescription()),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    protected ResponseEntity<ExceptionResponseDto> badCredentialsException(BadCredentialsException e){
+    protected ResponseEntity<ErrorResponseDto> badCredentialsException(BadCredentialsException e){
         System.out.println("로그인에러");
         System.out.println(e);
-        return new ResponseEntity<>(new ExceptionResponseDto(false,"아이디 혹은 비밀번호를 확인해주세요.","400"),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponseDto(false,ErrorCode.INVALID_LOGIN_INFO.getCode(), ErrorCode.INVALID_LOGIN_INFO.getDescription()),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AreaNotFoundException.class)
-    protected ResponseEntity<ExceptionResponseDto> areaNotFoundException(AreaNotFoundException e){
+    protected ResponseEntity<ErrorResponseDto> areaNotFoundException(AreaNotFoundException e){
         System.out.println("지역에러");
         System.out.println(e);
-        return new ResponseEntity<>(new ExceptionResponseDto(false,e.getMessage(),"400"),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponseDto(false,ErrorCode.NON_LOGIN.getCode(), ErrorCode.NON_LOGIN.getDescription()),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UsernameDuplicatedException.class)
-    protected ResponseEntity<ExceptionResponseDto> usernameDuplicatedException(UsernameDuplicatedException e){
+    protected ResponseEntity<ErrorResponseDto> usernameDuplicatedException(UsernameDuplicatedException e){
         System.out.println("회원가입 에러");
         System.out.println(e);
-        return new ResponseEntity<>(new ExceptionResponseDto(false,"이미 존재하는 아이디입니다.","400"),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponseDto(false,ErrorCode.DUPLICATED_USERNAME.getCode(),ErrorCode.DUPLICATED_USERNAME.getDescription()),HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(FileSizeLimitExceededException.class)
+    protected ResponseEntity<ErrorResponseDto> fileSizeLimitExceededException(FileSizeLimitExceededException e){
+        return new ResponseEntity<>(errorResponseDto(false,ErrorCode.FILE_SIZE_OVER.getCode(), ErrorCode.FILE_SIZE_OVER.getDescription()),HttpStatus.BAD_REQUEST);
+    }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDto> methodArgumentNotValidException(MethodArgumentNotValidException e){
+        System.out.println("ValidException");
+        System.out.println(e.getBindingResult());
+        String message = e.getBindingResult().getFieldError().getDefaultMessage();
+        return new ResponseEntity(new ErrorResponseDto(false,ErrorCode.NOT_NULL.getCode(), message),HttpStatus.BAD_REQUEST);
 
+    }
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<ErrorResponseDto> bindException(BindException e){
+        System.out.println("ValidException");
+        System.out.println(e.getBindingResult());
+        String message = e.getBindingResult().getFieldError().getDefaultMessage();
+        return new ResponseEntity(new ErrorResponseDto(false,ErrorCode.NOT_NULL.getCode(), message),HttpStatus.BAD_REQUEST);
+
+    }
+    private ErrorResponseDto errorResponseDto(boolean success, int code, String message){
+        return new ErrorResponseDto(success,code,message);
+
+    }
 
 }
