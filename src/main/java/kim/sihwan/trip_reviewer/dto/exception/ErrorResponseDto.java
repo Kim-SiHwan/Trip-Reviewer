@@ -3,13 +3,16 @@ package kim.sihwan.trip_reviewer.dto.exception;
 import lombok.Getter;
 
 @Getter
-public class ExceptionResponseDto {
+public class ErrorResponseDto {
     private boolean success;
     private String message;
-    private String code;
-    public ExceptionResponseDto(boolean success,String message,String code){
+    private int code;
+
+
+    public ErrorResponseDto(boolean success, int code, String message){
         this.success=success;
-        this.message=message;
         this.code=code;
+        this.message=message;
+
     }
 }
