@@ -1,6 +1,7 @@
 package kim.sihwan.trip_reviewer.exception;
 
 import kim.sihwan.trip_reviewer.dto.exception.*;
+import kim.sihwan.trip_reviewer.exception.cumtomException.*;
 import kim.sihwan.trip_reviewer.exception.cumtomException.AreaNotFoundException;
 import kim.sihwan.trip_reviewer.exception.cumtomException.FileSizeLimitExceededException;
 import kim.sihwan.trip_reviewer.exception.cumtomException.UserNotFoundException;
@@ -54,22 +55,30 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDto> methodArgumentNotValidException(MethodArgumentNotValidException e){
+    protected ResponseEntity<ErrorResponseDto> methodArgumentNotValidException(MethodArgumentNotValidException e){
         System.out.println("ValidException");
         System.out.println(e.getBindingResult());
         String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        return new ResponseEntity(new ErrorResponseDto(false,ErrorCode.NOT_NULL.getCode(), message),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(errorResponseDto(false, ErrorCode.NOT_NULL.getCode(), message),HttpStatus.BAD_REQUEST);
 
     }
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<ErrorResponseDto> bindException(BindException e){
+    protected ResponseEntity<ErrorResponseDto> bindException(BindException e){
         System.out.println("ValidException");
         System.out.println(e.getBindingResult());
         String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        return new ResponseEntity(new ErrorResponseDto(false,ErrorCode.NOT_NULL.getCode(), message),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(errorResponseDto(false, ErrorCode.NOT_NULL.getCode(), message),HttpStatus.BAD_REQUEST);
 
     }
+
+    @ExceptionHandler(DeletedReviewException.class)
+    protected ResponseEntity<ErrorResponseDto> deletedReviewException (DeletedReviewException e){
+        System.out.println("삭제된리뷰");
+        System.out.println(e);
+        return new ResponseEntity<>(errorResponseDto(false, ErrorCode.DELETED_REVIEW.getCode() , ErrorCode.DELETED_REVIEW.getDescription()),HttpStatus.BAD_REQUEST);
+    }
+
     private ErrorResponseDto errorResponseDto(boolean success, int code, String message){
         return new ErrorResponseDto(success,code,message);
 
