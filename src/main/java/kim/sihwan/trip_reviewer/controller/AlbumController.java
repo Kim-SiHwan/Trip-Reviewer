@@ -1,5 +1,8 @@
 package kim.sihwan.trip_reviewer.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import kim.sihwan.trip_reviewer.dto.area.album.AlbumRequestDto;
 import kim.sihwan.trip_reviewer.dto.area.album.AlbumResponseDto;
 import kim.sihwan.trip_reviewer.service.AlbumService;
@@ -13,8 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Api(tags = {"3. Album"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/album")
@@ -22,11 +27,15 @@ public class AlbumController {
 
     private final AlbumService albumService;
 
+    @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
+    @ApiOperation(value = "사진첩 조회",notes = "지역구 id로 해당 지역의 사진첩을 조회한다.")
     @GetMapping("/{areaId}")
     public ResponseEntity<List<AlbumResponseDto>> findAllAlbumByAreaId(@PathVariable("areaId") Long areaId){
-        return new ResponseEntity<>(getAlbums(areaId),HttpStatus.OK);
+        return new ResponseEntity<>(albumService.findAllAlbumByAreaId(areaId),HttpStatus.OK);
     }
 
+    @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
+    @ApiOperation(value = "사진 조회",notes = "사진첩의 사진을 조회한다.")
     @GetMapping(value = "/download", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
     public ResponseEntity<Resource> downloadAlbumImage(@RequestParam("filename")String filename){
         final String PATH = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\static\\albumImages\\"+filename;
@@ -34,19 +43,20 @@ public class AlbumController {
         return new ResponseEntity<>(resource,HttpStatus.OK);
     }
 
+    @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
+    @ApiOperation(value = "사진 추가",notes = "지역구 id와 사진 리스트를 입력받아 사진첩에 추가한다.")
     @PostMapping
-    public void addAlbum(@ModelAttribute AlbumRequestDto albumRequestDto){
+    public void addAlbum(@ModelAttribute @Valid AlbumRequestDto albumRequestDto){
         albumService.addAlbum(albumRequestDto);
     }
 
+    @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
+    @ApiOperation(value = "사진 삭제",notes = "사진 id 리스트로 사진을 삭제한다.")
     @DeleteMapping
-    public void deleteAlbumByAlbumIds(@RequestBody AlbumUpdateDto updateDto){
+    public void deleteAlbumByAlbumIds(@RequestBody @Valid AlbumUpdateDto updateDto){
         albumService.deleteAlbum(updateDto.getIds());
     }
 
-    private List<AlbumResponseDto> getAlbums(Long areaId){
-        return albumService.findAllAlbumByAreaId(areaId);
-    }
 
     @Getter
     @Setter
