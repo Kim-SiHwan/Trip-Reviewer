@@ -10,11 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface AlbumRepository extends JpaRepository<Album,Long> {
-// 굳이?   @EntityGraph(attributePaths = {"area"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Album> findAllByArea_Id(Long id);
 
-    //이걸로 delete는 쿼리 한번으로 퉁.
-    //성능 저하용은 deleteEntity
     @Transactional
     @Modifying
     @Query("DELETE FROM Album a WHERE a.id IN :ids")
