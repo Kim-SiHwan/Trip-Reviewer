@@ -30,7 +30,6 @@ public class TagService {
 
         Set<String> tags = requestDto.getTags();
 
-        System.out.println("addReviewTag: " +tags);
         tags.forEach(tagName->{
             ReviewTag reviewTag = new ReviewTag();
             Tag tag = addTag(tagName);
