@@ -29,12 +29,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring()
-                .antMatchers(
-                        "/h2/**"
-                        ,"/favicon.ico"
-                        ,"/error"
-                );
+        web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
+                "/swagger-ui.html", "/webjars/**", "/swagger/**","/favicon.ico",
+                "/error","h2/**");
+
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -65,11 +63,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/h2/**").permitAll()
+
                 .antMatchers("/api/member/save").permitAll()
                 .antMatchers("/api/member/login").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/member/new_token").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/review").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/review/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/review/*").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/review/all/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/review/download**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/comment/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/album/download**").permitAll()
                 .anyRequest().authenticated()
@@ -79,5 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     }
+
+
 
 }
