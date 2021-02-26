@@ -60,15 +60,12 @@ public class JwtTokenProvider {
 
     }
     public Authentication getAuthentication(String token){
-        System.out.println("GETAUTHENTICATION ");
-        System.out.println(token);
         Claims claims = Jwts
                 .parserBuilder()
                 .setSigningKey(secret)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        System.out.println("get Authentication의 get Subject : "+claims.getSubject());
         UserDetails userDetails = memberService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails,"", userDetails.getAuthorities());
     }
@@ -81,15 +78,11 @@ public class JwtTokenProvider {
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             request.setAttribute("exception","InvalidTokenException");
         } catch (ExpiredJwtException e) {
-            System.out.println("EXPIRE! ! !");
             request.setAttribute("exception","ExpiredTokenException");
-
         } catch (UnsupportedJwtException e) {
             request.setAttribute("exception","UnsupportedTokenException");
-
         } catch (IllegalArgumentException e) {
             request.setAttribute("exception","IllegalArgumentTokenException");
-
         }
         return false;
     }
