@@ -4,7 +4,8 @@ import kim.sihwan.trip_reviewer.domain.Album;
 import kim.sihwan.trip_reviewer.domain.Area;
 import kim.sihwan.trip_reviewer.dto.area.AreaRequestDto;
 import kim.sihwan.trip_reviewer.dto.area.AreaResponseDto;
-import kim.sihwan.trip_reviewer.dto.exception.AreaNotFoundException;
+import kim.sihwan.trip_reviewer.exception.cumtomException.AreaNotFoundException;
+
 import kim.sihwan.trip_reviewer.repository.AlbumRepository;
 import kim.sihwan.trip_reviewer.repository.AreaRepository;
 import lombok.RequiredArgsConstructor;

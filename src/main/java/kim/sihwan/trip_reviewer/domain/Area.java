@@ -57,10 +57,10 @@ public class Area {
         this.visitDate = visitDate;
     }
 
-    public void updateArea(String title, String color, String accompay, String visitDate){
+    public void updateArea(String title, String color, String accompany, String visitDate){
         this.title = title;
         this.color = color;
-        this.accompany = accompay;
+        this.accompany = accompany;
         this.visitDate = visitDate;
     }
 
