@@ -19,7 +19,7 @@ public class ReviewAlbum {
     private String filename;
     private String originFilename;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "review_id")
     private Review review;
 

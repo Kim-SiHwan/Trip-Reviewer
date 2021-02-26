@@ -15,7 +15,6 @@ public class ReviewAlbumResponseDto {
     private String originFilename;
 
     public ReviewAlbumResponseDto(ReviewAlbum reviewAlbum){
-        System.out.println("리뷰앨범디티오!! " );
         id = reviewAlbum.getId();
         url = reviewAlbum.getUrl();
         filename = reviewAlbum.getFilename();

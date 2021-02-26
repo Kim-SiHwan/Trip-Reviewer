@@ -2,6 +2,7 @@ package kim.sihwan.trip_reviewer.service;
 
 import kim.sihwan.trip_reviewer.domain.Member;
 import kim.sihwan.trip_reviewer.domain.Review;
+import kim.sihwan.trip_reviewer.exception.cumtomException.DeletedReviewException;
 import kim.sihwan.trip_reviewer.dto.review.ReviewListResponseDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewRequestDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewResponseDto;
@@ -31,7 +32,6 @@ public class ReviewService {
     private final TagService tagService;
 
 
-    @Cacheable(key = "#username", value = "myReviewList", unless = "#result == null")
     public List<ReviewListResponseDto> findAllReviewsByUsername(String username) {
         List<Review> reviews = reviewRepository.findAllByMember_Username(username);
         List<ReviewListResponseDto> list = reviews
@@ -64,7 +64,7 @@ public class ReviewService {
 
     @Cacheable(key = "#reviewId", value = "review", unless = "#result == null")
     public ReviewResponseDto findOneByReviewId(Long reviewId) {
-        return new ReviewResponseDto(reviewRepository.findReviewById(reviewId));
+        return new ReviewResponseDto(reviewRepository.findReviewById(reviewId).orElseThrow(DeletedReviewException::new));
     }
 
     @Transactional

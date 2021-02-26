@@ -38,7 +38,6 @@ public class ReviewAlbumService {
             }
             review.addThumbnail(saveUrl + newFilename);
         }catch (Exception e){
-            System.out.println("리뷰 앨범 생성 중 오류 발생");
         }
         return review;
     }
