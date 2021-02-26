@@ -5,6 +5,8 @@ import kim.sihwan.trip_reviewer.domain.Review;
 import kim.sihwan.trip_reviewer.dto.comment.CommentRequestDto;
 import kim.sihwan.trip_reviewer.dto.comment.CommentResponseDto;
 import kim.sihwan.trip_reviewer.dto.comment.CommentUpdateRequestDto;
+import kim.sihwan.trip_reviewer.exception.cumtomException.CommentNotFoundException;
+import kim.sihwan.trip_reviewer.exception.cumtomException.ReviewNotFoundException;
 import kim.sihwan.trip_reviewer.repository.CommentRepository;
 import kim.sihwan.trip_reviewer.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,24 +47,25 @@ public class CommentService {
     @Transactional
     public void addComment(CommentRequestDto requestDto) {
         Long reviewId = requestDto.getReviewId();
-        Review review = reviewRepository.findById(reviewId).get();
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(ReviewNotFoundException::new);
         Comment comment = requestDto.toEntity(requestDto);
         comment.addReview(review);
-        /**
-         * review.addComment(review)
-         */
+
     }
 
     @Transactional
     public void updateComment(CommentUpdateRequestDto updateRequestDto) {
-        Comment comment = commentRepository.findById(updateRequestDto.getId()).get();
+        Comment comment = commentRepository.findById(updateRequestDto.getId())
+                .orElseThrow(CommentNotFoundException::new);
         comment.changeContent(updateRequestDto.getContent());
 
     }
 
     @Transactional
     public void deleteComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).get();
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
         commentRepository.delete(comment);
     }
 

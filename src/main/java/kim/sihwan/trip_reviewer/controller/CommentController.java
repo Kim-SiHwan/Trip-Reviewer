@@ -22,21 +22,18 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
 
-    private List<CommentResponseDto> getComments(Long reviewId){
-        return commentService.findAllComments(reviewId);
-    }
 
     @ApiOperation(value = "댓글 전체 조회",notes = "리뷰 id로 해당 리뷰에 달린 모든 댓글을 조회한다.")
     @GetMapping("/{reviewId}")
-    public ResponseEntity<CommentResponseDto> findAllCommentsByReviewId(@PathVariable("reviewId")Long reviewId){
-        return new ResponseEntity(commentService.findAllComments(reviewId),HttpStatus.OK);
+    public ResponseEntity<List<CommentResponseDto>> findAllCommentsByReviewId(@PathVariable("reviewId")Long reviewId){
+        return new ResponseEntity<>(commentService.findAllComments(reviewId),HttpStatus.OK);
     }
 
     @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
     @ApiOperation(value = "내가 쓴 댓글 전체 조회",notes = "현재 로그인된 아이디로 자신이 쓴 모든 댓글을 조회한다.")
     @GetMapping("/my/{username}")
-    public ResponseEntity<CommentResponseDto> getAllCommentsByUsername(@PathVariable("username")String username){
-        return new ResponseEntity(commentService.findAllCommentsByUsername(username),HttpStatus.OK);
+    public ResponseEntity<List<CommentResponseDto>> getAllCommentsByUsername(@PathVariable("username")String username){
+        return new ResponseEntity<>(commentService.findAllCommentsByUsername(username),HttpStatus.OK);
     }
 
     @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
