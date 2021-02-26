@@ -17,11 +17,6 @@ instance.interceptors.request.use(
         if(config.method === "post"){
             console.log("포스트");
         }
-        if((!store.getters.isAuthenticated && !config.url.includes("member")) && (config.url.includes('area') || config.method === 'post' || config.method === "delete" || config.method === "put")){
-            console.log("로그인되지 않은 사용자의 비정상적 접근");
-            router.push('/login');
-            return;
-        }
 
         config.headers={'Authorization' : token}
         return config;
@@ -67,12 +62,26 @@ instance.interceptors.response.use(
             })
             store.commit('LOGOUT');
             router.push('/login');
-        }else if(code === 6 ){
+        }else if(status === 6 ){
             console.log("로그인되지 않은 사용자");
             store.commit('SET_SNACK_BAR',{
                 msg:"로그인이 필요합니다.",color:'info'
             })
             router.push('/login');
+        }else if(code === 7 ){
+            store.commit('SET_SNACK_BAR',{
+                msg:msg,color:'error'
+            })
+        }else if(code === 8 ){
+            store.commit('SET_SNACK_BAR',{
+                msg:msg,color:'error'
+            })
+            router.push('/error');
+        }else if(code === 9 ){
+            store.commit('SET_SNACK_BAR',{
+                msg:msg,color:'error'
+            })
+            router.push('/error');
         }
 
 

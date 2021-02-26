@@ -64,7 +64,7 @@
 </template>
 
 <script>
- import Comment from './comment'
+ import Comment from './Comment'
 export default {
   name: "reviewDetail",
   components:{
@@ -76,6 +76,8 @@ export default {
     },
     deleteReview(){
       this.$store.dispatch('REQUEST_DELETE_REVIEW',this.reviewInfo.id);
+      this.$store.dispatch('REQUEST_GET_ALL_REVIEWS_BY_TAG', this.tag);
+
     }
   },
   created() {
@@ -84,14 +86,13 @@ export default {
   computed:{
     reviewInfo(){
       return this.$store.state.reviewStore.reviewInfo;
+    },
+    tag(){
+      return this.$store.state.reviewStore.tag;
     }
 
   },
-/*  computed:{
-    reviewFileInfo(){
-      return this.$store.state.reviewFileInfo;
-    }
-  }*/
+
 }
 </script>
 

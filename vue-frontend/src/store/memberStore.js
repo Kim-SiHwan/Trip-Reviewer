@@ -36,40 +36,35 @@ const memberStore={
 
     },
     actions:{
-        async REQUEST_JOIN(context,member){
-            try{
-                const response = await member_api.requestJoin(member);
-                console.log(response.data);
-                console.log(context);
-                return response;
-            }catch (e) {
-                console.log("실패했습니다.")
-                console.log(e.response.data.message);
+        async REQUEST_JOIN(context,payload){
+            const joinResponse = await member_api.requestJoin(payload);
+            if(joinResponse){
+                context.commit('SET_SNACK_BAR',{
+                    msg:payload.username+'으로 정상 가입되었습니다.',color:'success'
+                });
             }
         },
         async REQUEST_LOGIN(context,payload){
-            try{
-                const response = await member_api.requestLogin(payload);
-                context.commit('LOGIN',response.data);
-
+            const loginResponse = await member_api.requestLogin(payload);
+            if(loginResponse){
+                context.commit('LOGIN',loginResponse.data);
+                context.commit('SET_SNACK_BAR',{
+                    msg:loginResponse.data.username+'님 반갑습니다.',color:'success'
+                });
                 const areaResponse = await area_api.getAreas();
                 context.commit('SET_AREAS',areaResponse.data);
-                context.commit('SET_SNACK_BAR',{
-                    msg:response.data.username+'님 반갑습니다.',color:'success'
-                });
 
-            }catch (e) {
-                context.commit('SET_SNACK_BAR',{
-                    msg:'아이디 혹은 비밀번호를 확인해주세요.',color:'error'
-                });
             }
+
         },
         async REQUEST_LOGOUT(context,payload){
-            await member_api.requestLogout(payload);
-            context.commit('LOGOUT');
-            context.commit('SET_SNACK_BAR',{
-                msg:'로그아웃 되었습니다.',color:'success'
-            });
+            const logoutResponse = await member_api.requestLogout(payload);
+            if(logoutResponse) {
+                context.commit('LOGOUT');
+                context.commit('SET_SNACK_BAR', {
+                    msg: '로그아웃 되었습니다.', color: 'success'
+                });
+            }
 
         },
     }

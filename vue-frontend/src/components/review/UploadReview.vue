@@ -96,30 +96,20 @@ methods:{
 
 
     }
-    formData.append('area',this.reviewData.area);
-    formData.append('title',this.reviewData.title);
-    formData.append('content',this.reviewData.content);
-    formData.append('username',this.reviewData.username);
-    formData.append('tags',this.reviewData.tags);
+    formData.set('area',this.reviewData.area);
+    formData.set('title',this.reviewData.title);
+    formData.set('content',this.reviewData.content);
+    formData.set('username',this.reviewData.username);
+    formData.set('tags',this.reviewData.tags);
 
-    console.log(this.reviewData.areaName);
+    console.log(formData.get('area'));
+    console.log(formData.get('title'));
+    console.log(formData.get('content'));
+    console.log(formData.get('username'));
+
+
     this.$store.dispatch('REQUEST_UPLOAD_REVIEW',formData);
-/*
-    axios.request({
-      url:'/api/review',
-      method:'POST',
-      headers:{'Content-Type' : 'multipart/form-data'},
-      data: formData
 
-    })*/
-
-    /*axios.request({
-      url:'/api/file/'+this.$route.query.areaId,
-      method:'POST',
-      data : formData
-    }).then(res=>{
-      console.log(res);
-    })*/
   },
   selectedFile(event){
     const files = event;

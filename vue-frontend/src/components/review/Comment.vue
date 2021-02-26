@@ -81,25 +81,30 @@
 
       </v-pagination>
 
-      <v-textarea
-          v-model="content"
-          label="Content"
-          no-resize
-          outlined
-          rows="3"
-          v-on:keyup.enter="addComment">
+      <div
+          id="addCommentDiv"
+>        <v-textarea
+            v-model="content"
+            label="Content"
+            no-resize
+            outlined
+            rows="3"
+            v-on:keyup.enter="addComment">
 
-      </v-textarea>
+        </v-textarea>
 
 
-      <v-btn
-          @click="addComment"
-          color="primary"
-          class="float-right">
-        <v-icon dark>
-          mdi-pencil
-        </v-icon>
-      </v-btn>
+        <v-btn
+            @click="addComment"
+            color="primary"
+            class="float-right">
+          <v-icon dark>
+            mdi-pencil
+          </v-icon>
+        </v-btn>
+      </div>
+
+
 
       <v-row justify="center">
         <v-dialog v-model="dialog" persistent max-width="450">
@@ -139,6 +144,7 @@ export default {
   props:['review-infos'],
   data(){
     return{
+      reviewId:'',
       sendForm:'',
       updateContent:'',
       content:'',
@@ -173,8 +179,11 @@ export default {
   methods:{
     deleteComment(commentId,username) {
       if(this.username == username){
-        this.$store.dispatch('REQUEST_DELETE_COMMENT',commentId);
-        this.$store.dispatch('REQUEST_GET_ALL_COMMENTS',this.$route.query.reviewId);
+        this.sendForm={
+          reviewId : this.reviewId,
+          commentId : commentId
+        };
+        this.$store.dispatch('REQUEST_DELETE_COMMENT',this.sendForm);
 
       }else{
         this.$store.commit('SET_SNACK_BAR',
@@ -214,20 +223,19 @@ export default {
 
     },
     addComment(){
-      console.log(this.reviewInfo.id)
       this.sendForm={
         reviewId : this.reviewInfo.id,
         username : this.username,
         content : this.content
       }
       this.$store.dispatch('REQUEST_ADD_COMMENT',this.sendForm);
-      this.$store.dispatch('REQUEST_GET_ALL_COMMENTS',this.$route.query.reviewId)
+      this.content='';
     }
   },
   created() {
     console.log(this.$route.query.reviewId);
-    this.dialog=true;
-    this.dialog=false;
+    this.reviewId = this.$route.query.reviewId;
+
 
   },
   mounted() {
@@ -243,6 +251,9 @@ export default {
     username(){
       return this.$store.state.memberStore.username;
     },
+    isAuthenticated(){
+      return this.$store.getters.isAuthenticated;
+    }
 
   }
 }

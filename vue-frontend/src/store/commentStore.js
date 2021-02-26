@@ -10,71 +10,55 @@ const commentStore={
         SET_COMMENT_LIST(state,payload){
             state.commentList=payload;
         },
-        SET_UPDATE_COMMENT(state,payload){
-            state.commentList[payload.idx]=payload.commentData;
-        },
         SET_MY_COMMENT_LIST(state,payload){
             state.myCommentList = payload;
         }
     },
     actions:{
         async REQUEST_GET_ALL_COMMENTS(context,payload){
-            try{
-                const response = await comment_api.getAllComments(payload);
+            const response = await comment_api.getAllComments(payload);
+            if(response){
                 context.commit('SET_COMMENT_LIST',response.data);
-            }catch (e) {
-                console.log("댓글 불러오기 실패 ")
-
-                context.commit('SET_SNACK_BAR',{
-                    msg:'댓글 불러오기를 실패했습니다.',color:'error'
-                });
             }
+
         },
         async REQUEST_ADD_COMMENT(context,payload){
-            try{
-                await comment_api.addComment(payload);
-            }catch (e) {
-                console.log("댓글 작성 실패 ")
-                context.commit('SET_SNACK_BAR',{
-                    msg:'댓글 작성을 실패했습니다.',color:'error'
-                });
+            const addCommentResponse = await comment_api.addComment(payload);
+            if(addCommentResponse){
+                const response = await comment_api.getAllComments(payload.reviewId);
+                    context.commit('SET_COMMENT_LIST', response.data);
+                    context.commit('SET_SNACK_BAR', {
+                        msg: '댓글이 등록되었습니다.', color: 'success'
+                    })
             }
+
         },
         async REQUEST_DELETE_COMMENT(context,payload){
-            try{
-                await comment_api.deleteComment(payload);
-            }catch (e) {
-                console.log("댓글 삭제 실패 ")
-
-                context.commit('SET_SNACK_BAR',{
-                    msg:'댓글 삭제를 실패했습니다.',color:'error'
-                });
+            const deleteCommentResponse = await comment_api.deleteComment(payload.commentId);
+            if(deleteCommentResponse){
+                const response = await comment_api.getAllComments(payload.reviewId);
+                context.commit('SET_COMMENT_LIST', response.data);
+                context.commit('SET_SNACK_BAR', {
+                    msg: '댓글이 삭제되었습니다.', color: 'success'
+                })
             }
         },
         async REQUEST_UPDATE_COMMENT(context,payload){
-            try{
-                const response = await comment_api.updateComment(payload);
-                context.commit('SET_COMMENT_LIST',response.data);
-            }catch (e) {
-                console.log("댓글 수정 실패 ")
-
-                context.commit('SET_SNACK_BAR',{
-                    msg:'댓글 수정을 실패했습니다.',color:'error'
-                });
+            const updateCommentResponse = await comment_api.updateComment(payload);
+            if(updateCommentResponse){
+                const response = await comment_api.getAllComments(payload.reviewId);
+                context.commit('SET_COMMENT_LIST', response.data);
+                context.commit('SET_SNACK_BAR', {
+                    msg: '댓글이 수정되었습니다.', color: 'success'
+                })
             }
         },
         async REQUEST_GET_ALL_MY_COMMENTS_BY_USERNAME(context,payload){
-            try{
-                const response = await comment_api.getMyCommentsByUsername(payload);
-                console.log(response);
+            const response = await comment_api.getMyCommentsByUsername(payload);
+            if(response){
                 context.commit('SET_MY_COMMENT_LIST',response.data);
-            }catch (e) {
-                console.log("댓글 불러오기 실패 ")
-
-                context.commit('SET_SNACK_BAR',{
-                    msg:'댓글 불러오기를 실패했습니다.',color:'error'
-                });
             }
+
         }
     }
 }

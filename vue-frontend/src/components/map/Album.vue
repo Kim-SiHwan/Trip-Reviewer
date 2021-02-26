@@ -49,10 +49,7 @@
           @click="updateAlbum">
         수정전송
       </v-btn>
-<!--    <v-img :src="`http://localhost:8080/api/download?fileName=${test.png}`"></v-img>-->
 
-<!--    <v-img :src="fileInfo.fileUrl"></v-img>-->
-<!--    <v-img src="http://localhost:8080/api/file/download?fileName=test.png"></v-img>-->
     </v-container>
   </v-app>
 </template>
@@ -64,7 +61,7 @@ export default {
     return{
       sendFileData:'',
       url:'http://localhost:8080/api/file/w',
-      selectedImgInfo:[],
+      selectedImageIds:[],
       updateFlag:false
     }
   },
@@ -79,34 +76,30 @@ export default {
       console.log(event);
       if(!this.updateFlag)
         return false;
-      let targetImg = this.selectedImgInfo.indexOf(fileId);
+      let targetImg = this.selectedImageIds.indexOf(fileId);
       if(targetImg!=-1){
         console.log("타겟있음" +targetImg)
-        this.selectedImgInfo.splice(targetImg,1);
+        this.selectedImageIds.splice(targetImg,1);
       }else{
         console.log("타겟없음")
-        this.selectedImgInfo.push(fileId);
+        this.selectedImageIds.push(fileId);
 
       }
-      console.log(this.selectedImgInfo);
+      console.log(this.selectedImageIds);
     },
     updateAlbum(){
       let sendForm={
         areaId : this.selectedArea.id,
-        fileList : this.selectedImgInfo
+        ids : this.selectedImageIds
       }
       this.$store.dispatch('REQUEST_UPDATE_ALBUM',sendForm);
-      this.$store.dispatch('REQUEST_GET_FILES',this.selectedArea.id);
     },
     upload(formData){
       formData.append('areaId',this.selectedArea.id);
       this.$store.dispatch('REQUEST_UPLOAD_FILES',formData);
-      this.$store.dispatch('REQUEST_GET_FILES',this.selectedArea.id);
     },
     selectedFile(event){
       const files = event;
-      console.log(files);
-      console.log("uplOAD")
       let formData = new FormData;
       for(let file in files){
         formData.append('files',files[file]);
@@ -115,19 +108,7 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.query.areaId);
     this.$store.dispatch('REQUEST_GET_FILES',this.selectedArea.id);
-/*    axios.request({
-      url:'/api/file/all',
-      params:{
-        areaId:this.$route.query.areaId
-      },
-      method:'GET'
-    }).then(res=>{
-      this.fileInfo= res.data;
-      console.log(res);
-    })*/
-
   },
   computed:{
     selectedArea(){

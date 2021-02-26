@@ -29,8 +29,8 @@ public class AreaServiceTest {
     //when
         List<AreaResponseDto> list = areaService.findAllByUsername(username);
     //then
-        //멤버 1명당 163개의 지역을 가지고 있음.
-        assertEquals(163,list.size());
+        //멤버 1명당 162개의 지역을 가지고 있음.
+        assertEquals(162,list.size());
     }
     @Test
     void 인증없이_지역구_1개_가져오기 (){

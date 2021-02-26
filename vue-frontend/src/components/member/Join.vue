@@ -13,6 +13,10 @@
                           required type="text" v-model="member.username">
             </v-text-field>
 
+            <v-text-field :rules="rules.nameRules" class=" pl-3 pr-3" label="Nickname" prepend-icon="mdi-account"
+                          required type="text" v-model="member.nickname">
+            </v-text-field>
+
             <v-text-field :rules="rules.passwordRules" class="pt-10 pl-3 pr-3" label="Password" prepend-icon="mdi-lock"
                           required type="password" v-model="member.password">
             </v-text-field>
