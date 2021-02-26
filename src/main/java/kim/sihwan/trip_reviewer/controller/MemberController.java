@@ -46,21 +46,4 @@ public class MemberController {
         memberService.logout(username);
     }
 
-/*    @PostMapping("/new_token")
-    public ResponseEntity refreshToken(@RequestBody NewTokenDto tokenDto){
-        String result = memberService.createNewAccessToken(tokenDto.expiredToken);
-        return new ResponseEntity(result,HttpStatus.OK);
-
-*//*        if("다시 로그인을 진행해주세요.".equals(result.getOrDefault("msg",""))) {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity(result, HttpStatus.OK);*//*
-    }*/
-
-    @Getter
-    static class NewTokenDto{
-        private String expiredToken;
-
-    }
-
 }
