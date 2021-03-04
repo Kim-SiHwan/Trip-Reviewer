@@ -42,23 +42,7 @@ public class JwtTokenProvider {
 
 
     }
-    public String createRefreshToken(Authentication authentication){
 
-        long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInSeconds*2);
-
-
-        return Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim("auth", authentication.getAuthorities())
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .setExpiration(validity)
-                .setIssuedAt(new Date(now))
-                .compact();
-
-
-
-    }
     public Authentication getAuthentication(String token){
         Claims claims = Jwts
                 .parserBuilder()
