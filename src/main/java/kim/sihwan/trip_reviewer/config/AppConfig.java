@@ -64,7 +64,7 @@ public class AppConfig implements ApplicationRunner {
             JSONParser jsonParser = new JSONParser();
 //            String path = AppConfig.class.getResource("").getPath();
 //            Object obj = jsonParser.parse(new FileReader(path+"custom.json"));
-            Object obj = jsonParser.parse(new FileReader("C:\\test\\custom.json"));
+            Object obj = jsonParser.parse(new FileReader("C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\java\\kim\\sihwan\\trip_reviewer\\config\\custom.json"));
             JSONObject jsonObj = (JSONObject) jsonParser.parse(obj.toString());
             JSONArray array = (JSONArray) jsonObj.get("features");
             for (int i = 0; i < array.size(); i++) {
