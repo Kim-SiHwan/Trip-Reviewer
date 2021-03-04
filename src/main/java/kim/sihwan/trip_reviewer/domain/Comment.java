@@ -24,12 +24,7 @@ public class Comment {
     private LocalDateTime createDate;
 
 
- /*   @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;*/
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "review_id")
     private Review review;
 
@@ -45,9 +40,6 @@ public class Comment {
     }
 
     //- 연관관계 편의 메소드 -
-//    public void addMember(Member member){
-//        this.member = member;
-//    }
     public void addReview(Review review){
         this.review = review;
         this.review.getComments().add(this);
