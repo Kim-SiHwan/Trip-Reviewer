@@ -30,7 +30,7 @@ public class AlbumController {
     @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
     @ApiOperation(value = "사진첩 조회",notes = "지역구 id로 해당 지역의 사진첩을 조회한다.")
     @GetMapping("/{areaId}")
-    public ResponseEntity<List<AlbumResponseDto>> findAllAlbumByAreaId(@PathVariable("areaId") Long areaId){
+    public ResponseEntity<List<AlbumResponseDto>> findAllAlbumByAreaId(@PathVariable Long areaId){
         return new ResponseEntity<>(albumService.findAllAlbumByAreaId(areaId),HttpStatus.OK);
     }
 

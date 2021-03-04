@@ -22,12 +22,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping
-    public ResponseEntity<String> test(){
-        String msg = "TEST!";
-        return new ResponseEntity<>(msg,HttpStatus.OK);
-    }
-
     @ApiOperation(value = "회원가입",notes = "회원 정보를 입력해 저장한다.")
     @PostMapping("/save")
     public void save(@RequestBody @Valid MemberJoinDto joinDto){
@@ -41,9 +35,9 @@ public class MemberController {
     }
 
     @ApiOperation(value = "로그아웃",notes = "로그아웃")
-    @PostMapping("/logout/{username}")
-    public void logout(@PathVariable("username")String username){
-        memberService.logout(username);
+    @PostMapping("/logout")
+    public void logout(){
+        memberService.logout();
     }
 
 }

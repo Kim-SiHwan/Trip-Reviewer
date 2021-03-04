@@ -32,7 +32,7 @@ public class CommentController {
     @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
     @ApiOperation(value = "내가 쓴 댓글 전체 조회",notes = "현재 로그인된 아이디로 자신이 쓴 모든 댓글을 조회한다.")
     @GetMapping("/my/{username}")
-    public ResponseEntity<List<CommentResponseDto>> getAllCommentsByUsername(@PathVariable("username")String username){
+    public ResponseEntity<List<CommentResponseDto>> getAllCommentsByUsername(@PathVariable String username){
         return new ResponseEntity<>(commentService.findAllCommentsByUsername(username),HttpStatus.OK);
     }
 

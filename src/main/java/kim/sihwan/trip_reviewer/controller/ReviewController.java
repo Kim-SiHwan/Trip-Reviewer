@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import kim.sihwan.trip_reviewer.dto.review.ReviewListResponseDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewRequestDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewResponseDto;
+import kim.sihwan.trip_reviewer.dto.review.ReviewUpdateRequestDto;
 import kim.sihwan.trip_reviewer.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
@@ -65,6 +66,13 @@ public class ReviewController {
     @DeleteMapping("/{reviewId}")
     public void deleteReview(@PathVariable Long reviewId){
         reviewService.deleteReview(reviewId);
+    }
+
+    @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
+    @ApiOperation(value = "리뷰 수정", notes = "리뷰 id로 리뷰를 수정한다. 사진은 변경할 수 없음.")
+    @PatchMapping
+    public void updateReview(@RequestBody ReviewUpdateRequestDto updateRequestDto){
+        reviewService.updateReview(updateRequestDto);
     }
 
 
