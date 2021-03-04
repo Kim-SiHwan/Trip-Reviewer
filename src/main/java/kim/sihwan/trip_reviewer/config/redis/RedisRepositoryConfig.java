@@ -1,3 +1,4 @@
+/*
 package kim.sihwan.trip_reviewer.config.redis;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,3 +35,4 @@ public class RedisRepositoryConfig {
         return redisTemplate;
     }
 }
+*/

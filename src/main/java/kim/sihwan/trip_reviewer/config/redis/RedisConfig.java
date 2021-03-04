@@ -1,3 +1,4 @@
+/*
 package kim.sihwan.trip_reviewer.config.redis;//package kim.sihwan.travle_review.config.redis;
 
 import lombok.RequiredArgsConstructor;
@@ -31,4 +32,4 @@ public class RedisConfig {
         return RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(connectionFactory).cacheDefaults(configuration).build();
     }
 
-}
+}*/
