@@ -69,7 +69,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<ErrorResponseDto> ff(MultipartException e){
-        System.out.println(e);
         return new ResponseEntity<>(errorResponseDto(ErrorCode.FILE_SIZE_OVER.getCode(), ErrorCode.FILE_SIZE_OVER.getDescription()),HttpStatus.PAYLOAD_TOO_LARGE);
     }
 
@@ -89,12 +88,23 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(DifferentUsernameException.class)
+    protected ResponseEntity<ErrorResponseDto> differentUsernameException(DifferentUsernameException e){
+        log.info("e");
+        return new ResponseEntity<>(errorResponseDto(ErrorCode.DIFFERENT_USER_ACCESS.getCode(),ErrorCode.DIFFERENT_USER_ACCESS.getDescription()),HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(DeletedReviewException.class)
     protected ResponseEntity<ErrorResponseDto> deletedReviewException (DeletedReviewException e){
         log.info("DeletedReviewException"+ e.getMessage());
         return new ResponseEntity<>(errorResponseDto(ErrorCode.DELETED_REVIEW.getCode() , ErrorCode.DELETED_REVIEW.getDescription()),HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ForbiddenAccessException.class)
+    protected ResponseEntity<ErrorResponseDto> forbiddenAccessException (ForbiddenAccessException e){
+        log.info("DeletedReviewException"+ e.getMessage());
+        return new ResponseEntity<>(errorResponseDto(ErrorCode.FORBIDDEN_ACCESS.getCode() , ErrorCode.FORBIDDEN_ACCESS.getDescription()),HttpStatus.BAD_REQUEST);
+    }
     private ErrorResponseDto errorResponseDto(int code, String message){
         return new ErrorResponseDto(false,code,message);
 

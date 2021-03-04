@@ -13,7 +13,8 @@ public enum ErrorCode {
     NON_LOGIN(6,"로그인이 필요합니다."),
     FILE_SIZE_OVER(7,"사진당 1MB 미만의 사진만 가능합니다."),
     DELETED_REVIEW(8,"삭제된 게시글입니다."),
-    FORBIDDEN_ACCESS(9,"접근할 수 없습니다");
+    FORBIDDEN_ACCESS(9,"접근할 수 없습니다"),
+    DIFFERENT_USER_ACCESS(10,"작성자만 수정, 삭제 할 수 있습니다.");
 
 
     private int code;
