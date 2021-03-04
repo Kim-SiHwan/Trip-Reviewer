@@ -1,3 +1,4 @@
+/*
 package kim.sihwan.trip_reviewer;
 
 import kim.sihwan.trip_reviewer.domain.Member;
@@ -73,3 +74,4 @@ public class ReviewServiceTest {
 
 
 }
+*/
