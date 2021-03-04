@@ -9,12 +9,8 @@ const memberStore={
     },
     getters:{
       isAuthenticated(state){
-          console.log(state.token);
-          console.log(state.authenticated);
-          console.log(state.username);
-          if(state.token && state.authenticated && state.username)
-              return true;
-          return false;
+          return !!(state.token && state.authenticated && state.username);
+
       }
     },
     mutations:{
@@ -57,8 +53,8 @@ const memberStore={
             }
 
         },
-        async REQUEST_LOGOUT(context,payload){
-            const logoutResponse = await member_api.requestLogout(payload);
+        async REQUEST_LOGOUT(context){
+            const logoutResponse = await member_api.requestLogout();
             if(logoutResponse) {
                 context.commit('LOGOUT');
                 context.commit('SET_SNACK_BAR', {

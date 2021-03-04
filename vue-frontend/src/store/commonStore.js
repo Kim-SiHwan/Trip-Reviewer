@@ -7,6 +7,7 @@ const commonStore={
             timeout:2500,
             color:'error'
         },
+        dialog:false
     },
     mutations:{
         SET_SNACK_BAR(state,payload){
@@ -15,6 +16,9 @@ const commonStore={
             state.snackBar.color=payload.color;
 
         },
+        SET_DIALOG(state){
+            state.dialog = !state.dialog;
+        }
     }
 }
 export default commonStore;

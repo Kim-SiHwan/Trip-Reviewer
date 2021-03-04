@@ -11,7 +11,7 @@ import MyPage from "@/components/member/MyPage";
 import Main from "@/components/common/Main";
 import ErrorPage from "@/components/common/ErrorPage";
 import AreaDetail from "@/components/map/AreaDetail";
-
+import Admin from "@/components/admin/Admin";
 Vue.use(Router); //vue 라우터 사용
 
 export default new Router({ //라우터 연결
@@ -60,6 +60,10 @@ export default new Router({ //라우터 연결
         {
             path:'/error',
             component: ErrorPage
+        },
+        {
+            path:'/admin',
+            component: Admin
         }
 
     ]

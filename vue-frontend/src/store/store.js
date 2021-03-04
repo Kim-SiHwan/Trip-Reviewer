@@ -6,6 +6,7 @@ import reviewStore from "@/store/reviewStore";
 import albumStore from "@/store/albumStore";
 import areaStore from "@/store/areaStore";
 import commentStore from "@/store/commentStore";
+import adminStore from "@/store/adminStore"
 import createPersistedState from "vuex-persistedstate"
 Vue.use(Vuex);
 
@@ -17,7 +18,8 @@ export const store = new Vuex.Store({
         reviewStore,
         albumStore,
         areaStore,
-        commentStore
+        commentStore,
+        adminStore
     },
     plugins:[
         createPersistedState({

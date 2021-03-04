@@ -8,14 +8,6 @@ function getReview(payload){
     })
 }
 
-function getAllReviews(){
-    return Send({
-        url:'/api/review/all/0',
-        method:'GET',
-
-    })
-}
-
 function getReviewsByTag(payload){
     return Send({
         url:'/api/review/all/'+payload,
@@ -47,10 +39,18 @@ function deleteReview(payload){
     })
 }
 
+function updateReview(payload){
+    return Send({
+        url:'/api/review',
+        method:'PATCH',
+        data:payload
+    })
+}
 
 
 
 
 
 
-export default {getReview,getAllReviews,getReviewsByTag,uploadReview,deleteReview, getMyReviewsByUsername};
+
+export default {getReview,updateReview,getReviewsByTag,uploadReview,deleteReview, getMyReviewsByUsername};

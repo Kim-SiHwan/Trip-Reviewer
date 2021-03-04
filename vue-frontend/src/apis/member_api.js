@@ -16,9 +16,9 @@ function requestLogin(member){
     })
 }
 
-function requestLogout(username){
+function requestLogout(){
     return Send({
-        url:'/api/member/logout/'+username,
+        url:'/api/member/logout',
         method:'POST',
     })
 }

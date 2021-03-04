@@ -6,18 +6,6 @@ const instance = axios.create();
 instance.interceptors.request.use(
     async config=>{
         const token = localStorage.getItem("access_token");
-        console.log(config.url);
-        console.log(token);
-        if(!store.getters.isAuthenticated){
-            console.log("isAuthenticated");
-        }
-        if(config.url.includes("review")){
-            console.log("리뷰가 포함")
-        }
-        if(config.method === "post"){
-            console.log("포스트");
-        }
-
         config.headers={'Authorization' : token}
         return config;
     },
@@ -81,7 +69,10 @@ instance.interceptors.response.use(
             store.commit('SET_SNACK_BAR',{
                 msg:msg,color:'error'
             })
-            router.push('/error');
+        }else if(code === 10 ){
+            store.commit('SET_SNACK_BAR',{
+                msg:msg,color:'error'
+            })
         }
 
 
