@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -20,6 +21,7 @@ public class Member {
     private String username;
     private String password;
     private String nickname;
+    private LocalDateTime createDate;
     private String role;
 
     @Builder
@@ -27,6 +29,7 @@ public class Member {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.createDate = LocalDateTime.now();
         this.role = role;
     }
 }

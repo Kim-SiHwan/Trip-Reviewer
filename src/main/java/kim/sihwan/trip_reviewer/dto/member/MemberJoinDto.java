@@ -13,9 +13,6 @@ public class MemberJoinDto {
     @NotEmpty(message = "아이디는 필수 항목입니다.")
     private String username;
 
-    @NotEmpty(message = "닉네임은 필수 항목입니다.")
-    private String nickname;
-
     @NotEmpty(message = "비밀번호는 필수 항목입니다.")
     private String password;
 
@@ -23,7 +20,6 @@ public class MemberJoinDto {
         return Member
                 .builder()
                 .username(joinDto.getUsername())
-                .nickname(joinDto.getNickname())
                 .password(passwordEncoder.encode(joinDto.getPassword()))
                 .role("ROLE_USER")
                 .build();

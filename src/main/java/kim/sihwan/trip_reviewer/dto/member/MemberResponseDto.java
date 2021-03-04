@@ -9,12 +9,10 @@ import lombok.Setter;
 public class MemberResponseDto {
     private Long id;
     private String username;
-    private String nickname;
     private String createDate;
 
     public MemberResponseDto(Member member) {
         username = member.getUsername();
-        nickname = member.getNickname();
-        //가입일 추가하기
+        createDate = member.getCreateDate().toString();
     }
 }

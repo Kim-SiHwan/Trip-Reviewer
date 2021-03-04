@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,8 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileReader;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -65,7 +62,8 @@ public class MemberService implements UserDetailsService {
     }
 
     @Transactional
-    public void logout(String username) {
+    public void logout() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         ValueOperations<String, String> vo = redisTemplate.opsForValue();
         vo.set(username + ACCESS_KEY, "");
         log.info(username + "로그아웃.");
@@ -91,7 +89,7 @@ public class MemberService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         Member member = memberRepository.findMemberByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("유저가 없습니다."));
+                .orElseThrow(UserNotFoundException::new);
         //불변객체
         return new User(member.getUsername(), member.getPassword(), Collections.singleton(new SimpleGrantedAuthority(member.getRole())));
     }
