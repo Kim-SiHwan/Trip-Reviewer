@@ -25,7 +25,6 @@ bin/
 *.jpg
 *.png
 *.yml
-src/main/resources
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
