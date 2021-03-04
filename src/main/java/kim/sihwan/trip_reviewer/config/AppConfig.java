@@ -16,12 +16,12 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileReader;
 
 @Component
 @RequiredArgsConstructor
 public class AppConfig implements ApplicationRunner {
-    private final RedisTemplate redisTemplate;
     private final MemberRepository memberRepository;
     private final AreaRepository areaRepository;
     private final PasswordEncoder passwordEncoder;
@@ -29,14 +29,11 @@ public class AppConfig implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        ValueOperations<String,String> valueOperations =redisTemplate.opsForValue();
-        valueOperations.set("start","hello");
-
         Member member = Member
                 .builder()
-                .username("kim")
-                .password(passwordEncoder.encode("kim"))
-                .nickname("라인가고싶다")
+                .username("admin")
+                .password(passwordEncoder.encode("admin"))
+                .nickname("HELLO ADMIN")
                 .role("ROLE_ADMIN")
                 .build();
         memberRepository.save(member);
@@ -46,7 +43,7 @@ public class AppConfig implements ApplicationRunner {
                 .builder()
                 .username("user")
                 .password(passwordEncoder.encode("user"))
-                .nickname("취직하고싶다")
+                .nickname("HELLO USER")
                 .role("ROLE_USER")
                 .build();
         memberRepository.save(member2);
@@ -55,7 +52,7 @@ public class AppConfig implements ApplicationRunner {
                 .builder()
                 .username("test")
                 .password("test")
-                .nickname("취직하고싶다")
+                .nickname("HELLO TEST")
                 .role("ROLE_USER")
                 .build();
         memberRepository.save(member3);
@@ -64,14 +61,12 @@ public class AppConfig implements ApplicationRunner {
 
     public void init(Member member) {
         try {
-            System.out.println("init! ");
             JSONParser jsonParser = new JSONParser();
+//            String path = AppConfig.class.getResource("").getPath();
+//            Object obj = jsonParser.parse(new FileReader(path+"custom.json"));
             Object obj = jsonParser.parse(new FileReader("C:\\test\\custom.json"));
-
             JSONObject jsonObj = (JSONObject) jsonParser.parse(obj.toString());
-
             JSONArray array = (JSONArray) jsonObj.get("features");
-
             for (int i = 0; i < array.size(); i++) {
                 JSONObject jj = (JSONObject) array.get(i);
                 JSONObject jj2 = (JSONObject) jj.get("properties");
@@ -91,7 +86,6 @@ public class AppConfig implements ApplicationRunner {
 
 
         } catch (Exception e) {
-            System.out.println("에러 ");
             e.printStackTrace();
         }
     }
