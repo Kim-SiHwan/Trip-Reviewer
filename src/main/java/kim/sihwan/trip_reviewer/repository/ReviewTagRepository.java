@@ -11,4 +11,6 @@ public interface ReviewTagRepository extends JpaRepository<ReviewTag,Long> {
     @EntityGraph(attributePaths = {"review","tag","review.reviewAlbums","review.member","review.comments"} , type = EntityGraph.EntityGraphType.LOAD)
     List<ReviewTag> findAllByTag_Id(Long id);
 
+    void deleteAllByTagId(Long tagId);
+
 }

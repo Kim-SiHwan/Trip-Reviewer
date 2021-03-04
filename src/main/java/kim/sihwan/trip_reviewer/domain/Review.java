@@ -50,6 +50,12 @@ public class Review {
     public void addThumbnail(String thumbnailUrl) {
         this.thumbnail = thumbnailUrl;
     }
+    public void changeTitle(String title){
+        this.title = title;
+    }
+    public void changeContent(String content){
+        this.content = content;
+    }
 
     //- 연관관계 편의 메소드 -
     public void addMember(Member member){

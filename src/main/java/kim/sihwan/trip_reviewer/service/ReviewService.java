@@ -2,16 +2,21 @@ package kim.sihwan.trip_reviewer.service;
 
 import kim.sihwan.trip_reviewer.domain.Member;
 import kim.sihwan.trip_reviewer.domain.Review;
+import kim.sihwan.trip_reviewer.dto.review.ReviewUpdateRequestDto;
 import kim.sihwan.trip_reviewer.exception.cumtomException.DeletedReviewException;
 import kim.sihwan.trip_reviewer.dto.review.ReviewListResponseDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewRequestDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewResponseDto;
+import kim.sihwan.trip_reviewer.exception.cumtomException.DifferentUsernameException;
+import kim.sihwan.trip_reviewer.exception.cumtomException.ReviewNotFoundException;
+import kim.sihwan.trip_reviewer.exception.cumtomException.UserNotFoundException;
 import kim.sihwan.trip_reviewer.repository.MemberRepository;
 import kim.sihwan.trip_reviewer.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,7 +75,8 @@ public class ReviewService {
     @Transactional
     @CacheEvict(key = "0", value = "reviewList")
     public Long addReview(ReviewRequestDto requestDto) {
-        Member member = memberRepository.findMemberByUsername(requestDto.getUsername()).get();
+        Member member = memberRepository.findMemberByUsername(requestDto.getUsername())
+                .orElseThrow(UserNotFoundException::new);
         Review review = reviewAlbumService.addReviewAlbums(requestDto);
         tagService.addReviewTag(review, requestDto);
         review.addMember(member);
@@ -84,7 +90,30 @@ public class ReviewService {
             @CacheEvict(key = "0", value = "reviewList")
     })
     public void deleteReview(Long reviewId) {
-        reviewRepository.deleteById(reviewId);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(ReviewNotFoundException::new);
+        if(!username.equals("admin") && !username.equals(review.getMember().getUsername())){
+            throw new DifferentUsernameException();
+        }
+        reviewRepository.delete(review);
+    }
+
+    @Transactional
+    @CacheEvict(key = "#updateRequestDto.reviewId", value = "review")
+    public void updateReview(ReviewUpdateRequestDto updateRequestDto){
+        Review review = reviewRepository.findById(updateRequestDto.getReviewId())
+                .orElseThrow(ReviewNotFoundException::new);
+        if(!updateRequestDto.getTitle().isEmpty()) {
+            review.changeTitle(updateRequestDto.getTitle());
+        }
+        if(!updateRequestDto.getContent().isEmpty()) {
+            review.changeContent(updateRequestDto.getContent());
+        }
+
+
+
+
     }
 
 
