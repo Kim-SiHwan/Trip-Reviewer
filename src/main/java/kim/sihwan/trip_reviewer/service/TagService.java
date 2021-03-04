@@ -25,6 +25,10 @@ public class TagService {
         return reviewTagRepository.findAllByTag_Id(tagId);
     }
 
+    public List<Tag> findAllTag(){
+        return tagRepository.findAll();
+    }
+
     @Transactional
     public void addReviewTag(Review review , ReviewRequestDto requestDto){
 
@@ -44,6 +48,14 @@ public class TagService {
         Tag tag = tagRepository.findTagByTag(tagName)
                 .orElse(Tag.builder().tag(tagName).build());
         return tagRepository.save(tag);
+    }
+
+    @Transactional
+    public void deleteTag(Long tagId){
+        Tag tag = tagRepository.findById(tagId).get();
+        reviewTagRepository.deleteAllByTagId(tagId);
+        tagRepository.delete(tag);
+
     }
 
 
