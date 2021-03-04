@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-container>
-      <v-row align="center" class="fill-height" justify="center">
+      <v-row align="center" class="fill-height; mt-15" justify="center">
         <div class=" elevation-15" style="width: 600px; height: 600px" >
           <h3 class="text-center pt-15 py-3 black--text">
             로그인

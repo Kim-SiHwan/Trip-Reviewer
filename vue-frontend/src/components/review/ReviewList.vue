@@ -25,9 +25,9 @@
           style="list-style: none">
         <li id="listDiv">
           <div class="p-5 mb-5 rounded float-left"
-               style="width: 500px; height: 500px; border: 1px solid cornflowerblue">
-            <div class="card-body">
-              <span><strong>{{ list.title }}</strong></span>
+               style="width: 600px; height: 700px; border: 1px solid cornflowerblue">
+            <div class="card-body" style="margin-top: 50px">
+              <span><strong>&lt;&nbsp; {{ list.title }} &gt;&nbsp;</strong></span>
               <br>
 
 
@@ -44,11 +44,10 @@
 
                   <v-img
                       :src="list.thumbnail"
-                      class="mt-15 mr-3 ml-13 black lighten-2"
+                      class="mt-15 mr-3 ml-13 grey lighten-3"
                       contain
-                      height="320"
-                      max-height="320"
-                      max-width="400"
+                      width="500"
+                      aspect-ratio="1.2"
                   >
 
                   </v-img>

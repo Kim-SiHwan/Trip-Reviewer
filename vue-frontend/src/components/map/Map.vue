@@ -11,8 +11,10 @@
         </svg>
       </div>
 
+
       <v-row id="dialogRow" style="margin-top: 500px">
-        <v-dialog id="dialogBody" v-model="dialog" max-width="600">
+        <v-dialog id="dialogBody" v-model="dialog" max-width="600"
+        eager="eager">
           <v-card id="dialogCard">
             <div id="modalDiv" class="modalDiv">
               <br><br>
@@ -22,8 +24,8 @@
               <h2 v-else><small>&lt;타이틀이 없습니다&gt;</small></h2>
             </div>
 
-            <svg id="ww" viewBox="70 0 500 500">
-              <path d="M248.761,92c0,9.801-7.93,17.731-17.71,17.731c-0.319,0-0.617,0-0.935-0.021c-10.035,37.291-51.174,65.206-100.414,65.206 c-49.261,0-90.443-27.979-100.435-65.334c-0.765,0.106-1.531,0.149-2.317,0.149c-9.78,0-17.71-7.93-17.71-17.731 c0-9.78,7.93-17.71,17.71-17.71c0.787,0,1.552,0.042,2.317,0.149C39.238,37.084,80.419,9.083,129.702,9.083c49.24,0,90.379,27.937,100.414,65.228h0.021c0.298-0.021,0.617-0.021,0.914-0.021C240.831,74.29,248.761,82.22,248.761,92z">
+            <svg id="area" viewBox="70 0 500 500">
+              <path>
               </path>
             </svg>
 
@@ -133,10 +135,11 @@ export default {
 
         console.log(_this.prevColor);
         _this.code=d.properties.SIG_CD;
-        _this.getArea(d);
         console.log(_this.selectedPath);
 
         _this.geoJSON.features[0].geometry.coordinates= d.geometry.coordinates;
+        _this.getArea();
+
         let width2=600, height2=600;
         let projection2 = d3.geo.mercator()
             .scale(1)
@@ -154,14 +157,19 @@ export default {
 
         _this.dialog=true;
         if(_this.dialog){
-          let svg2= d3.select('#ww').attr('width',600).attr('height',600);
+          let svg2= d3.select('#area').attr('width',600).attr('height',600);
+
           svg2
               .select('path')
               .data(_this.selectedPath.features)
               .attr('d',path2)
               .style('fill', _this.prevColor)
               .attr('stroke','black');
+
+
+
         }
+
       }
 
       svg
@@ -315,7 +323,6 @@ export default {
 
   },
   mounted() {
-    console.log("마운트");
     this.drawMap();
   },
   computed:{

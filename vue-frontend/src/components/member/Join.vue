@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-container>
-      <v-row align="center" class="fill-height" justify="center">
+      <v-row align="center" class="fill-height; mt-15" justify="center">
         <div class=" elevation-15" style="width: 600px; height: 600px" >
           <h3 class="text-center pt-15 py-3 black--text">
             회 원 가 입
@@ -11,10 +11,6 @@
 
             <v-text-field :rules="rules.nameRules" class=" pl-3 pr-3" label="Name" prepend-icon="mdi-account"
                           required type="text" v-model="member.username">
-            </v-text-field>
-
-            <v-text-field :rules="rules.nameRules" class=" pl-3 pr-3" label="Nickname" prepend-icon="mdi-account"
-                          required type="text" v-model="member.nickname">
             </v-text-field>
 
             <v-text-field :rules="rules.passwordRules" class="pt-10 pl-3 pr-3" label="Password" prepend-icon="mdi-lock"
@@ -48,7 +44,6 @@ export default {
       member:{
         username:'',
         password:'',
-        nickname:''
       },
       rules: {
         emailRules: [],
@@ -70,12 +65,12 @@ export default {
 
       this.rules.passwordRules= [
         v => !!v || '비밀번호를 입력해주세요.',
-        v => v.length <= 10 || '10자 이내로 작성해주세요.',
+        v => v.length <= 13 || '12자 이내로 작성해주세요.',
         v => v.search(/\s/) ===-1 ||'공백을 제거해주세요.'
       ],
       this.rules.nameRules= [
-        v => !!v || '이름을 입력해주세요.',
-        v => v.length <= 10 || '10자 이내로 작성해주세요.',
+        v => !!v || '아이디를 입력해주세요.',
+        v => v.length <= 13 || '12자 이내로 작성해주세요.',
         v => v.search(/\s/) ===-1 ||'공백을 제거해주세요.'
 
       ]

@@ -82,7 +82,6 @@
       {{snackBarInfo.text}}
     </v-snackbar>
 
-
   </v-app>
 
 
@@ -97,8 +96,8 @@ export default {
   },
   methods:{
     logout(){
-      this.$store.dispatch('REQUEST_LOGOUT',this.$store.state.memberStore.username);
-    }
+      this.$store.dispatch('REQUEST_LOGOUT');
+    },
   },
   computed:{
     snackBarInfo(){

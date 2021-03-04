@@ -2,9 +2,8 @@
   <v-app>
     <v-container>
       <div id="username">
-        아이디 : {{username}}
-        <br>
-        닉네임 : 닉네임
+        <router-link to="/admin"
+        v-if="this.$store.getters.isAuthenticated && username==='admin'">관리자페이지</router-link>
         <br>
         내가 쓴 리뷰 목록
         <div id="myReviewZone" v-if="myReviewList">
@@ -132,11 +131,7 @@
           </v-pagination>
 
         </div>
-        <br>
-        내가 방문한 여행지
-        <div id="myTripZone">
 
-        </div>
       </div>
 
     </v-container>

@@ -8,7 +8,7 @@
         mdi-message-text
       </v-icon>
       <p v-if="commentList">
-      {{commentList.length}}개의 댓글이 달렸습니다
+        {{ commentList.length }}개의 댓글이 달렸습니다
       </p>
       <hr>
 
@@ -20,8 +20,8 @@
           :items-per-page="itemsPerPage"
           :page.sync="page"
           class="elevation-1"
-          hide-default-header
           hide-default-footer
+          hide-default-header
           no-data-text="첫 댓글을 작성해보세요!"
           @page-count="pageCount= $event">
 
@@ -30,9 +30,9 @@
             <td width="500">
 
               <v-textarea
+                  class="mt-5"
                   no-resize
                   outlined
-                  class="mt-5"
                   readonly="readonly"
                   rows="4"
                   v-bind:value="commentList.item.content"
@@ -41,16 +41,14 @@
             </td>
 
 
-
-
             <td width="100">{{ commentList.item.username }}</td>
             <td width="100"> 날짜</td>
             <td width="100">
 
               <v-icon
-                  small
                   class="mr-2"
                   color="blue"
+                  small
                   @click="updateCommentForm(
                       commentData={
                       commentId:commentList.item.id,
@@ -64,8 +62,8 @@
               </v-icon>
 
               <v-icon
-                  small
                   color="red"
+                  small
                   @click="deleteComment(commentList.item.id,commentList.item.username)"
               >
                 mdi-delete
@@ -83,7 +81,8 @@
 
       <div
           id="addCommentDiv"
->        <v-textarea
+      >
+        <v-textarea
             v-model="content"
             label="Content"
             no-resize
@@ -95,9 +94,9 @@
 
 
         <v-btn
-            @click="addComment"
+            class="float-right"
             color="primary"
-            class="float-right">
+            @click="addComment">
           <v-icon dark>
             mdi-pencil
           </v-icon>
@@ -105,18 +104,17 @@
       </div>
 
 
-
       <v-row justify="center">
-        <v-dialog v-model="dialog" persistent max-width="450">
+        <v-dialog v-model="dialog" max-width="450" persistent>
           <v-card>
             <v-card-title class="headline"><small>댓글수정</small></v-card-title>
             <v-textarea
-                style="width: 90%; margin-left: 17px"
                 v-model="updateContent"
                 label="수정할 내용을 입력해주세요."
                 no-resize
                 outlined
                 rows="4"
+                style="width: 90%; margin-left: 17px"
                 v-bind:placeholder="updateForm.commentContent"
             >
 
@@ -125,33 +123,35 @@
               <v-spacer></v-spacer>
               <v-btn
                   color="primary"
-                  @click="updateComment(updateForm.commentId)">수정하기</v-btn>
+                  @click="updateComment(updateForm.commentId)">수정하기
+              </v-btn>
               <v-btn
                   color="error"
-                  @click="dialog = false">취소하기</v-btn>
+                  @click="dialog = false">취소하기
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-row>
 
     </v-container>
-    </v-app>
+  </v-app>
 </template>
 
 <script>
 export default {
   name: "comment",
-  props:['review-infos'],
-  data(){
-    return{
-      reviewId:'',
-      sendForm:'',
-      updateContent:'',
-      content:'',
+  props: ['review-infos'],
+  data() {
+    return {
+      reviewId: '',
+      sendForm: '',
+      updateContent: '',
+      content: '',
       dialog: false,
-      itemsPerPage:12,
+      itemsPerPage: 12,
       pageCount: 0,
-      page:1,
+      page: 1,
       headers: [
         {
           text: '내용',
@@ -168,68 +168,66 @@ export default {
           text: '수정/삭제'
         }
       ],
-      updateForm:{
-        commentId:'',
-        commentContent:'',
-        username:''
+      updateForm: {
+        commentId: '',
+        commentContent: '',
+        username: ''
 
       }
     }
   },
-  methods:{
-    deleteComment(commentId,username) {
-      if(this.username == username){
-        this.sendForm={
-          reviewId : this.reviewId,
-          commentId : commentId
-        };
-        this.$store.dispatch('REQUEST_DELETE_COMMENT',this.sendForm);
-
-      }else{
+  methods: {
+    deleteComment(commentId, username) {
+      if (this.username !== 'admin' && this.username !== username ) {
         this.$store.commit('SET_SNACK_BAR',
-            {msg:'작성자만 삭제 할 수 있습니다.', color:'error'}
+            {msg: '작성자만 삭제 할 수 있습니다.', color: 'error'}
         );
         return false;
       }
-    },
-    updateCommentForm(commentData){
-      console.log(commentData.commentIdx)
+      this.sendForm = {
+        reviewId: this.reviewId,
+        commentId: commentId
+      };
+      this.$store.dispatch('REQUEST_DELETE_COMMENT', this.sendForm);
 
-      if(this.username !== commentData.username){
+    },
+    updateCommentForm(commentData) {
+
+      if (this.username !== commentData.username) {
         this.$store.commit('SET_SNACK_BAR',
-            {msg:'작성자만 수정 할 수 있습니다.', color:'error'}
+            {msg: '작성자만 수정 할 수 있습니다.', color: 'error'}
         );
         return false;
       }
-      this.updateForm={
-        commentId:commentData.commentId,
-        commentContent:commentData.commentContent,
-        username:commentData.username,
-        reviewId:this.$route.query.reviewId
+      this.updateForm = {
+        commentId: commentData.commentId,
+        commentContent: commentData.commentContent,
+        username: commentData.username,
+        reviewId: this.$route.query.reviewId
       }
 
-      this.dialog=true;
+      this.dialog = true;
 
     },
-    updateComment(commentId){
+    updateComment(commentId) {
       console.log(commentId);
-        let data={
-          id:commentId,
-          content:this.updateContent,
-          reviewId:this.$route.query.reviewId
-        }
-        this.$store.dispatch('REQUEST_UPDATE_COMMENT',data);
-        this.dialog=false;
+      let data = {
+        id: commentId,
+        content: this.updateContent,
+        reviewId: this.$route.query.reviewId
+      }
+      this.$store.dispatch('REQUEST_UPDATE_COMMENT', data);
+      this.dialog = false;
 
     },
-    addComment(){
-      this.sendForm={
-        reviewId : this.reviewInfo.id,
-        username : this.username,
-        content : this.content
+    addComment() {
+      this.sendForm = {
+        reviewId: this.reviewInfo.id,
+        username: this.username,
+        content: this.content
       }
-      this.$store.dispatch('REQUEST_ADD_COMMENT',this.sendForm);
-      this.content='';
+      this.$store.dispatch('REQUEST_ADD_COMMENT', this.sendForm);
+      this.content = '';
     }
   },
   created() {
@@ -239,19 +237,19 @@ export default {
 
   },
   mounted() {
-     this.$store.dispatch('REQUEST_GET_ALL_COMMENTS',this.$route.query.reviewId);
+    this.$store.dispatch('REQUEST_GET_ALL_COMMENTS', this.$route.query.reviewId);
   },
-  computed:{
-    reviewInfo(){
+  computed: {
+    reviewInfo() {
       return this.$store.state.reviewStore.reviewInfo;
     },
-    commentList(){
+    commentList() {
       return this.$store.state.commentStore.commentList;
     },
-    username(){
+    username() {
       return this.$store.state.memberStore.username;
     },
-    isAuthenticated(){
+    isAuthenticated() {
       return this.$store.getters.isAuthenticated;
     }
 
@@ -260,7 +258,7 @@ export default {
 </script>
 
 <style scoped>
-#commentContainer{
+#commentContainer {
   overflow: auto;
 }
 

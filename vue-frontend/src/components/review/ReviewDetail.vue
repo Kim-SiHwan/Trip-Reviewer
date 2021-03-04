@@ -2,35 +2,51 @@
   <v-app>
     <v-container>
 
-
       <h2>{{reviewInfo.area}}</h2>
-      <h3 v-if="reviewInfo.title"><small >&lt;{{reviewInfo.title}}&gt;</small></h3>
-      <h3 v-else><small>&lt;타이틀이 없습니다&gt;</small></h3>
-    <v-row justify="center">
+      <h3 v-if="reviewInfo.title">
+        <small v-if="!updateFlag">&lt;&nbsp;{{reviewInfo.title}}&nbsp;&gt;</small>
+        <v-text-field
+            v-else
+            v-model="updateForm.title"
+            outlined
+            label="수정할 제목을 입력해주세요."
+        ></v-text-field>
+      </h3>
+      <div v-for="(tags,index) in reviewInfo.tags" :key="index"
+           style="list-style: none; display: inline;">
+        <v-chip
+            color="info"
+            class="ml-0 mr-1 pr-2 pl-2"
+            label
+            small>
+          {{tags.tag}}
+        </v-chip>
+      </div>
+      <v-row justify="center" class="mt-5">
       <v-col
 
           v-for="(file,index) in reviewInfo.reviewAlbums" :key="index"
           class="d-flex child-flex"
-          cols="3"
+          cols="4"
       >
-        <div id="reviewFileImgDiv" style="width: 100%; height: 100%;">
+        <div id="reviewFileImgDiv">
         <v-img
             :src="file.url"
-
-            class="grey lighten-2"
+            class="grey lighten-4"
             contain
+            width="500"
+            aspect-ratio="1.2"
+        >
 
-            height="320"
-            max-height="320"
-            max-width="400"
-
-        ></v-img>
+        </v-img>
         </div>
 
       </v-col>
     </v-row>
+
+
     <v-textarea
-      v-if="reviewInfo"
+      v-if="reviewInfo && !updateFlag"
       v-bind:value="reviewInfo.content"
       v-bind:rows="reviewInfo.content.length/5"
       readonly="readonly"
@@ -39,10 +55,37 @@
       class="mt-10"
       background-color="white"
       ></v-textarea>
+      <v-textarea
+        v-else
+        v-model="updateForm.content"
+        outlined
+        label="수정할 내용을 입력해주세요."
+        v-bind:value="reviewInfo.content"
+        class="mt-10"
+        background-color="white">
+
+      </v-textarea>
       <div
-          v-if="reviewInfo.username === this.$store.state.memberStore.username"
+          v-if="reviewInfo.username === username || username === 'admin' "
+
           id="reviewDetailBtnDiv" class="float-right">
         <v-btn
+            v-if="!updateFlag"
+            @click="updateReviewForm"
+            color="info"
+        >
+          수정
+        </v-btn>
+        <v-btn
+            color="warning"
+            class="mr-5"
+            v-else
+            @click="updateFlag=false"
+        >
+          취소
+        </v-btn>
+        <v-btn
+            v-if="updateFlag"
             @click="updateReview"
             color="info"
         >
@@ -67,12 +110,30 @@
  import Comment from './Comment'
 export default {
   name: "reviewDetail",
+  data(){
+    return{
+      updateFlag:false,
+      updateForm:{
+        reviewId:'',
+        title:'',
+        content:'',
+      },
+      selectedImageIds:[],
+
+    }
+  },
   components:{
     'comment': Comment
   },
   methods:{
+    updateReviewForm(){
+      this.updateFlag=true;
+    },
     updateReview(){
-
+      this.updateForm.reviewId = this.reviewInfo.id;
+      this.$store.dispatch('REQUEST_UPDATE_REVIEW',this.updateForm);
+      this.$store.dispatch('REQUEST_GET_REVIEW',this.updateForm.reviewId);
+      this.updateFlag=false;
     },
     deleteReview(){
       this.$store.dispatch('REQUEST_DELETE_REVIEW',this.reviewInfo.id);
@@ -89,6 +150,9 @@ export default {
     },
     tag(){
       return this.$store.state.reviewStore.tag;
+    },
+    username(){
+      return this.$store.state.memberStore.username;
     }
 
   },
