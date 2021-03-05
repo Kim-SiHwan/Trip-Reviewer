@@ -30,6 +30,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -97,7 +99,10 @@ public class MemberService implements UserDetailsService {
     public void init(Member member) {
         try {
             JSONParser jsonParser = new JSONParser();
-            Object obj = jsonParser.parse(new FileReader("C:\\test\\custom.json"));
+            InputStream in5 = this.getClass().getResourceAsStream("/custom.json");
+
+            Object obj = jsonParser.parse(new InputStreamReader(in5));
+
             JSONObject jsonObj = (JSONObject) jsonParser.parse(obj.toString());
             JSONArray array = (JSONArray) jsonObj.get("features");
             for (Object o : array) {
