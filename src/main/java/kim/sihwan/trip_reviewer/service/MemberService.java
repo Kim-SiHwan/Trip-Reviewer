@@ -15,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -41,7 +39,6 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class MemberService implements UserDetailsService {
     private final AuthenticationManagerBuilder managerBuilder;
-    private final RedisTemplate<String, String> redisTemplate;
     private final JwtTokenProvider tokenProvider;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -66,8 +63,6 @@ public class MemberService implements UserDetailsService {
     @Transactional
     public void logout() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        ValueOperations<String, String> vo = redisTemplate.opsForValue();
-        vo.set(username + ACCESS_KEY, "");
         log.info(username + "로그아웃.");
     }
 
@@ -77,8 +72,6 @@ public class MemberService implements UserDetailsService {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
         Authentication auth = managerBuilder.getObject().authenticate(token);
         String jwt = tokenProvider.createToken(auth);
-        ValueOperations<String, String> vo = redisTemplate.opsForValue();
-        vo.set(auth.getName() + ACCESS_KEY, jwt);
         return new MemberLoginResponseDto(jwt,auth.getName());
     }
 
@@ -92,7 +85,6 @@ public class MemberService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         Member member = memberRepository.findMemberByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
-        //불변객체
         return new User(member.getUsername(), member.getPassword(), Collections.singleton(new SimpleGrantedAuthority(member.getRole())));
     }
 

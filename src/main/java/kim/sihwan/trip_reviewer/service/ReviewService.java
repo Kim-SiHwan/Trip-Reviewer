@@ -13,9 +13,6 @@ import kim.sihwan.trip_reviewer.exception.cumtomException.UserNotFoundException;
 import kim.sihwan.trip_reviewer.repository.MemberRepository;
 import kim.sihwan.trip_reviewer.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +43,6 @@ public class ReviewService {
         return list;
     }
 
-    @Cacheable(key = "#tagId", value = "reviewList", unless = "#result == null")
     public List<ReviewListResponseDto> findAllReviews(Long tagId) {
 
         if (tagId == 0) {
@@ -65,13 +61,11 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
-    @Cacheable(key = "#reviewId", value = "review", unless = "#result == null")
     public ReviewResponseDto findOneByReviewId(Long reviewId) {
         return new ReviewResponseDto(reviewRepository.findReviewById(reviewId).orElseThrow(DeletedReviewException::new));
     }
 
     @Transactional
-    @CacheEvict(key = "0", value = "reviewList")
     public Long addReview(ReviewRequestDto requestDto) {
         Member member = memberRepository.findMemberByUsername(requestDto.getUsername())
                 .orElseThrow(UserNotFoundException::new);
@@ -83,10 +77,6 @@ public class ReviewService {
     }
 
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(key = "#reviewId", value = "review"),
-            @CacheEvict(key = "0", value = "reviewList")
-    })
     public void deleteReview(Long reviewId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Review review = reviewRepository.findById(reviewId)
@@ -98,21 +88,14 @@ public class ReviewService {
     }
 
     @Transactional
-    @CacheEvict(key = "#updateRequestDto.reviewId", value = "review")
-    public void updateReview(ReviewUpdateRequestDto updateRequestDto){
+    public void updateReview(ReviewUpdateRequestDto updateRequestDto) {
         Review review = reviewRepository.findById(updateRequestDto.getReviewId())
                 .orElseThrow(ReviewNotFoundException::new);
-        if(!updateRequestDto.getTitle().isEmpty()) {
+        if (!updateRequestDto.getTitle().isEmpty()) {
             review.changeTitle(updateRequestDto.getTitle());
         }
-        if(!updateRequestDto.getContent().isEmpty()) {
+        if (!updateRequestDto.getContent().isEmpty()) {
             review.changeContent(updateRequestDto.getContent());
         }
-
-
-
-
     }
-
-
 }
