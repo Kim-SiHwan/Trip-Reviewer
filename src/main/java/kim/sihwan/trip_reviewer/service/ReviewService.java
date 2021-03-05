@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class ReviewService {
 
-    //결합도 줄이고싶음.
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final ReviewAlbumService reviewAlbumService;
@@ -59,7 +58,6 @@ public class ReviewService {
                     .collect(Collectors.toList());
         }
 
-        //쿼리 줄일방법 생각해보자.
         return tagService.getReviewIdsByTagId(tagId)
                 .stream()
                 .map(reviewTag -> ReviewListResponseDto.toDto(reviewTag.getReview()))
@@ -73,7 +71,7 @@ public class ReviewService {
     }
 
     @Transactional
-//    @CacheEvict(key = "0", value = "reviewList")
+    @CacheEvict(key = "0", value = "reviewList")
     public Long addReview(ReviewRequestDto requestDto) {
         Member member = memberRepository.findMemberByUsername(requestDto.getUsername())
                 .orElseThrow(UserNotFoundException::new);
@@ -84,11 +82,11 @@ public class ReviewService {
         return review.getId();
     }
 
-    @Transactional/*
+    @Transactional
     @Caching(evict = {
             @CacheEvict(key = "#reviewId", value = "review"),
             @CacheEvict(key = "0", value = "reviewList")
-    })*/
+    })
     public void deleteReview(Long reviewId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Review review = reviewRepository.findById(reviewId)
@@ -100,7 +98,7 @@ public class ReviewService {
     }
 
     @Transactional
-//    @CacheEvict(key = "#updateRequestDto.reviewId", value = "review")
+    @CacheEvict(key = "#updateRequestDto.reviewId", value = "review")
     public void updateReview(ReviewUpdateRequestDto updateRequestDto){
         Review review = reviewRepository.findById(updateRequestDto.getReviewId())
                 .orElseThrow(ReviewNotFoundException::new);
