@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 @Component
 @RequiredArgsConstructor
@@ -62,9 +64,25 @@ public class AppConfig implements ApplicationRunner {
     public void init(Member member) {
         try {
             JSONParser jsonParser = new JSONParser();
-//            String path = AppConfig.class.getResource("").getPath();
+            String path = AppConfig.class.getResource("").getPath();
 //            Object obj = jsonParser.parse(new FileReader(path+"custom.json"));
-            Object obj = jsonParser.parse(new FileReader("C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\java\\kim\\sihwan\\trip_reviewer\\config\\custom.json"));
+
+            InputStream in5 = this.getClass().getResourceAsStream("/custom.json");
+
+//            System.out.println("SESE5 : "+in5.toString());
+//
+//              FileReader fileReader=new FileReader("C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\java\\kim\\sihwan\\trip_reviewer\\config\\custom.json");
+//            System.out.println(fileReader);
+
+            Object obj = jsonParser.parse(new InputStreamReader(in5));
+//            System.out.println(aa.toString());
+
+
+            System.out.println(path);
+            File file = new File("C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\java\\kim\\sihwan\\trip_reviewer\\config\\custom.json");
+            System.out.println(file);
+            System.out.println(file.length());
+//            Object obj = jsonParser.parse(new FileReader("C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\java\\kim\\sihwan\\trip_reviewer\\config\\custom.json"));
             JSONObject jsonObj = (JSONObject) jsonParser.parse(obj.toString());
             JSONArray array = (JSONArray) jsonObj.get("features");
             for (int i = 0; i < array.size(); i++) {
