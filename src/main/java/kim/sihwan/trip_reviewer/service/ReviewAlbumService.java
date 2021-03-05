@@ -19,12 +19,14 @@ public class ReviewAlbumService {
     @Transactional
     public Review addReviewAlbums(ReviewRequestDto requestDto){
         Review review = requestDto.toEntity(requestDto);
-        String fileUrl = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\static\\reviewImages\\";
+        String fileUrl = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\images\\reviewImages\\";
         String saveUrl = "http://localhost:8080/api/review/download?filename=";
 
         try{
             String newFilename="";
             for(MultipartFile file : requestDto.getFiles()){
+                System.out.println(file.getOriginalFilename());
+                System.out.println(file.getName());
                 newFilename = createNewFilename(file.getOriginalFilename());
                 File dest = new File(fileUrl + newFilename);
                 file.transferTo(dest);
@@ -42,6 +44,7 @@ public class ReviewAlbumService {
         return review;
     }
     public String createNewFilename(String filename){
+        System.out.println(filename);
         UUID uuid = UUID.randomUUID();
         return uuid.toString() +"_" + filename;
     }

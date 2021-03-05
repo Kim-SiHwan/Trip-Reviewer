@@ -49,7 +49,7 @@ public class ReviewController {
     @ApiOperation(value = "리뷰 사진 조회",notes = "리뷰의 사진을 조회한다.")
     @GetMapping(value = "/download", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
     public ResponseEntity<Resource> downloadAlbumImage(@RequestParam("filename")String filename){
-        final String PATH = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\static\\reviewImages\\"+filename;
+        final String PATH = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\images\\reviewImages\\"+filename;
         Resource resource = new FileSystemResource(PATH);
         return new ResponseEntity<>(resource,HttpStatus.OK);
     }

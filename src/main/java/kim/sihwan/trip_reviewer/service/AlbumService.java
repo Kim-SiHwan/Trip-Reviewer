@@ -35,7 +35,7 @@ public class AlbumService {
 
     @Transactional
     public void addAlbum(AlbumRequestDto albumRequestDto) {
-        String fileUrl = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\static\\albumImages\\";
+        String fileUrl = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\images\\albumImages\\";
         String saveUrl = "http://localhost:8080/api/album/download?filename=";
         try {
             Area area = areaRepository.findById(albumRequestDto.getAreaId()).orElseThrow(AreaNotFoundException::new);
