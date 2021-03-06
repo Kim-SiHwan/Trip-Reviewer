@@ -13,7 +13,6 @@ const albumStore={
         async REQUEST_GET_FILES(context,payload){
             const response = await album_api.getFiles(payload);
             if(response){
-                console.log(response.data);
                 context.commit('SET_FILE_INFO',response.data);
             }
 

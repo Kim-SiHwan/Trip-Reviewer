@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@Api(tags = {"1. Member"})
+@Api(tags = {"2. Member"})
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/member")

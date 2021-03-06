@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
-@Api(tags = {"3. Album"})
+@Api(tags = {"4. Album"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/album")

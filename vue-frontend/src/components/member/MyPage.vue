@@ -166,10 +166,8 @@ export default {
     }
   },
   created() {
-    console.log("크리에이트 마이페이지")
   },
   mounted() {
-    console.log("마운트! 마이페이지")
     this.$store.dispatch('REQUEST_GET_ALL_MY_REVIEWS_BY_USERNAME',this.username);
     this.$store.dispatch('REQUEST_GET_ALL_MY_COMMENTS_BY_USERNAME',this.username);
   },

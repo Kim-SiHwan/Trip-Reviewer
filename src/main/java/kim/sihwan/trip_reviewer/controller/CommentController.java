@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Api(tags = "5. Comment")
+@Api(tags = "6. Comment")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/comment")

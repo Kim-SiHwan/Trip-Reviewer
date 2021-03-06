@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = "2. Area")
+@Api(tags = "3. Area")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/area")

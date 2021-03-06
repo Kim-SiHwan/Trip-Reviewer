@@ -150,7 +150,7 @@ export default {
 
         _this.dialog=true;
         if(_this.dialog){
-          let svg2= d3.select('#area').attr('width',600).attr('height',600);
+          let svg2= d3.select('#area').attr('width',600).attr('height',400);
 
           svg2
               .select('path')
