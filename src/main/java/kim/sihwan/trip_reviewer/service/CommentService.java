@@ -6,10 +6,12 @@ import kim.sihwan.trip_reviewer.dto.comment.CommentRequestDto;
 import kim.sihwan.trip_reviewer.dto.comment.CommentResponseDto;
 import kim.sihwan.trip_reviewer.dto.comment.CommentUpdateRequestDto;
 import kim.sihwan.trip_reviewer.exception.cumtomException.CommentNotFoundException;
+import kim.sihwan.trip_reviewer.exception.cumtomException.DifferentUsernameException;
 import kim.sihwan.trip_reviewer.exception.cumtomException.ReviewNotFoundException;
 import kim.sihwan.trip_reviewer.repository.CommentRepository;
 import kim.sihwan.trip_reviewer.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,9 +66,13 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long commentId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
-        commentRepository.delete(comment);
+        if(!username.equals("admin4166") && !username.equals(comment.getUsername())){
+            throw new DifferentUsernameException();
+        }commentRepository.delete(comment);
+
     }
 
 }

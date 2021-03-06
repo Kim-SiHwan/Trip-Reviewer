@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class AdminService {
     private final MemberRepository memberRepository;
     private final TagService tagService;
-    private final ReviewTagRepository reviewTagRepository;
 
     public List<MemberResponseDto> findAllMembers(){
         checkAdmin();
@@ -52,7 +51,7 @@ public class AdminService {
 
     private void checkAdmin(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if(!username.equals("admin")){
+        if(!username.equals("admin4166")){
             throw new ForbiddenAccessException();
         }
     }

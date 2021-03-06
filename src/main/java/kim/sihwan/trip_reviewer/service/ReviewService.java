@@ -81,7 +81,7 @@ public class ReviewService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(ReviewNotFoundException::new);
-        if(!username.equals("admin") && !username.equals(review.getMember().getUsername())){
+        if(!username.equals("admin4166") && !username.equals(review.getMember().getUsername())){
             throw new DifferentUsernameException();
         }
         reviewRepository.delete(review);
