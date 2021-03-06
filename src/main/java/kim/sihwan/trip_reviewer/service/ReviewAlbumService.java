@@ -19,8 +19,9 @@ public class ReviewAlbumService {
     @Transactional
     public Review addReviewAlbums(ReviewRequestDto requestDto) throws IOException {
         Review review = requestDto.toEntity(requestDto);
-       for (MultipartFile file : requestDto.getFiles()) {
-            String saveUrl = s3Uploader.upload(file, "static");
+        String saveUrl = "";
+        for (MultipartFile file : requestDto.getFiles()) {
+            saveUrl = s3Uploader.upload(file, "static");
             ReviewAlbum reviewAlbum = ReviewAlbum
                     .builder()
                     .url(saveUrl)
@@ -28,6 +29,7 @@ public class ReviewAlbumService {
                     .build();
             reviewAlbum.addReview(review);
         }
+        review.addThumbnail(saveUrl);
         return review;
     }
 
