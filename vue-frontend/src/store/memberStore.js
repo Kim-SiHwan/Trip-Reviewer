@@ -1,5 +1,6 @@
 import member_api from "@/apis/member_api";
 import auth from "@/util/auth"
+import router from "@/routes/index";
 import area_api from "@/apis/area_api";
 const memberStore={
     state:{
@@ -10,18 +11,14 @@ const memberStore={
     getters:{
       isAuthenticated(state){
           return !!(state.token && state.authenticated && state.username);
-
       }
     },
     mutations:{
         LOGIN(state,payload){
-            console.log(payload);
             auth.setStorage(payload);
             state.token=localStorage.getItem('access_token');
             state.username=localStorage.getItem('username')
             state.authenticated=true;
-            console.log("SET!")
-            console.log(state.username);
         },
         LOGOUT(state){
             auth.initStorage();
@@ -29,7 +26,6 @@ const memberStore={
             state.username="";
             state.authenticated=false;
         },
-
     },
     actions:{
         async REQUEST_JOIN(context,payload){
@@ -49,9 +45,8 @@ const memberStore={
                 });
                 const areaResponse = await area_api.getAreas();
                 context.commit('SET_AREAS',areaResponse.data);
-
+                router.push('/main');
             }
-
         },
         async REQUEST_LOGOUT(context){
             const logoutResponse = await member_api.requestLogout();

@@ -18,11 +18,10 @@ instance.interceptors.response.use(
         return response;
     },
     async error=>{
-
         const code = error.response.data.code;
         const msg = error.response.data.message;
-        const status = error.response.data.status;
-        console.log(error.response);
+        const status = error.response.status;
+
         if(code === 1 ){
             store.commit('SET_SNACK_BAR',{
                 msg:msg, color:'warning'
@@ -35,27 +34,27 @@ instance.interceptors.response.use(
             store.commit('SET_SNACK_BAR',{
                 msg:msg, color:'error'
             })
-        }else if(status === 4){
-            console.log("정상적이지 않은 토큰.");
 
-            store.commit('SET_SNACK_BAR',{
-                msg:"비정상적 토큰이므로 로그인을 다시 시도해주세요.",color:'info'
-            })
-            store.commit('LOGOUT');
-            router.push('/login');
-        }else if(status === 5){
-            console.log("토큰이 만료되었음.");
+        }else if(status===403){
             store.commit('SET_SNACK_BAR',{
                 msg:"토큰이 만료되었으니 로그인을 다시 시도해주세요.",color:'info'
             })
-            store.commit('LOGOUT');
             router.push('/login');
-        }else if(status === 6 ){
-            console.log("로그인되지 않은 사용자");
+        }else if(status===401){
             store.commit('SET_SNACK_BAR',{
-                msg:"로그인이 필요합니다.",color:'info'
+                msg:"로그인이 필요한 서비스입니다.",color:'info'
             })
+            store.commit('LOGOUT');
+
             router.push('/login');
+        }else if(status===405){
+            store.commit('SET_SNACK_BAR',{
+                msg:"로그인이 필요한 서비스입니다.",color:'info'
+            })
+            store.commit('LOGOUT');
+
+            router.push('/login');
+
         }else if(code === 7 ){
             store.commit('SET_SNACK_BAR',{
                 msg:msg,color:'error'
