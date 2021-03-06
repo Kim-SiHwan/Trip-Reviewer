@@ -21,16 +21,16 @@ export default {
     return {
       items: [
         {
-          src: '/api/album/download?filename=q4.jpg'
+          src: 'https://kim-si-hwan-trip-s3.s3.ap-northeast-2.amazonaws.com/static/q1.jpg'
         },
         {
-          src: '/api/album/download?filename=q3.jpg'
+          src: 'https://kim-si-hwan-trip-s3.s3.ap-northeast-2.amazonaws.com/static/q2.jpg'
         },
         {
-          src: '/api/album/download?filename=q9.png'
+          src: 'https://kim-si-hwan-trip-s3.s3.ap-northeast-2.amazonaws.com/static/q3.jpg'
         },
         {
-          src: '/api/album/download?filename=q1.jpg'
+          src: 'https://kim-si-hwan-trip-s3.s3.ap-northeast-2.amazonaws.com/static/q4.jpg'
         }
       ]
     }

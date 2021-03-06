@@ -1,5 +1,6 @@
 package kim.sihwan.trip_reviewer.service;
 
+import kim.sihwan.trip_reviewer.config.awsS3.S3Uploader;
 import kim.sihwan.trip_reviewer.domain.Album;
 import kim.sihwan.trip_reviewer.domain.Area;
 import kim.sihwan.trip_reviewer.dto.area.album.AlbumRequestDto;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AreaRepository areaRepository;
-
+    private final S3Uploader s3Uploader;
     public List<AlbumResponseDto> findAllAlbumByAreaId(Long areaId) {
         return albumRepository.findAllByArea_Id(areaId)
                 .stream()
@@ -38,26 +39,36 @@ public class AlbumService {
     }
 
     @Transactional
-    public void addAlbum(AlbumRequestDto albumRequestDto) {
-        String fileUrl = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\images\\albumImages\\";
-        InputStream in5 = this.getClass().getResourceAsStream("/images/albumImages/q1.jpg");
-        System.out.println(in5.toString());
-////        File f = new File("/src/main/resources/images/albumImages/");
-//        System.out.println(f.getName());
-//        System.out.println(f.getPath());
+    public void addAlbum(AlbumRequestDto albumRequestDto) throws IOException {
+        Area area = areaRepository.findById(albumRequestDto.getAreaId())
+                .orElseThrow(AreaNotFoundException::new);
+        for(MultipartFile file : albumRequestDto.getFiles()){
+            String saveUrl = s3Uploader.upload(file,"static");
+            Album album = Album
+                    .builder()
+                    .url(saveUrl)
+                    .filename("")
+                    .originFilename(file.getOriginalFilename())
+                    .build();
+            album.addArea(area);
+        }
 
-        String fileUrl2 = this.getClass().getResourceAsStream("/images/albumImages/").toString();
-        String pp = "/home/ec2-user/app/images/";
-        System.out.println("파일 : "+fileUrl2);
+/*        String fileUrl = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\images\\albumImages\\";
+
+
         String saveUrl = "http://localhost:8080/api/album/download?filename=";
         try {
             Area area = areaRepository.findById(albumRequestDto.getAreaId()).orElseThrow(AreaNotFoundException::new);
             for(MultipartFile file : albumRequestDto.getFiles()) {
                 String newFilename = createNewFilename(file.getOriginalFilename());
-                log.info("파일 : "+pp);
-                File dest = new File(pp + newFilename);
+                System.out.println(file);
+                File dest = new File(fileUrl + newFilename);
+
 
                 file.transferTo(dest);
+                System.out.println(file);
+                System.out.println(dest);
+                System.out.println(file.getSize()+" "+dest.length());
                 Album album = Album
                         .builder()
                         .url(saveUrl + newFilename)
@@ -68,7 +79,7 @@ public class AlbumService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Transactional
