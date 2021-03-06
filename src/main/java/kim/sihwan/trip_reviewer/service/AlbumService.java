@@ -47,7 +47,7 @@ public class AlbumService {
 //        System.out.println(f.getPath());
 
         String fileUrl2 = this.getClass().getResourceAsStream("/images/albumImages/").toString();
-        String pp = "~/app/images/";
+        String pp = "/home/ec2-user/app/images/";
         System.out.println("파일 : "+fileUrl2);
         String saveUrl = "http://localhost:8080/api/album/download?filename=";
         try {
