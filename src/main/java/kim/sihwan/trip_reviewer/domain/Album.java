@@ -19,7 +19,6 @@ public class Album {
     @Column(name = "album_id")
     private Long id;
     private String url;
-    private String filename;
     private String originFilename;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,9 +26,8 @@ public class Album {
     private Area area;
 
     @Builder
-    public Album(String url, String filename, String originFilename) {
+    public Album(String url,  String originFilename) {
         this.url = url;
-        this.filename = filename;
         this.originFilename = originFilename;
     }
 

@@ -16,7 +16,6 @@ public class ReviewAlbum {
     @Column(name = "review_album_id")
     private Long id;
     private String url;
-    private String filename;
     private String originFilename;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -24,9 +23,8 @@ public class ReviewAlbum {
     private Review review;
 
     @Builder
-    public ReviewAlbum(String url, String filename, String originFilename) {
+    public ReviewAlbum(String url, String originFilename) {
         this.url = url;
-        this.filename = filename;
         this.originFilename = originFilename;
     }
 

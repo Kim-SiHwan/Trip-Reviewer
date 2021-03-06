@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -66,14 +67,13 @@ public class ReviewService {
     }
 
     @Transactional
-    public Long addReview(ReviewRequestDto requestDto) {
+    public void addReview(ReviewRequestDto requestDto) throws IOException {
         Member member = memberRepository.findMemberByUsername(requestDto.getUsername())
                 .orElseThrow(UserNotFoundException::new);
         Review review = reviewAlbumService.addReviewAlbums(requestDto);
         tagService.addReviewTag(review, requestDto);
         review.addMember(member);
         reviewRepository.save(review);
-        return review.getId();
     }
 
     @Transactional

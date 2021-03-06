@@ -41,7 +41,6 @@ public class AreaController {
     @ApiOperation(value = "지역구 수정",notes = "변경할 정보를 입력받아 지역구의 속성값을 수정한다.")
     @PatchMapping
     public void updateAreaInfo(@RequestBody AreaRequestDto requestDto){
-        System.out.println("??????");
         areaService.changeAreaInfo(requestDto);
     }
 

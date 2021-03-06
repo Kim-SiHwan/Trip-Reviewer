@@ -9,14 +9,11 @@ import kim.sihwan.trip_reviewer.dto.review.ReviewResponseDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewUpdateRequestDto;
 import kim.sihwan.trip_reviewer.service.ReviewService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Api(tags = {"4. Review"})
@@ -46,18 +43,10 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.findAllReviewsByUsername(username),HttpStatus.OK);
     }
 
-    @ApiOperation(value = "리뷰 사진 조회",notes = "리뷰의 사진을 조회한다.")
-    @GetMapping(value = "/download", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-    public ResponseEntity<Resource> downloadAlbumImage(@RequestParam("filename")String filename){
-        final String PATH = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\images\\reviewImages\\"+filename;
-        Resource resource = new FileSystemResource(PATH);
-        return new ResponseEntity<>(resource,HttpStatus.OK);
-    }
-
     @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
     @ApiOperation(value = "리뷰 생성",notes = "리뷰 정보를 입력받아 리뷰를 생성한다. 리뷰 정보는 Set 구조의 태그, Set 구조의 리뷰앨범으로 구성되어있다.")
     @PostMapping
-    public void addReview(@ModelAttribute @Valid ReviewRequestDto requestDto){
+    public void addReview(@ModelAttribute @Valid ReviewRequestDto requestDto) throws IOException {
         reviewService.addReview(requestDto);
     }
 

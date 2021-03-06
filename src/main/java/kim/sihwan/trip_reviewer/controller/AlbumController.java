@@ -10,10 +10,7 @@ import kim.sihwan.trip_reviewer.service.AlbumService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,18 +36,7 @@ public class AlbumController {
 
     @PostMapping("/upload")
     public String upload(@RequestParam("data")MultipartFile multipartFile) throws IOException{
-        System.out.println(multipartFile);
         return s3Uploader.upload(multipartFile, "static");
-    }
-
-
-    @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
-    @ApiOperation(value = "사진 조회",notes = "사진첩의 사진을 조회한다.")
-    @GetMapping(value = "/download", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-    public ResponseEntity<Resource> downloadAlbumImage(@RequestParam("filename")String filename){
-        final String PATH = "C:\\Users\\김시환\\Desktop\\Git\\Trip-Reviewer\\src\\main\\resources\\images\\albumImages\\"+filename;
-        Resource resource = new FileSystemResource(PATH);
-        return new ResponseEntity<>(resource,HttpStatus.OK);
     }
 
     @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")

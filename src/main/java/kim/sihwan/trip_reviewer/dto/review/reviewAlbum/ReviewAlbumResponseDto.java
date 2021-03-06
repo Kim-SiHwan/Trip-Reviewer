@@ -11,13 +11,11 @@ import lombok.Setter;
 public class ReviewAlbumResponseDto {
     private Long id;
     private String url;
-    private String filename;
     private String originFilename;
 
     public ReviewAlbumResponseDto(ReviewAlbum reviewAlbum){
         id = reviewAlbum.getId();
         url = reviewAlbum.getUrl();
-        filename = reviewAlbum.getFilename();
         originFilename = reviewAlbum.getOriginFilename();
     }
 }

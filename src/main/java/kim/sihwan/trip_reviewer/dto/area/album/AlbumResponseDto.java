@@ -11,7 +11,6 @@ import lombok.Setter;
 public class AlbumResponseDto {
     private Long id;
     private String url;
-    private String filename;
     private String originFilename;
 
     public static AlbumResponseDto toDto(Album album){
@@ -19,7 +18,6 @@ public class AlbumResponseDto {
                 .builder()
                 .id(album.getId())
                 .url(album.getUrl())
-                .filename(album.getFilename())
                 .originFilename(album.getOriginFilename())
                 .build();
     }
