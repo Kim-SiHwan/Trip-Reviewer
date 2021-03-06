@@ -18,7 +18,7 @@ function getArea(areaId){
 function changeAreaInfo(areaInfo){
     return Send({
         url:'/api/area',
-        method:'put',
+        method:'PATCH',
         data:areaInfo
     })
 }

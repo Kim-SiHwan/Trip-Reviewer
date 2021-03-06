@@ -39,8 +39,9 @@ public class AreaController {
 
     @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")
     @ApiOperation(value = "지역구 수정",notes = "변경할 정보를 입력받아 지역구의 속성값을 수정한다.")
-    @PatchMapping//여기 패치로 바꿨음.
+    @PatchMapping
     public void updateAreaInfo(@RequestBody AreaRequestDto requestDto){
+        System.out.println("??????");
         areaService.changeAreaInfo(requestDto);
     }
 
