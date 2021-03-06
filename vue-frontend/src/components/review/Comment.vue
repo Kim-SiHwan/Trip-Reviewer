@@ -42,7 +42,7 @@
 
 
             <td width="100">{{ commentList.item.username }}</td>
-            <td width="100"> 날짜</td>
+            <td width="100">{{ commentList.item.createDate.substring(0,10)}}</td>
             <td width="100">
 
               <v-icon
@@ -178,7 +178,7 @@ export default {
   },
   methods: {
     deleteComment(commentId, username) {
-      if (this.username !== 'admin' && this.username !== username ) {
+      if (this.username !== 'admin4166' && this.username !== username ) {
         this.$store.commit('SET_SNACK_BAR',
             {msg: '작성자만 삭제 할 수 있습니다.', color: 'error'}
         );

@@ -2,11 +2,12 @@
   <v-app>
     <v-container>
       <div id="username">
-        <router-link to="/admin"
-        v-if="this.$store.getters.isAuthenticated && username==='admin'">관리자페이지</router-link>
+        <router-link v-if="this.$store.getters.isAuthenticated && username==='admin'"
+                     to="/admin">관리자페이지
+        </router-link>
         <br>
         내가 쓴 리뷰 목록
-        <div id="myReviewZone" v-if="myReviewList">
+        <div v-if="myReviewList" id="myReviewZone">
           <div id="reviewsDiv" class="row justify-center mt-15">
             <ul v-for="(list,index) in myReviewList" :key="index"
                 style="list-style: none">
@@ -17,52 +18,44 @@
                     <span><strong>{{ list.title }}</strong></span>
                     <br>
 
-
                     <span class="float-right card-subtitle">
               <span class="float-right mt-1 mr-3"><small>작성자 : {{ list.username }}</small></span>
               <br>
               <span class="float-right mt-1 mr-3"><small>지역 : {{ list.area }}</small></span>
                   </span>
-
                     <br>
-
                     <div id="imgDiv" style="height: 100%; width: 100%">
                       <router-link :to="{path:'/reviewDetail',query:{reviewId:list.id}}">
 
                         <v-img
                             :src="list.thumbnail"
-                            class="mt-15 mr-3 ml-13 black lighten-2"
+                            class="mt-15 mr-3 ml-13  grey lighten-3"
                             contain
                             height="320"
                             max-height="320"
-                            max-width="400"
-                        >
+                            max-width="400">
 
                         </v-img>
                       </router-link>
 
                       <div v-for="(tags,index) in list.tags" :key="index" style="list-style: none; display: inline">
                         <v-chip
-                            color="info"
                             class="ml-0 mr-1 pr-2 pl-2"
+                            color="info"
                             label
                             small>
-                          {{tags.tag}}
+                          {{ tags.tag }}
                         </v-chip>
                       </div>
 
                       <div id="reviewListIconDiv" class="mt-4 mb-5">
                         <v-icon
-                            color="blue darken-4"
-                        >
+                            color="blue darken-4">
                           mdi-message-text
                         </v-icon>
                         {{ list.commentCount }}
-
                         <v-icon
-
-                            color="green"
-                        >
+                            color="green">
                           mdi-image-multiple
                         </v-icon>
                         {{ list.reviewAlbumsCount }}
@@ -91,8 +84,8 @@
               :items-per-page="itemsPerPage"
               :page.sync="page"
               class="elevation-1"
-              hide-default-header
               hide-default-footer
+              hide-default-header
               no-data-text="작성한 댓글이 없습니다."
               @page-count="pageCount= $event">
 
@@ -101,17 +94,15 @@
                 <td width="500">
 
                   <v-textarea
+                      class="mt-5"
                       no-resize
                       outlined
-                      class="mt-5"
                       readonly="readonly"
                       rows="4"
                       v-bind:value="commentList.item.content"
                   >
                   </v-textarea>
                 </td>
-
-
 
 
                 <td width="100">{{ commentList.item.username }}</td>
@@ -142,11 +133,11 @@
 <script>
 export default {
   name: "MyPage",
-  data(){
-    return{
-      itemsPerPage:3,
+  data() {
+    return {
+      itemsPerPage: 3,
       pageCount: 0,
-      page:1,
+      page: 1,
       headers: [
         {
           text: '내용',
@@ -168,17 +159,17 @@ export default {
   created() {
   },
   mounted() {
-    this.$store.dispatch('REQUEST_GET_ALL_MY_REVIEWS_BY_USERNAME',this.username);
-    this.$store.dispatch('REQUEST_GET_ALL_MY_COMMENTS_BY_USERNAME',this.username);
+    this.$store.dispatch('REQUEST_GET_ALL_MY_REVIEWS_BY_USERNAME', this.username);
+    this.$store.dispatch('REQUEST_GET_ALL_MY_COMMENTS_BY_USERNAME', this.username);
   },
-  computed:{
-    username(){
+  computed: {
+    username() {
       return this.$store.state.memberStore.username;
     },
-    myReviewList(){
+    myReviewList() {
       return this.$store.state.reviewStore.myReviewList;
     },
-    myCommentList(){
+    myCommentList() {
       return this.$store.state.commentStore.myCommentList;
     }
   }

@@ -3,6 +3,7 @@
     <v-container>
 
       <h2>{{reviewInfo.area}}</h2>
+      <small>{{reviewInfo.createDate.substring(0,10)}} {{reviewInfo.createDate.substring(11,16)}}</small>
       <h3 v-if="reviewInfo.title">
         <small v-if="!updateFlag">&lt;&nbsp;{{reviewInfo.title}}&nbsp;&gt;</small>
         <v-text-field
@@ -66,7 +67,7 @@
 
       </v-textarea>
       <div
-          v-if="reviewInfo.username === username || username === 'admin' "
+          v-if="reviewInfo.username === username || username === 'admin4166' "
 
           id="reviewDetailBtnDiv" class="float-right">
         <v-btn

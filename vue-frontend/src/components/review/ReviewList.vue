@@ -1,5 +1,5 @@
 <template>
-  <v-app >
+  <v-app>
 
     <p><small v-if="reviewList">{{ reviewList.length }}개의 리뷰가 있습니다</small></p>
 
@@ -7,16 +7,16 @@
     <div>
       <v-chip
           v-if="tag.id!=0"
-          small
           close
-          label
           color="info"
+          label
+          small
           @click:close="clickTag({
           id:0,
           tag:''
           })"
       >
-        {{tag.tag}}
+        {{ tag.tag }}
       </v-chip>
     </div>
 
@@ -29,25 +29,25 @@
             <div class="card-body" style="margin-top: 50px">
               <span><strong>&lt;&nbsp; {{ list.title }} &gt;&nbsp;</strong></span>
               <br>
-
-
               <span class="float-right card-subtitle">
               <span class="float-right mt-1 mr-3"><small>작성자 : {{ list.username }}</small></span>
               <br>
+              <span class="float-right mt-1 mr-3"> <small>작성일 : {{
+                  reviewInfo.createDate.substring(0, 10)
+                }}</small></span>
+              <br>
               <span class="float-right mt-1 mr-3"><small>지역 : {{ list.area }}</small></span>
-                  </span>
-
+              </span>
               <br>
 
               <div id="imgDiv" style="height: 100%; width: 100%">
                 <router-link :to="{path:'/reviewDetail',query:{reviewId:list.id}}">
-
                   <v-img
                       :src="list.thumbnail"
+                      aspect-ratio="1.2"
                       class="mt-15 mr-3 ml-13 grey lighten-3"
                       contain
                       width="500"
-                      aspect-ratio="1.2"
                   >
 
                   </v-img>
@@ -55,34 +55,29 @@
 
                 <div v-for="(tags,index) in list.tags" :key="index" style="list-style: none; display: inline">
                   <v-chip
-                      color="info"
                       class="ml-0 mr-1 pr-2 pl-2"
+                      color="info"
                       label
-                      @click="clickTag(tags)"
-                      small>
-                    {{tags.tag}}
+                      small
+                      @click="clickTag(tags)">
+                    {{ tags.tag }}
                   </v-chip>
                 </div>
 
                 <div id="reviewListIconDiv" class="mt-4 mb-5">
                   <v-icon
-                      color="blue darken-4"
-                  >
+                      color="blue darken-4">
                     mdi-message-text
                   </v-icon>
                   {{ list.commentCount }}
 
                   <v-icon
-
-                      color="green"
-                  >
+                      color="green">
                     mdi-image-multiple
                   </v-icon>
                   {{ list.reviewAlbumsCount }}
                 </div>
-
               </div>
-
             </div>
           </div>
         </li>
@@ -99,8 +94,8 @@ export default {
     showReviewList() {
       this.$store.dispatch('REQUEST_GET_ALL_REVIEWS_BY_TAG', this.tag);
     },
-    clickTag(tag){
-      this.$store.dispatch('REQUEST_GET_ALL_REVIEWS_BY_TAG',tag);
+    clickTag(tag) {
+      this.$store.dispatch('REQUEST_GET_ALL_REVIEWS_BY_TAG', tag);
     }
 
   },
@@ -111,7 +106,7 @@ export default {
     reviewInfo() {
       return this.$store.state.reviewStore.reviewInfo;
     },
-    tag(){
+    tag() {
       return this.$store.state.reviewStore.tag;
     }
   },
