@@ -6,6 +6,7 @@ import kim.sihwan.trip_reviewer.config.jwt.JwtAuthenticationEntryPoint;
 import kim.sihwan.trip_reviewer.config.jwt.JwtSecurityConfig;
 import kim.sihwan.trip_reviewer.config.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -31,7 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
                 "/swagger-ui.html", "/webjars/**", "/swagger/**","/favicon.ico"
-                ,"/node_modules/**","/error","h2/**","/static/index.html","/css/**","/js/**","/index.html");
+                ,"/node_modules/**","/error","h2/**","/static/index.html","/css/**","/js/**","/index.html")
+                .mvcMatchers("/node_modules/**")
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 
     }
     @Bean
@@ -70,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/api/review/*").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/review/all/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/review/download**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/comment/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/comment/*").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/album/download**").permitAll()
                 .anyRequest().authenticated()
 

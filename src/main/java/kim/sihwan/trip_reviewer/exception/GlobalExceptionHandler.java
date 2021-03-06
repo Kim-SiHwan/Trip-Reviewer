@@ -79,6 +79,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponseDto(ErrorCode.NOT_NULL.getCode(), message),HttpStatus.BAD_REQUEST);
 
     }
+    
+    @ExceptionHandler(ExpiredTokenException.class)
+    protected ResponseEntity<ErrorResponseDto> expiredTokenException(ExpiredTokenException e){
+        log.info("tokenExpired"+e);
+        return new ResponseEntity<>(errorResponseDto(ErrorCode.EXPIRED_TOKEN.getCode(), ErrorCode.EXPIRED_TOKEN.getDescription()),HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(BindException.class)
     protected ResponseEntity<ErrorResponseDto> bindException(BindException e){
