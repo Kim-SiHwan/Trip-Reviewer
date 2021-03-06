@@ -128,15 +128,8 @@ export default {
       }
 
       function mouseclick(d) {
-        console.log(d);
-
-        console.log(d.properties.idx);
         _this.areaId = _this.areas[d.properties.idx-1].id;
-
-        console.log(_this.prevColor);
         _this.code=d.properties.SIG_CD;
-        console.log(_this.selectedPath);
-
         _this.geoJSON.features[0].geometry.coordinates= d.geometry.coordinates;
         _this.getArea();
 

@@ -157,7 +157,6 @@ export default {
         visitDate: this.date,
         accompany : this.selectedItems
       };
-      console.log(this.sendInfo);
       this.$store.dispatch('REQUEST_CHANGE_AREA_INFO',this.sendInfo);
 
     },
@@ -212,9 +211,6 @@ export default {
   mounted() {
     this.drawArea(this.selectedArea.color);
 
-  },
-  created() {
-    console.log(document.documentElement.clientWidth);
   },
   computed:{
     selectedArea(){

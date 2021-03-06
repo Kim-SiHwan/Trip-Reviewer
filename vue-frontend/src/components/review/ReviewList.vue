@@ -100,14 +100,12 @@ export default {
       this.$store.dispatch('REQUEST_GET_ALL_REVIEWS_BY_TAG', this.tag);
     },
     clickTag(tag){
-      console.log(tag.id+" "+tag.tag);
       this.$store.dispatch('REQUEST_GET_ALL_REVIEWS_BY_TAG',tag);
     }
 
   },
   computed: {
     reviewList() {
-      console.log("??")
       return this.$store.state.reviewStore.reviewList;
     },
     reviewInfo() {

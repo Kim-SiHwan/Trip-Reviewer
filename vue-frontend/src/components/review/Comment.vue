@@ -210,7 +210,6 @@ export default {
 
     },
     updateComment(commentId) {
-      console.log(commentId);
       let data = {
         id: commentId,
         content: this.updateContent,
@@ -231,7 +230,6 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.query.reviewId);
     this.reviewId = this.$route.query.reviewId;
 
 

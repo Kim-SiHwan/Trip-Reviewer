@@ -86,18 +86,13 @@ export default {
       let targetImg = this.selectedImageIds.indexOf(fileId);
       let x= event.target.childNodes[0];
       if(targetImg!==-1){
-        console.log("타겟있음" +targetImg)
-        console.log(document.getElementById('pa'));
-        console.log(x);
         x.style.visibility = 'hidden';
         this.selectedImageIds.splice(targetImg,1);
       }else{
-        console.log("타겟없음")
         x.style.visibility = 'visible';
         this.selectedImageIds.push(fileId);
 
       }
-      console.log(this.selectedImageIds);
     },
     updateAlbum(){
       let sendForm={

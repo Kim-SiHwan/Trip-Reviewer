@@ -79,42 +79,28 @@ methods:{
   addTags(){
     this.reviewData.tags.push(this.tagName);
     this.tagName='';
-    console.log(this.reviewData.tags);
   },
   deleteTag(tagIdx){
     this.reviewData.tags.splice(tagIdx,1);
   },
 
   upload(formData){
-
-    console.log(formData);
     if(formData===''){
       this.$store.commit('SET_SNACK_BAR',{
         msg:'사진을 1장 이상 선택해주세요.',color:'warning'
       });
       return false;
-
-
     }
     formData.set('area',this.reviewData.area);
     formData.set('title',this.reviewData.title);
     formData.set('content',this.reviewData.content);
     formData.set('username',this.reviewData.username);
     formData.set('tags',this.reviewData.tags);
-
-    console.log(formData.get('area'));
-    console.log(formData.get('title'));
-    console.log(formData.get('content'));
-    console.log(formData.get('username'));
-
-
     this.$store.dispatch('REQUEST_UPLOAD_REVIEW',formData);
 
   },
   selectedFile(event){
     const files = event;
-    console.log(files);
-    console.log("uplOAD")
     let formData = new FormData;
     for(let file in files){
       formData.append('files',files[file]);
