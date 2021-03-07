@@ -2,7 +2,7 @@
   <v-app>
     <v-container>
       <div id="username">
-        <router-link v-if="this.$store.getters.isAuthenticated && username==='admin'"
+        <router-link v-if="this.$store.getters.isAuthenticated && username==='admin4166'"
                      to="/admin">관리자페이지
         </router-link>
         <br>
