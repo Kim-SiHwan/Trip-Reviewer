@@ -78,7 +78,8 @@
     <v-snackbar
         v-model="snackBarInfo.open"
         :color="snackBarInfo.color"
-        :timeout="snackBarInfo.timeout">
+        :timeout="snackBarInfo.timeout"
+        top>
       {{snackBarInfo.text}}
     </v-snackbar>
 
