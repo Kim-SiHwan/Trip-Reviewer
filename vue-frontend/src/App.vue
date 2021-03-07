@@ -1,7 +1,9 @@
 <template>
   <v-app id="app">
 
-    <v-app-bar id="bar"
+    <v-app-bar
+        id="bar"
+        style="position: fixed"
         absolute
         color="orange lighten-2"
         elevation="10"

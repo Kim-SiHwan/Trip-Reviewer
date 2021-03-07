@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="headerDiv">
 
     <p><small v-if="reviewList">{{ reviewList.length }}개의 리뷰가 있습니다</small></p>
 
@@ -26,7 +26,7 @@
         <li id="listDiv">
           <div class="p-5 mb-5 rounded float-left"
                style="width: 500px; height: 600px; border: 1px solid cornflowerblue">
-            <div class="card-body" style="margin-top: 50px">
+            <div class="card-body" style="margin-top: 20px">
               <span><strong>&lt;&nbsp; {{ list.title }} &gt;&nbsp;</strong></span>
               <br>
               <span class="float-right card-subtitle">
@@ -82,6 +82,20 @@
         </li>
       </ul>
     </div>
+
+    <v-fab-transition>
+      <v-btn
+        bottom
+        right
+        fixed
+        fab
+        small
+        color="orange lighten -1"
+        @click="$vuetify.goTo('#headerDiv')">
+        <v-icon>mdi-chevron-double-up</v-icon>
+      </v-btn>
+    </v-fab-transition>
+
 
   </v-app>
 </template>
