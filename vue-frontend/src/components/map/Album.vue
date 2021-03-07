@@ -9,12 +9,11 @@
       <v-col
           v-for="(file,index) in fileInfo" :key="index"
           class="d-flex child-flex"
-          cols="4"
+          cols="3"
       >
         <div id="galleryImgDiv" >
         <v-img
             :src="file.url"
-            contain
             width="500"
             aspect-ratio="1.2"
             @click="selectedImg(file.id,$event)"

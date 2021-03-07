@@ -25,7 +25,7 @@
           style="list-style: none">
         <li id="listDiv">
           <div class="p-5 mb-5 rounded float-left"
-               style="width: 600px; height: 700px; border: 1px solid cornflowerblue">
+               style="width: 500px; height: 600px; border: 1px solid cornflowerblue">
             <div class="card-body" style="margin-top: 50px">
               <span><strong>&lt;&nbsp; {{ list.title }} &gt;&nbsp;</strong></span>
               <br>
@@ -44,10 +44,9 @@
                 <router-link :to="{path:'/reviewDetail',query:{reviewId:list.id}}">
                   <v-img
                       :src="list.thumbnail"
-                      aspect-ratio="1.2"
+                      aspect-ratio="1"
                       class="mt-15 mr-3 ml-13 grey lighten-3"
-                      contain
-                      width="500"
+                      width="400"
                   >
 
                   </v-img>

@@ -43,6 +43,13 @@
                   {{tag}}
                 </v-chip>
               </div>
+              <v-btn
+                v-if="this.reviewData.tags.length<3"
+                color="primary"
+                small
+                @click="addTags">
+                추가
+              </v-btn>
             </div>
 
       </div>

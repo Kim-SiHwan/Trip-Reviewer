@@ -28,16 +28,13 @@
 
           v-for="(file,index) in reviewInfo.reviewAlbums" :key="index"
           class="d-flex child-flex"
-          cols="4"
-      >
+          cols="3">
         <div id="reviewFileImgDiv">
         <v-img
             :src="file.url"
             class="grey lighten-4"
-            contain
             width="500"
-            aspect-ratio="1.2"
-        >
+            aspect-ratio="1.2">
 
         </v-img>
         </div>
