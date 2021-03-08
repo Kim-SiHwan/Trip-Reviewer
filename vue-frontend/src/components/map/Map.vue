@@ -32,9 +32,12 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <router-link to="/detail" style="text-decoration: none" @click="dialog=false">
-                <v-btn color="blue darken-1" text >수정하기</v-btn>
+                <v-btn class="mr-3" color="blue darken-1" text >수정</v-btn>
               </router-link>
-              <v-btn color="red darken-1" text @click="dialog=false">취소하기</v-btn>
+              <router-link to="/album" style="text-decoration: none" @click="dialog=false">
+                <v-btn class="mr-3" color="green darken-1" text >사진첩</v-btn>
+              </router-link>
+              <v-btn color="red darken-1" text @click="dialog=false">취소</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>

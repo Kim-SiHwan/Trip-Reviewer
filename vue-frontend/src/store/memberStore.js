@@ -34,6 +34,7 @@ const memberStore={
                 context.commit('SET_SNACK_BAR',{
                     msg:payload.username+'으로 정상 가입되었습니다.',color:'success'
                 });
+                router.push('/login');
             }
         },
         async REQUEST_LOGIN(context,payload){

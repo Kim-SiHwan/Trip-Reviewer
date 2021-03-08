@@ -14,7 +14,7 @@
             <li id="listDiv">
               <div class="p-5 mb-5 rounded float-left"
                    style="width: 500px; height: 600px; border: 1px solid cornflowerblue">
-                <div class="card-body" style="margin-top: 50px">
+                <div class="card-body" style="margin-top: 20px">
                   <span><strong>&lt;&nbsp; {{ list.title }} &gt;&nbsp;</strong></span>
                   <br>
                   <span class="float-right card-subtitle">
