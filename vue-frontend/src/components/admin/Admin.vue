@@ -18,6 +18,12 @@
             <td>{{memberList.item.createDate}}</td>
           </tr>
         </template>
+
+        <v-pagination
+            v-model="page"
+            :length="pageCount">
+
+        </v-pagination>
       </v-data-table>
 
 
@@ -46,6 +52,12 @@
           </tr>
         </template>
       </v-data-table>
+
+      <v-pagination
+          v-model="page"
+          :length="pageCount">
+
+      </v-pagination>
     </v-container>
   </v-app>
 
