@@ -29,11 +29,9 @@ public class Review {
     private Member member;
 
     @OneToMany(mappedBy="review", cascade = CascadeType.ALL)
-    //private List<Comment> comments = new ArrayList<>();
     private Set<Comment> comments = new HashSet<>();
 
     @OneToMany(mappedBy="review", cascade = CascadeType.ALL)
-    //private List<ReviewAlbum> reviewAlbums = new ArrayList<>();
     private Set<ReviewAlbum> reviewAlbums = new HashSet<>();
 
     @OneToMany(mappedBy="review", cascade = CascadeType.ALL)

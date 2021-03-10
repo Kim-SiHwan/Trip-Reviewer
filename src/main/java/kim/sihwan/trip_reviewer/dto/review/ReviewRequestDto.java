@@ -1,7 +1,6 @@
 package kim.sihwan.trip_reviewer.dto.review;
 
 import kim.sihwan.trip_reviewer.domain.Review;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;

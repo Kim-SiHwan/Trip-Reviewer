@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CommentResponseDto {
-    private Long id;
-    private String content;
-    private String username;//닉네임으로?
-    private String createDate;
+    private final Long id;
+    private final String content;
+    private final String username;
+    private final String createDate;
 
 
     public static CommentResponseDto toDto(Comment comment){

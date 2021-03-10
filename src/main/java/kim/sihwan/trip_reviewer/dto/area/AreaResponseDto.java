@@ -3,20 +3,18 @@ package kim.sihwan.trip_reviewer.dto.area;
 import kim.sihwan.trip_reviewer.domain.Area;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
 public class AreaResponseDto {
 
-    private Long id;
-    private int idx;
-    private String name;
-    private String title;
-    private String color;
-    private String accompany;
-    private String visitDate;
+    private final Long id;
+    private final int idx;
+    private final String name;
+    private final String title;
+    private final String color;
+    private final String accompany;
+    private final String visitDate;
 
     public static AreaResponseDto toDto(Area area){
         return AreaResponseDto.builder()

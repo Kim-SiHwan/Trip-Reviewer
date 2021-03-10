@@ -63,7 +63,7 @@ public class ReviewService {
     }
 
     public ReviewResponseDto findOneByReviewId(Long reviewId) {
-        return new ReviewResponseDto(reviewRepository.findReviewById(reviewId).orElseThrow(DeletedReviewException::new));
+        return ReviewResponseDto.toDto(reviewRepository.findReviewById(reviewId).orElseThrow(DeletedReviewException::new));
     }
 
     @Transactional

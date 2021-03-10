@@ -3,15 +3,13 @@ package kim.sihwan.trip_reviewer.dto.area.album;
 import kim.sihwan.trip_reviewer.domain.Album;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
 public class AlbumResponseDto {
-    private Long id;
-    private String url;
-    private String originFilename;
+    private final Long id;
+    private final String url;
+    private final String originFilename;
 
     public static AlbumResponseDto toDto(Album album){
         return AlbumResponseDto

@@ -1,30 +1,26 @@
 package kim.sihwan.trip_reviewer.dto.review;
 
 import kim.sihwan.trip_reviewer.domain.Review;
-import kim.sihwan.trip_reviewer.dto.review.reviewAlbum.ReviewAlbumResponseDto;
 import kim.sihwan.trip_reviewer.dto.tag.TagResponseDto;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ReviewListResponseDto {
 
-    private Long id;
-    private String area;
-    private String username;
-    private String title;
-    private String content;
-    private String createDate;
-    private String thumbnail;
-    private int reviewAlbumsCount;
-    private int commentCount;
-    private List<TagResponseDto> tags;
+    private final Long id;
+    private final String area;
+    private final String username;
+    private final String title;
+    private final String content;
+    private final String createDate;
+    private final String thumbnail;
+    private final int reviewAlbumsCount;
+    private final int commentCount;
+    private final List<TagResponseDto> tags;
 
 
     public static ReviewListResponseDto toDto(Review review){
