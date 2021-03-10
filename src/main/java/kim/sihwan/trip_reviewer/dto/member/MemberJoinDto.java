@@ -3,12 +3,13 @@ package kim.sihwan.trip_reviewer.dto.member;
 import kim.sihwan.trip_reviewer.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.*;
 
 @Getter
-@Builder
+@Setter
 public class MemberJoinDto {
     @NotBlank
     @NotEmpty(message = "아이디는 필수 항목입니다.")

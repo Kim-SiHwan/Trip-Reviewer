@@ -32,7 +32,7 @@ public class ReviewResponseDto {
 
         reviewAlbums = review.getReviewAlbums()
                 .stream()
-                .map(m->new ReviewAlbumResponseDto(m))
+                .map(ReviewAlbumResponseDto::new)
                 .collect(Collectors.toList());
 
         tags = review.getReviewTags()
