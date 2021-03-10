@@ -4,7 +4,6 @@ package kim.sihwan.trip_reviewer.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -12,7 +11,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

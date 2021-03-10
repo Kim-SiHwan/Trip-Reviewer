@@ -4,14 +4,12 @@ package kim.sihwan.trip_reviewer.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import javax.persistence.*;
 
 
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

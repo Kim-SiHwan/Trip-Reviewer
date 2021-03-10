@@ -1,18 +1,14 @@
 package kim.sihwan.trip_reviewer.domain;
 
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import javax.persistence.*;
 
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class ReviewTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

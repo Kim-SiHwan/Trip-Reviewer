@@ -1,7 +1,6 @@
 package kim.sihwan.trip_reviewer.domain;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,6 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Area {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

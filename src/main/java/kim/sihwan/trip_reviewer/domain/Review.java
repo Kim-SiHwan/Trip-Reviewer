@@ -12,7 +12,6 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

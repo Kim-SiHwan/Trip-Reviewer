@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ReviewAlbum {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
