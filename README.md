@@ -157,7 +157,7 @@ Spring Security , JsonWebToken을 사용한 사용자 인증
 - JPA 사용 시 1+N 문제로, 쿼리가 매우 많이 나가는 현상 발생
   - 객체 참조를 LAZY 설정
   - EntityGraph를 사용해 객체 그래프 탐색을 한번에 마치도록 변경
-  - '''java   @EntityGraph(attributePaths = {"member","reviewAlbums","reviewTags","reviewTags.tag"},type = EntityGraph.EntityGraphType.LOAD)
-    Optional<Review> findReviewById(Long id); '''
-
-  - 
+- 배포를 위한 빌드를 할 때  Gradle 오류가 발생했으나 해결하지 못했음
+  - Gradle을 Maven으로 변경해 배포 완료
+- 배포 시 이미지 저장경로 등에 대한 고민
+  - AWS의 S3 버킷을 사용해 이미지 저장과 조회 구현
