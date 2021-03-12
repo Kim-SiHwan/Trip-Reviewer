@@ -42,19 +42,6 @@ public class Area {
         this.accompany = accompany;
     }
 
-    public void changeTitle(String title){
-        this.title = title;
-    }
-    public void changeColor(String color){
-        this.color = color;
-    }
-    public void changeAccompany(String accompany){
-        this.accompany = accompany;
-    }
-    public void changeVisitDate(String visitDate){
-        this.visitDate = visitDate;
-    }
-
     public void updateArea(String title, String color, String accompany, String visitDate){
         this.title = title;
         this.color = color;

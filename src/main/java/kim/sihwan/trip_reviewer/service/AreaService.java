@@ -42,19 +42,9 @@ public class AreaService {
                 .orElseThrow(AreaNotFoundException::new);
 
         area.updateArea(requestDto.getTitle(), requestDto.getColor(), requestDto.getAccompany(), requestDto.getVisitDate());
-/*
-        if(!requestDto.getTitle().isEmpty())
-            area.changeTitle(requestDto.getTitle());
-        if(!requestDto.getColor().isEmpty())
-            area.changeColor(requestDto.getColor());
-        if(!requestDto.getAccompany().isEmpty())
-            area.changeAccompany(requestDto.getAccompany());
-        if(!requestDto.getVisitDate().isEmpty())
-            area.changeVisitDate(requestDto.getVisitDate());*/
 
     }
 
-    // 람다표현식
     @Transactional
     public void initArea(Long areaId){
         Area area = areaRepository.findById(areaId)
