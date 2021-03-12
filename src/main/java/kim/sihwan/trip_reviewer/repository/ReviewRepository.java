@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review,Long> {
 
-    @EntityGraph(attributePaths = {"member","reviewAlbums","comments","reviewTags","reviewTags.tag"},type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"member","reviewAlbums","reviewTags","reviewTags.tag"},type = EntityGraph.EntityGraphType.LOAD)
     //성능 저하 비교는 findById
     Optional <Review> findReviewById(Long id);
     //이거 써서 쿼리 1번으로 줄임.

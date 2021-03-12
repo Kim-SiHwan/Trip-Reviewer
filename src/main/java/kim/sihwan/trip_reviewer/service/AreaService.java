@@ -41,7 +41,8 @@ public class AreaService {
         Area area = areaRepository.findById(requestDto.getAreaId())
                 .orElseThrow(AreaNotFoundException::new);
 
-
+        area.updateArea(requestDto.getTitle(), requestDto.getColor(), requestDto.getAccompany(), requestDto.getVisitDate());
+/*
         if(!requestDto.getTitle().isEmpty())
             area.changeTitle(requestDto.getTitle());
         if(!requestDto.getColor().isEmpty())
@@ -49,7 +50,7 @@ public class AreaService {
         if(!requestDto.getAccompany().isEmpty())
             area.changeAccompany(requestDto.getAccompany());
         if(!requestDto.getVisitDate().isEmpty())
-            area.changeVisitDate(requestDto.getVisitDate());
+            area.changeVisitDate(requestDto.getVisitDate());*/
 
     }
 

@@ -9,7 +9,6 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment,Long> {
 
 
-    @EntityGraph(attributePaths = {"review"} , type = EntityGraph.EntityGraphType.LOAD)
     List<Comment> findAllByReview_Id(Long id);
 
     List<Comment> findAllByUsername(String username);

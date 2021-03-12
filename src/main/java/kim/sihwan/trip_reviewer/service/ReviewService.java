@@ -47,7 +47,6 @@ public class ReviewService {
     public List<ReviewListResponseDto> findAllReviews(Long tagId) {
 
         if (tagId == 0) {
-
             return reviewRepository.findAll()
                     .stream()
                     .map(ReviewListResponseDto::toDto)

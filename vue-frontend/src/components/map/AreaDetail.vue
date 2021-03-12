@@ -152,11 +152,13 @@ export default {
       this.sendInfo={
         areaId : this.selectedArea.id,
         areaIdx : this.selectedArea.idx,
-        title : this.title,
-        color : this.color,
-        visitDate: this.date,
-        accompany : this.selectedItems
+        title : this.title === '' ? this.selectedArea.title : this.title,
+        color : this.color === '#FF0000' ? this.selectedArea.color : this.color,
+        visitDate: this.date === '' ? this.selectedArea.visitDate : this.date,
+        accompany : this.selectedItems === '' ? this.selectedArea.accompany : this.selectedItems
       };
+
+
       this.$store.dispatch('REQUEST_CHANGE_AREA_INFO',this.sendInfo);
 
     },
