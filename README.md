@@ -71,11 +71,9 @@ Deploy
 <details>
   
 <summary>지역</summary>
-<div markdown="1">     
 + 전체 지역구 조회 ( 지도 )
 + 단일 지역구 조회
 + 단일 지역구에 대한 방문 표시 ( 색상, 여행 제목, 방문 일자, 동행 여부, 사진 삽입 )
-</div>
 </details>
 
 
