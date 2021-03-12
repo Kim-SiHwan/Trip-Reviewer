@@ -8,6 +8,9 @@ TripReviewer는 대한민국 행정구역 데이터를 시각화 해
 ---
 ### 프로젝트 사용
 <a> http://ec2-13-125-95-122.ap-northeast-2.compute.amazonaws.com:8080/#/ </a>
+지도 기능은 로그인한 사용자만 사용할 수 있습니다.
+회원가입 : 공백이 없는 알파벳, 숫자를 이용한 6~12자 이내
+비밀번호 : 공백이 알파벳, 숫자 ( 특수문자 가능 )를 이용한 6~12자 이내
 
 ---
 ### 배포 아키텍처
@@ -53,6 +56,26 @@ Deploy
 ![댓글](https://user-images.githubusercontent.com/66605925/110917328-2459e380-835d-11eb-86c2-317ddfdb1e32.PNG)
 ![홈](https://user-images.githubusercontent.com/66605925/110917360-2b80f180-835d-11eb-91d4-da4eb1fbac94.PNG)
 
-
+---
+### 구현 기능
+<details>
+<summary>회원</summary>
+<div markdown="1">       
++ 회원 등록
++ 회원 인증
++ 로그인
++ 로그아웃
++ 개인 지도 생성
+</div>
+</details>
+<details>
+  
+<summary>지역</summary>
+<div markdown="1">     
++ 전체 지역구 조회 ( 지도 )
++ 단일 지역구 조회
++ 단일 지역구에 대한 방문 표시 ( 색상, 여행 제목, 방문 일자, 동행 여부, 사진 삽입 )
+</div>
+</details>
 
 
