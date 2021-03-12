@@ -44,11 +44,15 @@ Deploy
 
 ---
 ### API
-<details>
-<summary>여기를 눌러주세요</summary>
-<div markdown="1">       
+![전체](https://user-images.githubusercontent.com/66605925/110917180-f83e6280-835c-11eb-945f-42ab8e144502.PNG)
+![어드민](https://user-images.githubusercontent.com/66605925/110917274-1015e680-835d-11eb-9a04-f8ce571c7875.PNG)
+![멤버](https://user-images.githubusercontent.com/66605925/110917287-16a45e00-835d-11eb-85b2-59a9ed2cb37e.PNG)
+![지역](https://user-images.githubusercontent.com/66605925/110917295-1a37e500-835d-11eb-8160-c554f4e069fa.PNG)
+![사진첩](https://user-images.githubusercontent.com/66605925/110917306-1e640280-835d-11eb-93fd-2590938534d5.PNG)
+![리뷰](https://user-images.githubusercontent.com/66605925/110917318-215ef300-835d-11eb-8899-0637e769447c.PNG)
+![댓글](https://user-images.githubusercontent.com/66605925/110917328-2459e380-835d-11eb-86c2-317ddfdb1e32.PNG)
+![홈](https://user-images.githubusercontent.com/66605925/110917360-2b80f180-835d-11eb-91d4-da4eb1fbac94.PNG)
 
-😎숨겨진 내용😎
 
-</div>
-</details>
+
+
