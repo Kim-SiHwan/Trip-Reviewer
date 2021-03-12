@@ -154,3 +154,10 @@ Spring Security , JsonWebToken을 사용한 사용자 인증
 ### 문제점 및 해결 방법
 - 핵심 기능인 지도 그려내기의 막막함
   - 행정구역 JSON 파일을 QGIS를 통해 지저분한 부분을 커스텀 한 뒤 D3 라이브러리를 이용해 시각화
+- JPA 사용 시 1+N 문제로, 쿼리가 매우 많이 나가는 현상 발생
+  - 객체 참조를 LAZY 설정
+  - EntityGraph를 사용해 객체 그래프 탐색을 한번에 마치도록 변경
+  - '''     @EntityGraph(attributePaths = {"member","reviewAlbums","reviewTags","reviewTags.tag"},type = EntityGraph.EntityGraphType.LOAD)
+    Optional<Review> findReviewById(Long id); '''
+
+  - 
