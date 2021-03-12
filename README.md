@@ -18,7 +18,26 @@ TripReviewer는 대한민국 행정구역 데이터를 시각화 해
 ![실행 GIF](https://user-images.githubusercontent.com/66605925/110914755-21a9bf00-835a-11eb-8776-6cccc1543a5c.gif)
 
 ---
-### 사용 기술
+### 개발 환경
 Back
++ SpringWeb 2.4.3
 + SpringBoot 2.4.3
-+ SpringDataJpa
++ SpringDataJpa 2.4.3
++ SpringSecurity 2.4.3
++ MariaDB 2.7.2
++ Swagger2 2.6.1
+
+Front
++ node v15.2.0
++ npm 7.0.8
++ vue 2.6.11
++ vue-router 3.4.7
++ vuetify 2.4.0
++ vuex 3.6.2
++ vuex-persistedstate 4.0.0-beta.3
++ axios 0.20.0
++ d3 3.1.7
+
+Deploy
++ AWS EC2
++ AWS S3
