@@ -9,8 +9,8 @@ TripReviewer는 대한민국 행정구역 데이터를 시각화 해
 ### 프로젝트 사용
 <a> http://ec2-13-125-95-122.ap-northeast-2.compute.amazonaws.com:8080/#/ </a> <br>
 지도 기능은 로그인한 사용자만 사용할 수 있습니다.<br>
-회원가입 : 공백이 없는 알파벳, 숫자를 이용한 6~12자 이내<br>
-비밀번호 : 공백이 없는 알파벳, 숫자 ( 특수문자 가능 )를 이용한 6~12자 이내
+회원가입 : 공백이 없는 알파벳, 숫자를 이용한 6 - 12자 이내<br>
+비밀번호 : 공백이 없는 알파벳, 숫자 ( 특수문자 가능 )를 이용한 6 - 12자 이내
 
 ---
 ### 배포 아키텍처
@@ -47,13 +47,44 @@ Deploy
 
 ---
 ### 프로젝트 설계
-도메인 객체
+###### 도메인 객체
 ![엔티티 객체](https://user-images.githubusercontent.com/66605925/110919736-ee6a2e80-835f-11eb-8233-06d6a896db74.PNG)
 
-테이블 설계
+###### 테이블 설계
 ![테이블 설계](https://user-images.githubusercontent.com/66605925/110919758-f4f8a600-835f-11eb-9814-1fa46361b3cc.PNG)
+###### 도메인 객체 분석
+- Member (회원)⇒ 아이디와 닉네임, 비밀번호를 가지며 인증을 위한 권한 정보 role또한 가지고 있다.
 
+- Area (지역구)⇒ Member와 지역구 이름, 방문표시를 위한 색, 제목, 방문일자, 동행 여부와 보다 쉽게 처리하기 위해 idx를( 행정구역 그리는 json 데이터와 일치시킴 )가지고 있다.
 
+- Album (앨범)⇒ Area와 사진을 내려주기위한 url, 중복을 방지하는 filenae과 사진의 기존 이름 originFilename을 가지고 있다.
+
+- Review (리뷰)⇒ 지역구의 이름, 리뷰의 내용과 제목 생성일자와 썸네일 표시를 위한 사진의 url 그리고 ReviewAlbum, Review Tag, Comment를 List 형식으로 가지고 있다.
+
+- ReviewAlbum (리뷰 앨범)⇒ Review와 url, filename, originFilename을 가지고 있다.
+
+- ReviewTag (리뷰에 달린 태그)⇒ 다대다 매핑을 풀어낸 테이블로 Review와 Tag를 가지고 있다.
+
+- Tag (해시태그)⇒ 실제 사용될 tag를 가지고 있다.
+
+- Comment (댓글)⇒ 작성자와 내용, 생성일자를 가지고 있다.
+
+###### 연관관계 매핑 분석
+- Area와 Member ⇒ 다대일 단방향 관계로, Area에서 Member를
+ 참조한다.<br>
+
+- Area와 Album ⇒ 일대다 양방향 관계로, 외래키가 있는 Album을 
+연관관계의 주인으로 설정하고, Area는 List의 형태로 Album을 참조한다.<br>
+
+- Review와 ReviewAlbum ⇒ 일대다 양방향 관계로, 외래키가 있는 
+ReviewAlbum을 연관관계의 주인으로 설정한다. Review는 List의 형태로 ReviewAlbum을 참조한다.<br>
+
+- Review와 Comment ⇒ 위와 동일하다.<br>
+
+- Review와 ReviewTag, Tag ⇒ Review와 Tag 다대다 관계를 
+Review와 ReviewTag를 일대다 양방향 관계,
+ReviewTag와 Tag를 다대일 단방향 관계로 풀어낸 것으로
+외래키가 있는 ReviewTag를 연관관계의 주인으로 설정한다. Review는 List의 형태로 ReviewTag를 참조한다.
 
 ---
 ### API
