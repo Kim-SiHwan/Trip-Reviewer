@@ -58,22 +58,17 @@ Deploy
 
 ---
 ### 구현 기능
-<details>
-<summary>회원</summary>
-<div markdown="1">       
+###### 회원
 + 회원 등록
 + 회원 인증
 + 로그인
 + 로그아웃
 + 개인 지도 생성
-</div>
-</details>
-<details>
-  
-<summary>지역</summary>
+
+###### 지역
 + 전체 지역구 조회 ( 지도 )
 + 단일 지역구 조회
 + 단일 지역구에 대한 방문 표시 ( 색상, 여행 제목, 방문 일자, 동행 여부, 사진 삽입 )
-</details>
+
 
 
