@@ -19,7 +19,8 @@ TripReviewer는 대한민국 행정구역 데이터를 시각화 해
 
 ---
 ### 실행 GIF
-![실행 GIF](https://user-images.githubusercontent.com/66605925/110914755-21a9bf00-835a-11eb-8776-6cccc1543a5c.gif)
+![TRGIF](https://user-images.githubusercontent.com/66605925/111725293-287c8880-88aa-11eb-8efa-056cbc3b9346.gif)
+
 
 ---
 ### 개발 환경
