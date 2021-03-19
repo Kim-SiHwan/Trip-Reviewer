@@ -150,6 +150,7 @@ Spring Validate를 사용한 유효성 검증
 
 ###### 사용자 인증
 Spring Security , JsonWebToken을 사용한 사용자 인증
+- 회원가입, 로그인, 리뷰 조회, 댓글 조회를 제외한 모든 작업에 대해 인증
 
 
 ---
