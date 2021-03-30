@@ -25,23 +25,23 @@ TripReviewer는 대한민국 행정구역 데이터를 시각화 해
 ---
 ### 개발 환경
 Back
-+ SpringWeb 2.4.3
-+ SpringBoot 2.4.3
-+ SpringDataJpa 2.4.3
-+ SpringSecurity 2.4.3
-+ MariaDB 2.7.2
-+ Swagger2 2.6.1
++ SpringWeb
++ SpringBoot
++ SpringDataJpa
++ SpringSecurity
++ MariaDB
++ Swagger2 
 
 Front
-+ node v15.2.0
-+ npm 7.0.8
-+ vue 2.6.11
-+ vue-router 3.4.7
-+ vuetify 2.4.0
-+ vuex 3.6.2
-+ vuex-persistedstate 4.0.0-beta.3
-+ axios 0.20.0
-+ d3 3.1.7
++ Node 
++ Npm 
++ Vue 
++ Vue-router
++ Vuetify
++ Vuex 
++ Vuex-persistedstate 
++ Axios 
++ D3 
 
 Deploy
 + AWS EC2
