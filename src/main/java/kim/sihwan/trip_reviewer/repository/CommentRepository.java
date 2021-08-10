@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment,Long> {
 
-
-    List<Comment> findAllByReview_Id(Long id);
+    @EntityGraph(attributePaths = {"review","review.reviewAlbums","review.reviewTags"})
+    List<Comment> findAllByReviewId(Long id);
 
     List<Comment> findAllByUsername(String username);
 

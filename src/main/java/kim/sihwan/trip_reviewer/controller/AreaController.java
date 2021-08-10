@@ -27,7 +27,7 @@ public class AreaController {
     @GetMapping
     public ResponseEntity<List<AreaResponseDto>> findAllByUsername(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return new ResponseEntity<>(areaService.findAllByUsername(username),HttpStatus.OK);
+        return new ResponseEntity<>(areaService.findAllAreasByUsername(username),HttpStatus.OK);
     }
 
     @ApiImplicitParam(name = "AUTHORIZATION", value = "Bearer +로그인 후 access_token", required = true, dataType = "String", paramType = "header", defaultValue = "Bearer ")

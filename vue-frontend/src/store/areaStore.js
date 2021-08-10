@@ -29,8 +29,6 @@ const areaStore={
             try{
                 context.commit('SET_SELECTED_PATH',payload);
             }catch (e) {
-                console.log("도형 불러오기 실패")
-
                 context.commit('SET_SNACK_BAR',{
                     msg:'도형 불러오기를 실패했습니다.',color:'error'
                 });
@@ -57,34 +55,6 @@ const areaStore={
             }
 
         }
-/*
-        async REQUEST_CHANGE_COLOR(context,payload){
-            try {
-                const response = await area_api.changeColor(payload);
-                context.commit('SET_AREAS',response.data);
-                context.commit('SET_SELECTED_AREA',response.data[payload.areaIdx-1]);
-            }catch (e) {
-
-                context.commit('SET_SNACK_BAR',{
-                    msg:'색상 변경을 실패했습니다.',color:'error'
-                });
-            }
-        },
-        async REQUEST_CHANGE_TITLE(context,payload){
-            try {
-                // const response = await area_api.changeTitle(payload);
-                // store.commit('setArea',response.data);
-                console.log(payload);
-                const response = await area_api.changeTitle(payload);
-                context.commit('SET_AREAS',response.data);
-                context.commit('SET_SELECTED_AREA',response.data[payload.areaIdx-1]);
-            }catch (e) {
-
-                context.commit('SET_SNACK_BAR',{
-                    msg:'제목 변경을 실패했습니다.',color:'error'
-                });
-            }
-        },*/
     }
 }
 export default areaStore

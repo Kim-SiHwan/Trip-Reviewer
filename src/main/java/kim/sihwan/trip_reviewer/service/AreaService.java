@@ -23,8 +23,8 @@ public class AreaService {
     private final AreaRepository areaRepository;
     private final AlbumRepository albumRepository;
 
-    public List<AreaResponseDto> findAllByUsername(String username){
-        return areaRepository.findAllByMember_Username(username)
+    public List<AreaResponseDto> findAllAreasByUsername(String username){
+        return areaRepository.findAllByMemberUsername(username)
                 .stream()
                 .map(AreaResponseDto::toDto)
                 .collect(Collectors.toList());
@@ -40,9 +40,7 @@ public class AreaService {
     public void changeAreaInfo(AreaRequestDto requestDto){
         Area area = areaRepository.findById(requestDto.getAreaId())
                 .orElseThrow(AreaNotFoundException::new);
-
         area.updateArea(requestDto.getTitle(), requestDto.getColor(), requestDto.getAccompany(), requestDto.getVisitDate());
-
     }
 
     @Transactional

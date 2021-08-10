@@ -21,8 +21,8 @@ public class TagService {
     private final TagRepository tagRepository;
     private final ReviewTagRepository reviewTagRepository;
 
-    public List<ReviewTag> getReviewIdsByTagId(Long tagId){
-        return reviewTagRepository.findAllByTag_Id(tagId);
+    public List<ReviewTag> getReviewTagsByTagId(Long tagId){
+        return reviewTagRepository.findAllByTagId(tagId);
     }
 
     public List<Tag> findAllTag(){
@@ -31,9 +31,7 @@ public class TagService {
 
     @Transactional
     public void addReviewTag(Review review , ReviewRequestDto requestDto){
-
         Set<String> tags = requestDto.getTags();
-
         tags.forEach(tagName->{
             ReviewTag reviewTag = new ReviewTag();
             Tag tag = addTag(tagName);

@@ -41,7 +41,6 @@ const albumStore={
                 await album_api.deleteFiles(payload);
 
             }catch (e) {
-                console.log("앨범 수정 실패");
                 context.commit('SET_SNACK_BAR',{
                     msg:'앨범 수정을 실패했습니다.',color:'error'
                 });

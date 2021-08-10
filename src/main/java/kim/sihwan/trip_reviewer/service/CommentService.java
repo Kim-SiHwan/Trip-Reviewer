@@ -26,21 +26,15 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final ReviewRepository reviewRepository;
 
-
-
-
-//     * @Slf4j << log4j,logback,log4j2
-
     public List<CommentResponseDto> findAllCommentsByUsername(String username) {
         return commentRepository.findAllByUsername(username)
                 .stream()
                 .map(CommentResponseDto::toDto)
                 .collect(Collectors.toList());
-
     }
 
     public List<CommentResponseDto> findAllComments(Long reviewId) {
-        return commentRepository.findAllByReview_Id(reviewId)
+        return commentRepository.findAllByReviewId(reviewId)
                 .stream()
                 .map(CommentResponseDto::toDto)
                 .collect(Collectors.toList());
@@ -53,7 +47,6 @@ public class CommentService {
                 .orElseThrow(ReviewNotFoundException::new);
         Comment comment = requestDto.toEntity(requestDto);
         comment.addReview(review);
-
     }
 
     @Transactional
@@ -61,7 +54,6 @@ public class CommentService {
         Comment comment = commentRepository.findById(updateRequestDto.getId())
                 .orElseThrow(CommentNotFoundException::new);
         comment.changeContent(updateRequestDto.getContent());
-
     }
 
     @Transactional
@@ -71,8 +63,8 @@ public class CommentService {
                 .orElseThrow(CommentNotFoundException::new);
         if(!username.equals("admin4166") && !username.equals(comment.getUsername())){
             throw new DifferentUsernameException();
-        }commentRepository.delete(comment);
-
+        }
+        commentRepository.delete(comment);
     }
 
 }

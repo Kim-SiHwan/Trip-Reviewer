@@ -44,13 +44,10 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final AreaRepository areaRepository;
 
-    private final String ACCESS_KEY = "_access_key";
-
     @Transactional
     public void save(MemberJoinDto joinDto) {
 
         Member member = joinDto.toEntity(joinDto, passwordEncoder);
-        // 객체지향 체조 원칙 10가지
         if (!isValidateDuplicateMember(member)) {
             throw new UsernameDuplicatedException();
         }

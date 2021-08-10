@@ -81,18 +81,4 @@ instance.interceptors.response.use(
 
 )
 
-/*function requestRefreshToken(accessToken){
-    let form ={
-        expiredToken : accessToken
-    }
-    console.log("펑셩ㄴ! " +accessToken);
-    return axios.request({
-        url:'/api/member/new_token',
-        method:'POST',
-        data:form,
-
-    })
-}*/
-
-
 export default instance;

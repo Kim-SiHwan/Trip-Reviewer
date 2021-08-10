@@ -6,8 +6,6 @@ import kim.sihwan.trip_reviewer.dto.member.MemberResponseDto;
 import kim.sihwan.trip_reviewer.dto.tag.TagResponseDto;
 import kim.sihwan.trip_reviewer.exception.cumtomException.ForbiddenAccessException;
 import kim.sihwan.trip_reviewer.repository.MemberRepository;
-import kim.sihwan.trip_reviewer.repository.ReviewTagRepository;
-import kim.sihwan.trip_reviewer.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -46,8 +44,6 @@ public class AdminService {
         checkAdmin();
         tagService.deleteTag(tagId);
     }
-
-
 
     private void checkAdmin(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

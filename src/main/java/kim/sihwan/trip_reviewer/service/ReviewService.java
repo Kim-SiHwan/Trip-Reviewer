@@ -2,11 +2,11 @@ package kim.sihwan.trip_reviewer.service;
 
 import kim.sihwan.trip_reviewer.domain.Member;
 import kim.sihwan.trip_reviewer.domain.Review;
-import kim.sihwan.trip_reviewer.dto.review.ReviewUpdateRequestDto;
-import kim.sihwan.trip_reviewer.exception.cumtomException.DeletedReviewException;
 import kim.sihwan.trip_reviewer.dto.review.ReviewListResponseDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewRequestDto;
 import kim.sihwan.trip_reviewer.dto.review.ReviewResponseDto;
+import kim.sihwan.trip_reviewer.dto.review.ReviewUpdateRequestDto;
+import kim.sihwan.trip_reviewer.exception.cumtomException.DeletedReviewException;
 import kim.sihwan.trip_reviewer.exception.cumtomException.DifferentUsernameException;
 import kim.sihwan.trip_reviewer.exception.cumtomException.ReviewNotFoundException;
 import kim.sihwan.trip_reviewer.exception.cumtomException.UserNotFoundException;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,15 +32,13 @@ public class ReviewService {
     private final ReviewAlbumService reviewAlbumService;
     private final TagService tagService;
 
-
     public List<ReviewListResponseDto> findAllReviewsByUsername(String username) {
-        List<Review> reviews = reviewRepository.findAllByMember_Username(username);
-        List<ReviewListResponseDto> list = reviews
+        List<Review> reviews = reviewRepository.findAllByMemberUsername(username);
+        return reviews
                 .stream()
                 .map(ReviewListResponseDto::toDto)
+                .sorted(Comparator.comparing(ReviewListResponseDto::getId,Comparator.reverseOrder()))
                 .collect(Collectors.toList());
-        Collections.reverse(list);
-        return list;
     }
 
     public List<ReviewListResponseDto> findAllReviews(Long tagId) {
@@ -54,7 +51,7 @@ public class ReviewService {
                     .collect(Collectors.toList());
         }
 
-        return tagService.getReviewIdsByTagId(tagId)
+        return tagService.getReviewTagsByTagId(tagId)
                 .stream()
                 .map(reviewTag -> ReviewListResponseDto.toDto(reviewTag.getReview()))
                 .sorted(Comparator.comparing(ReviewListResponseDto::getId, Comparator.reverseOrder()))

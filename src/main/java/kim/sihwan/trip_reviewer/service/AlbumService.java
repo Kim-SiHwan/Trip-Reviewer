@@ -25,6 +25,7 @@ public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AreaRepository areaRepository;
     private final S3Uploader s3Uploader;
+
     public List<AlbumResponseDto> findAllAlbumByAreaId(Long areaId) {
         return albumRepository.findAllByArea_Id(areaId)
                 .stream()
